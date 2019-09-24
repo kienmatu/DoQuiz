@@ -12,11 +12,18 @@ namespace TracNghiem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QuizTest()
         {
-
+            Quizzes = new HashSet<Quiz>();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public int TestID { get; set; }
+
+        [Required]
+        public int TotalTime { get; set; }
+
+        [Required]
+        public int TotalMark { get; set; }
+
         [Required]
         [StringLength(100)]
         public string name { get; set; }
@@ -33,6 +40,9 @@ namespace TracNghiem.Models
         public virtual Subject Subject { get; set; }
 
         [Required]
-        public int status { get; set; }
+        public TestStatus status { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public ICollection<Quiz> Quizzes { get; set; }
     }
 }

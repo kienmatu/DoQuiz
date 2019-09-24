@@ -17,18 +17,31 @@ namespace TracNghiem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+
         [Required]
         public int status { get; set; }
+
         [Required]
         [StringLength(20)]
         public string username { get; set; }
+
         [StringLength(100)]
         public string fullname { get; set; }
+
+        [StringLength(100)]
+        public string email { get; set; }
         [Required]
-        public int type { get; set; }
+        public UserType type { get; set; }
+
+        [Required]
+        [StringLength(15)]
+        public string role { get; set; }
+
         [Column(TypeName = "ntext")]
         public string description { get; set; }
+
         public DateTime? register_date { get; set; }
+
         [StringLength(200)]
         public string AvatarImage { get; set; }
 
@@ -38,4 +51,5 @@ namespace TracNghiem.Models
 
 
     }
+   
 }

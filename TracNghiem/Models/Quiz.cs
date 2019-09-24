@@ -12,20 +12,23 @@ namespace TracNghiem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Quiz()
         {
-
+            QuizTests = new HashSet<QuizTest>();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public int QuizID { get; set; }
 
         [ForeignKey("Creator")]
         [Required]
         public int CreatorID { get; set; }
-        public virtual User Creator {get;set;}
+        public virtual User Creator { get; set; }
 
         [StringLength(500)]
         [Required]
         public string content { get; set; }
+
+        [Required]
+        public HardType HardType { get; set; }
 
         [StringLength(100)]
         public string image { get; set; }
@@ -48,11 +51,13 @@ namespace TracNghiem.Models
         [Required]
         public string answerD { get; set; }
         [Required]
-        public int trueAnswer { get; set; }
+        public Answer trueAnswer { get; set; }
         [Required]
         public int status { get; set; }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public ICollection<QuizTest> QuizTests { get; set; }
 
     }
+    
 }
