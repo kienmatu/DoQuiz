@@ -9,7 +9,7 @@ namespace TracNghiem.Models
     public partial class QuizContext : DbContext
     {
         public QuizContext()
-            : base("name=QuizContext")
+            : base("QuizContext")
         {
         }
         public DbSet<Quiz> Quizzes { get; set; }
@@ -28,6 +28,10 @@ namespace TracNghiem.Models
             modelBuilder.Entity<User>()
                 .HasIndex(e => e.email)
                 .IsUnique();
+            modelBuilder.Entity<QuizTest>()
+                .HasMany(t => t.Quizzes)
+                .WithRequired()
+                .WillCascadeOnDelete(false);
         }
     }
 }

@@ -5,12 +5,29 @@ using System.Web;
 
 namespace TracNghiem.Models
 {
+    public enum CommonStatus
+    {
+        active = 0,
+        notactive = 1,
+    }
+    public enum Gender
+    {
+        Male = 0,
+        Female = 1,
+    }
+    public enum UserStatus
+    {
+        NotActivated = 0,
+        Activated = 1,
+        Blocked = 2,
+        Deleted = 3,
+
+    }
     public enum UserType
     {
         Admin = 0,
-        Mod = 1,
-        Teacher = 2,
-        Student = 3,
+        Teacher = 1,
+        Student = 2,
 
     }
     public enum Answer

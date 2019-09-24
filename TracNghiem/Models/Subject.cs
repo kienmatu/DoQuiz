@@ -22,7 +22,7 @@ namespace TracNghiem.Models
         [Required]
         public string name { get; set; }
         [Required]
-        public int status { get; set; }
+        public CommonStatus status { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<Quiz> Quizzes { get; set; }

@@ -19,7 +19,13 @@ namespace TracNghiem.Models
         public int ID { get; set; }
 
         [Required]
-        public int status { get; set; }
+        public UserStatus status { get; set; }
+
+        [Required]
+        [StringLength(500)]
+        public string password { get; set; }
+
+        public Gender gender { get; set; }
 
         [Required]
         [StringLength(20)]
