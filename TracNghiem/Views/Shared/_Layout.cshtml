@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Trắc Nghiệm Online</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -17,13 +17,30 @@
         </nav>
         @if (Request.IsAuthenticated)
         {
-            <a class="btn btn-outline-primary" href="/Auth/Logout">Đăng nuất</a>
+            <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    @User.Identity.Name
+                </button>
+                <div class="dropdown-menu mr-1">
+                    <a class="dropdown-item" href="/Admin/Index">Dashboard</a>
+                    <a class="dropdown-item" href="/Auth/Logout">Đăng nuất</a>
+                </div>
+            </div>
+
         }
         else
         {
-            <a class="btn btn-outline-warning mr-1" href="/Auth/Register">Đăng ký</a>
-            <a class="btn btn-outline-primary" href="/Auth/Login">Đăng nhập</a>
+            <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Tài khoản
+                </button>
+                <div class="dropdown-menu  mr-1">
+                    <a class="dropdown-item" href="/Auth/Register">Đăng ký</a>
+                    <a class="dropdown-item" href="/Auth/Login">Đăng nhập</a>
+                </div>
+            </div>
         }
+
 
     </div>
 
@@ -70,9 +87,10 @@
             </footer>
         </div>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
+    <script src="/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="/Scripts/umd/popper.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

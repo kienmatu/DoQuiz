@@ -1,0 +1,84 @@
+﻿@model IEnumerable<TracNghiem.ViewModel.UserViewModel>
+@{
+    ViewBag.Title = "Manage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div style="margin-top:20px;">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="/Content/images/@item.AvatarImage" alt="User profile picture">
+                        </div>
+                        <h3 class="profile-username text-center">@item.fullname</h3>
+                        <p class="text-muted text-center">@@@item.username</p>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            @if (item.type == TracNghiem.Models.UserType.Teacher || item.type == TracNghiem.Models.UserType.Admin)
+                            {
+                                <li class="list-group-item">
+                                    <b>Số câu hỏi đã tạo:</b> <a class="float-right">@item.CountQuestion</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Số bài thi đã tạo:</b> <a class="float-right">@item.CountTest</a>
+                                </li>
+                            }
+                            @if (item.type == TracNghiem.Models.UserType.Student)
+                            {
+                                <li class="list-group-item">
+                                    <b>Số bài thi đã làm:</b> <a class="float-right">@item.CountDoneTest</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Số bài thi đã làm:</b> <a class="float-right">@item.CountDoneTest</a>
+                                </li>
+                            }
+                            <li class="list-group-item">
+                                <b>Trạng thái:</b> <a class="float-right">
+                                    <label class="switch">
+                                        <input onchange="changeStt(this)" type="checkbox" id="@item.ID" @(item.status == TracNghiem.Models.UserStatus.Activated ? "checked" : "") class="primary">
+                                        <span class="slider"></span>
+                                    </label>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+
+    </div>
+</div>
+<script>
+    var changeStt = function (xthis) {
+        var xid = xthis.id;
+        var st = xthis.checked ? 1 : 0;
+        $.ajax({
+            type: "POST",
+            url: '/User/changeStatus',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ userid: xid, status: st }),
+            dataType: "json",
+            success: function (recData) {
+                var notify = $.notify('<strong>Thành công</strong><br/>' + recData.Message + '<br />', {
+                    type: 'pastel-info',
+                    allow_dismiss: false,
+                    timer: 500,
+                });
+            },
+            error: function () {
+                var enotify = $.notify('<strong>Lỗi</strong><br />', {
+                    type: 'pastel-info',
+                    allow_dismiss: false,
+                    timer: 500,
+                });
+            }
+        });
+    }
+</script>
+

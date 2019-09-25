@@ -32,6 +32,7 @@ namespace TracNghiem.Models
                 .HasMany(t => t.Quizzes)
                 .WithRequired()
                 .WillCascadeOnDelete(false);
+
         }
     }
 }

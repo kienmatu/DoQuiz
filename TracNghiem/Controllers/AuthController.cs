@@ -54,23 +54,75 @@ namespace TracNghiem.Controllers
 
             if (ModelState.IsValid)
             {
-                User user = db.Users.Where(e => e.username.Equals(model.Username)).First();
-                if (user != null)
+                var exist = db.Users.Any(e => e.username.Equals(model.Username));
+                if (exist)
                 {
-                    if (user.password == Helper.CalculateMD5Hash(model.Password) && (user.status == UserStatus.Activated || user.status == UserStatus.NotActivated) )
+                    var user = db.Users.Where(e => e.username.Equals(model.Username)).First();
+                    if (user != null)
                     {
-                        setCookie(user.username, model.RememberMe, user.role);
-                        if (ReturnUrl != null)
-                            return Redirect(ReturnUrl);
-                        return RedirectToAction("Index", "Home");
-                    }
-                    ViewBag.Error = "Sai tài khoản hoặc mật khẩu!";
-                    return View();
+                        if (user.password == Helper.CalculateMD5Hash(model.Password) && (user.status == UserStatus.Activated || user.status == UserStatus.NotActivated))
+                        {
+                            setCookie(user.username, model.RememberMe, user.role);
+                            if (ReturnUrl != null)
+                                return Redirect(ReturnUrl);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        ViewBag.Error = "Sai tài khoản hoặc mật khẩu!";
+                        return View();
 
+                    }
                 }
+                
             }
 
             ViewBag.Error = "Sai tài khoản hoặc mật khẩu!";
+            return View();
+        }
+        public ActionResult Register()
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            return View();
+
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var exist = db.Users.Any(e => e.username == model.username);
+                if (exist)
+                {
+                    ViewBag.Error = "Tên người dùng " + model.username + " đã tồn tại";
+                    return View();
+                }
+                exist = db.Users.Any(e => e.email == model.email);
+                if (exist)
+                {
+                    ViewBag.Error = "Email " + model.email + " đã tồn tại";
+                    return View();
+                }
+                User u = new User
+                {
+                    username = model.username,
+                    password = Common.Helper.CalculateMD5Hash(model.password),
+                    email = model.email,
+                    gender = model.gender,
+                    register_date = DateTime.Now,
+                    role = "normal",
+                    status = UserStatus.NotActivated,
+                    fullname = model.fullname,
+                    type = (UserType)model.type,
+                };
+                db.Users.Add(u);
+                db.SaveChanges();
+                FormsAuthentication.SignOut();
+                setCookie(u.username, false, u.role);
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }

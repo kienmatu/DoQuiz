@@ -1,0 +1,58 @@
+﻿@model TracNghiem.ViewModel.RegisterViewModel
+@{
+    ViewBag.Title = "Đăng ký";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Đăng Ký</h5>
+                    <div class="text-center text-danger">@ViewBag.Error</div>
+                    <form class="form-signin" method="post" action="/Auth/Register">
+
+                        <div class="form-label-group">
+                            <label for="Username">Username:</label><br />
+                            @Html.TextBoxFor(m => m.username, new { @class = "form-control", @placeholder = "UserName" })
+                            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-label-group">
+                            <label for="Password">Mật khẩu:</label><br />
+                            @Html.PasswordFor(m => m.password, new { @class = "form-control", @placeholder = "Password" })
+                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Email:</label><br />
+                            @Html.TextBoxFor(m => m.email, new { @class = "form-control", @placeholder = "Email" })
+                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <label for="Fullname">Fullname:</label><br />
+                            @Html.TextBoxFor(m => m.fullname, new { @class = "form-control", @placeholder = "Full name" })
+                            @Html.ValidationMessageFor(model => model.fullname, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Gender">Giới tính:</label><br />
+                                    @Html.EnumDropDownListFor(e => e.gender, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="type">Loại tài khoản:</label><br />
+                                    @Html.EnumDropDownListFor(e => e.type, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Đăng Ký</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

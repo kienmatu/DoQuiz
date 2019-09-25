@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -12,7 +13,9 @@ namespace TracNghiem.Models
     }
     public enum Gender
     {
+        [Display(Name = "Nam")]
         Male = 0,
+        [Display(Name = "Nữ")]
         Female = 1,
     }
     public enum UserStatus
