@@ -17,12 +17,16 @@ namespace TracNghiem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int QuizID { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string name { get; set; }
 
         [ForeignKey("Creator")]
         [Required]
         public int CreatorID { get; set; }
         public virtual User Creator { get; set; }
-
+        [Required]
+        public DateTime CreateDate { get; set; }
         [StringLength(500)]
         [Required]
         public string content { get; set; }
@@ -53,7 +57,7 @@ namespace TracNghiem.Models
         [Required]
         public Answer trueAnswer { get; set; }
         [Required]
-        public int status { get; set; }
+        public QuizStatusAd status { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<QuizTest> QuizTests { get; set; }

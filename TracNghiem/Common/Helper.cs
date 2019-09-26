@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
+using TracNghiem.Models;
 
 namespace TracNghiem.Common
 {
@@ -23,6 +25,19 @@ namespace TracNghiem.Common
                 sb.Append(hash[i].ToString("X2"));
             }
             return sb.ToString();
+        }
+        public static IEnumerable<SelectListItem> getSubjectItem()
+        {
+            QuizContext db = new QuizContext();
+            List<SelectListItem> lstSub = db.Subjects
+                .Select(m =>
+                new SelectListItem
+                {
+                    Text = m.name,
+                    Value = m.ID.ToString(),
+                }
+                ).ToList();
+            return lstSub;
         }
     }
 }

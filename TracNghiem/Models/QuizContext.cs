@@ -30,7 +30,7 @@ namespace TracNghiem.Models
                 .IsUnique();
             modelBuilder.Entity<QuizTest>()
                 .HasMany(t => t.Quizzes)
-                .WithRequired()
+                .WithOptional()
                 .WillCascadeOnDelete(false);
 
         }

@@ -10,6 +10,7 @@ namespace TracNghiem.ViewModel
     public class RegisterViewModel
     {
         [Required]
+        [DataType(DataType.Password)]
         [MaxLength(20)]
         public string password { get; set; }
         [Required]

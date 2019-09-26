@@ -44,5 +44,7 @@ namespace TracNghiem.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<Quiz> Quizzes { get; set; }
+        [Required]
+        public DateTime CreateDate { get; set; }
     }
 }

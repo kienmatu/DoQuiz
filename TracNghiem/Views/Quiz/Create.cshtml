@@ -1,0 +1,72 @@
+﻿@model TracNghiem.ViewModel.QuizViewModel
+@{
+    ViewBag.Title = "Thêm câu hỏi mới";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container-fluid" style="margin-top:15px;padding-top:15px;">
+    <form method="post">
+        <div class="form-group">
+            <label for="Quiz">Tiêu đề câu hỏi:</label><br />
+            @Html.TextAreaFor(m => m.name, new { @class = "form-control", @placeholder = "Nội dung" })
+            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Quiz">Nội dung câu hỏi:</label><br />
+            @Html.TextAreaFor(m => m.content, new { @class = "form-control", @placeholder = "Nội dung" })
+            @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Quiz">Đáp án A:</label><br />
+            @Html.TextAreaFor(m => m.answerA, new { @class = "form-control", @placeholder = "Đáp án A" })
+            @Html.ValidationMessageFor(model => model.answerA, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Quiz">Đáp án B:</label><br />
+            @Html.TextAreaFor(m => m.answerB, new { @class = "form-control", @placeholder = "Đáp án B" })
+            @Html.ValidationMessageFor(model => model.answerB, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Quiz">Đáp án C:</label><br />
+            @Html.TextAreaFor(m => m.answerC, new { @class = "form-control", @placeholder = "Đáp án C" })
+            @Html.ValidationMessageFor(model => model.answerC, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Quiz">Đáp án D:</label><br />
+            @Html.TextAreaFor(m => m.answerD, new { @class = "form-control", @placeholder = "Đáp án D" })
+            @Html.ValidationMessageFor(model => model.answerD, "", new { @class = "text-danger" })
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Đáp án đúng:</label><br />
+                    @Html.EnumDropDownListFor(m => m.trueAnswer, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.trueAnswer, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Môn học:</label><br />
+                    @Html.DropDownListFor(m => m.SubjectID, Model.Subject, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Trạng thái:</label><br />
+                    @Html.EnumDropDownListFor(m => m.status, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Độ khó:</label><br />
+                    @Html.EnumDropDownListFor(m => m.HardType, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.HardType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Thêm mới" />
+        </div>
+    </form>
+</div>

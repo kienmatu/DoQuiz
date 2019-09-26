@@ -22,7 +22,7 @@ namespace TracNghiem.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Admin");
             }
             return View();
         }
@@ -65,7 +65,7 @@ namespace TracNghiem.Controllers
                             setCookie(user.username, model.RememberMe, user.role);
                             if (ReturnUrl != null)
                                 return Redirect(ReturnUrl);
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Admin");
                         }
                         ViewBag.Error = "Sai tài khoản hoặc mật khẩu!";
                         return View();
@@ -112,7 +112,7 @@ namespace TracNghiem.Controllers
                     email = model.email,
                     gender = model.gender,
                     register_date = DateTime.Now,
-                    role = "normal",
+                    role = model.type == RegisterType.Student ? "student" : "teacher",
                     status = UserStatus.NotActivated,
                     fullname = model.fullname,
                     type = (UserType)model.type,
@@ -122,6 +122,34 @@ namespace TracNghiem.Controllers
                 FormsAuthentication.SignOut();
                 setCookie(u.username, false, u.role);
                 return RedirectToAction("Index");
+            }
+            return View();
+        }
+        [Authorize]
+        public ActionResult ChangePass()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePass(ChangepassViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.oldpassword == model.password)
+                {
+                    ViewBag.anno = "Mật khẩu mới không được trùng mật khẩu cũ !";
+                    return View();
+                }
+                else
+                {
+                    User user = db.Users.Where(e => e.username == User.Identity.Name).First();
+                    if (user != null)
+                    {
+                        user.password = Common.Helper.CalculateMD5Hash(model.password);
+                        db.SaveChanges();
+                        return RedirectToAction("Logout");
+                    }
+                }
             }
             return View();
         }
