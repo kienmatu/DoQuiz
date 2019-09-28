@@ -1151,6 +1151,7 @@
     <Content Include="Views\Quiz\Index.cshtml" />
     <Content Include="Views\Quiz\MyQuiz.cshtml" />
     <Content Include="Views\Quiz\Edit.cshtml" />
+    <Content Include="Views\Quiz\AllQuiz.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

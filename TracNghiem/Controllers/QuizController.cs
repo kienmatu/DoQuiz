@@ -17,6 +17,154 @@ namespace TracNghiem.Controllers
         {
             return View();
         }
+        [Authorize(Roles = "admin")]
+        public ViewResult AllQuiz(string sortOrder, string CurrentSort, int? page, string titleStr)
+        {
+            int pageSize = 100;
+            int pageIndex = 1;
+            ViewBag.Sort = "tăng dần";
+            ViewBag.CurrentSort = sortOrder;
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "Title" : sortOrder;
+            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            IPagedList<QuizViewModelAd> lstQuiz = null;
+            var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
+            if (String.IsNullOrWhiteSpace(titleStr))
+            {
+                switch (sortOrder)
+                {
+                    case "title":
+                        lstQuiz = db.Quizzes.OrderBy(e => e.name).Select(q =>
+                        new QuizViewModelAd
+                        {
+                            status = q.status,
+                            ID = q.QuizID,
+                            name = q.name,
+                            HardType = q.HardType,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    case "createdate":
+                        lstQuiz = db.Quizzes.OrderBy(e => e.CreateDate).Select(q =>
+                        new QuizViewModelAd
+                        {
+                            status = q.status,
+                            ID = q.QuizID,
+                            name = q.name,
+                            HardType = q.HardType,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    default:
+                        lstQuiz = db.Quizzes.OrderBy(e => e.name).Select(q =>
+                        new QuizViewModelAd
+                        {
+                            status = q.status,
+                            ID = q.QuizID,
+                            name = q.name,
+                            HardType = q.HardType,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            else
+            {
+                ViewBag.titleStr = titleStr;
+                switch (sortOrder)
+                {
+                    case "title":
+                        ViewBag.sortname = "tiêu đề";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                           new QuizViewModelAd
+                           {
+                               status = q.status,
+                               ID = q.QuizID,
+                               name = q.name,
+                               HardType = q.HardType,
+                               SubjectName = q.Subject.name,
+                               CreatorName = q.Creator.username,
+                               CreateDate = q.CreateDate,
+                           }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.name).Select(q =>
+                            new QuizViewModelAd
+                            {
+                                status = q.status,
+                                ID = q.QuizID,
+                                name = q.name,
+                                HardType = q.HardType,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    case "createdate":
+                        ViewBag.sortname = "ngày tạo";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.CreateDate).Select(q =>
+                            new QuizViewModelAd
+                            {
+                                status = q.status,
+                                ID = q.QuizID,
+                                name = q.name,
+                                HardType = q.HardType,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.CreateDate).Select(q =>
+                            new QuizViewModelAd
+                            {
+                                status = q.status,
+                                ID = q.QuizID,
+                                name = q.name,
+                                HardType = q.HardType,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    default:
+                        lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                        new QuizViewModelAd
+                        {
+                            status = q.status,
+                            ID = q.QuizID,
+                            name = q.name,
+                            HardType = q.HardType,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            return View(lstQuiz);
+        }
         public ViewResult MyQuiz(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
             int pageSize = 100;
