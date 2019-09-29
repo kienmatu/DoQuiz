@@ -169,7 +169,7 @@
                                 @if(User.IsInRole("admin") || User.IsInRole("teacher"))
                                 {
                                     <li class="nav-item">
-                                        <a href="/Admin/newPost" class="nav-link">
+                                        <a href="/QuizTest/Create" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon text-success"></i>
                                             <p>Thêm đề thi mới</p>
                                         </a>
@@ -177,14 +177,14 @@
                                     if(User.IsInRole("admin"))
                                     {
                                         <li class="nav-item">
-                                            <a href="/Quiz/Index" class="nav-link">
+                                            <a href="/QuizTest/AllQuizTest" class="nav-link">
                                                 <i class="fa fa-circle-o nav-icon text-info"></i>
                                                 <p>Tất cả đề thi</p>
                                             </a>
                                         </li>
                                     }
                                     <li class="nav-item">
-                                        <a href="/Admin/MyPost" class="nav-link">
+                                        <a href="/QuizTest/MyQuizTest" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon text-info"></i>
                                             <p>Đề thi của tôi</p>
                                         </a>
@@ -193,7 +193,7 @@
                                 @if(User.IsInRole("student"))
                                 {
                                     <li class="nav-item">
-                                        <a href="/Admin/MyPost" class="nav-link">
+                                        <a href="/Test/TestList" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon text-info"></i>
                                             <p>Danh sách bài thi</p>
                                         </a>

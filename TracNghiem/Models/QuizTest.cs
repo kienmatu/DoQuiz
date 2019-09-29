@@ -40,7 +40,7 @@ namespace TracNghiem.Models
         public virtual Subject Subject { get; set; }
 
         [Required]
-        public TestStatus status { get; set; }
+        public TestStatusAd status { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<Quiz> Quizzes { get; set; }

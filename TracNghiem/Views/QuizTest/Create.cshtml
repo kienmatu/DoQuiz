@@ -1,0 +1,197 @@
+﻿@model TracNghiem.ViewModel.QuizTestViewModel
+@{
+    ViewBag.Title = "Tạo đề thi mới";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .ms-container{
+        width: 90% !important;
+    }
+    .ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection {
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+}
+    #list option{
+        height: 2em;
+        padding-top: .3em;
+    }
+    #list option:hover{
+        cursor:pointer;
+    }
+</style>
+<div class="container-fluid" style="margin-top:15px;padding-top:15px;">
+    <form method="post">
+        <div class="form-group">
+            <label for="Quiz">Tiêu đề bài thi:</label><br />
+            @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Tiêu đề" })
+            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Thời gian :</label><br />
+                    @Html.EnumDropDownListFor(m => m.TotalTime, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TotalTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Môn học:</label><br />
+                    @Html.DropDownListFor(m => m.SubjectID, Model.Subject, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Trạng thái:</label><br />
+                    @Html.EnumDropDownListFor(m => m.status, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="Quiz">Tổng điểm:</label><br />
+                    @Html.TextBoxFor(m => m.TotalMark, new { @class = "form-control", @type = "number" })
+                    @Html.ValidationMessageFor(model => model.TotalMark, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Quiz">Chọn câu hỏi </label>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="Quiz">Tìm theo tên :</label>
+                    <input class="form-control" name="name_search" id="name_search" type="text" placeholder="Tìm kiếm câu hỏi">
+                    @*<div class="spinner-border text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>*@
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="Quiz">Độ khó:</label><br />
+                        @Html.EnumDropDownListFor(m => m.HardTypeChoose, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div id="list"></div>
+            <button type="button" class="btn btn-sm btn-block btn-info" id="button">selected</button>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Thêm mới" />
+        </div>
+    </form>
+</div>
+
+<!--jQuery Multiselect Plugin-->
+<link rel="stylesheet" type="text/css" href="~/Content/multi-select/css/picklist.min.css">
+
+<script src="~/Content/multi-select/js/picklist.js"></script>
+<script type="text/javascript">
+   var pick;
+   var data ={
+            available: [
+                
+            ],
+            selected: [
+            ]
+        };
+   var loadData = function () {
+        var subject = $('#SubjectID').val();
+        var sname = $('#name_search').val();
+        var hardtype = $('#HardTypeChoose').val();
+        $.ajax({
+            type: "POST",
+            url: '/QuizTest/SearchQuiz',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ subject: subject,name : sname }),
+            dataType: "json",
+            success: function (recData) {
+                recData.QuizList.forEach((e) => {
+                    data.available.push({ id: e.id, label: e.Name,hard: hardtype });
+                });
+                
+
+                $('#button').on('click', function () {
+                    console.log(a.pickList('getSelected'));
+                });
+
+                a.on('picklist.remove', function (event, v) {
+                    console.log(v)
+                });
+
+                a.on('picklist.add', function (event, v) {
+                    console.log(v)
+                });
+            },
+            error: function () {
+                var notify = $.notify('<strong>Lỗi</strong><br/>Lỗi hệ thống<br />', {
+                    type: 'pastel-warning',
+                    allow_dismiss: false,
+                });
+            }
+        });
+        };
+   var initialData = function () {
+        var subject = $('#SubjectID').val();
+        var sname = $('#name_search').val();
+        var hardtype = $('#HardTypeChoose').val();
+        $.ajax({
+            type: "POST",
+            url: '/QuizTest/SearchQuiz',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ subject: subject,name : sname }),
+            dataType: "json",
+            success: function (recData) {
+                recData.QuizList.forEach((e) => {
+                    data.available.push({ id: e.id, label: e.Name,hard: hardtype });
+                });
+                //debugger;
+                pick = $('#list').pickList({
+                    data: data,
+                    buttons: [
+                        {
+                            action: 'add',
+                            label: 'Thêm',
+                            className: 'btn btn-sm btn-block btn-info'
+                        },
+                        {
+                            action: 'remove',
+                            label: 'Bỏ',
+                            className: 'btn btn-sm btn-block btn-warning text-light'
+                        },
+                        {
+                            action: 'removeAll',
+                            label: 'Bỏ tất cả',
+                            className: 'btn btn-sm btn-block btn-danger text-light'
+                        }
+                    ]
+                });
+
+                $('#button').on('click', function () {
+                    console.log(pick.pickList('getSelected'));
+                });
+
+                pick.on('picklist.remove', function (event, v) {
+                    console.log(v)
+                });
+
+                pick.on('picklist.add', function (event, v) {
+                    console.log(v)
+                });
+            },
+            error: function () {
+                var notify = $.notify('<strong>Lỗi</strong><br/>Lỗi hệ thống<br />', {
+                    type: 'pastel-warning',
+                    allow_dismiss: false,
+                });
+            }
+        });
+    };
+    $(function () {
+        initialData();
+    })
+    $('#SubjectID').change((z) => initialData());
+    $('#name_search').change((z) => initialData());
+    $('#HardTypeChoose').change((z) => initialData());
+</script>

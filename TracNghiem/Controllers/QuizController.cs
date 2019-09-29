@@ -189,6 +189,7 @@ namespace TracNghiem.Controllers
                             SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
+                            status = (QuizStatus)q.status,
                         }
                         ).ToPagedList(pageIndex, pageSize);
                         break;
@@ -202,6 +203,7 @@ namespace TracNghiem.Controllers
                             SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
+                            status = (QuizStatus)q.status,
                         }
                         ).ToPagedList(pageIndex, pageSize);
                         break;
@@ -215,6 +217,7 @@ namespace TracNghiem.Controllers
                             SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
+                            status = (QuizStatus)q.status,
                         }
                         ).ToPagedList(pageIndex, pageSize);
                         break;
@@ -238,6 +241,7 @@ namespace TracNghiem.Controllers
                                 SubjectName = q.Subject.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
+                                status = (QuizStatus)q.status,
                             }
                             ).ToPagedList(pageIndex, pageSize);
                         }
@@ -252,6 +256,7 @@ namespace TracNghiem.Controllers
                                 SubjectName = q.Subject.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
+                                status = (QuizStatus)q.status,
                             }
                             ).ToPagedList(pageIndex, pageSize);
                         }
@@ -269,6 +274,7 @@ namespace TracNghiem.Controllers
                                 SubjectName = q.Subject.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
+                                status = (QuizStatus)q.status,
                             }
                             ).ToPagedList(pageIndex, pageSize);
                         }
@@ -283,6 +289,7 @@ namespace TracNghiem.Controllers
                                 SubjectName = q.Subject.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
+                                status = (QuizStatus)q.status,
                             }
                             ).ToPagedList(pageIndex, pageSize);
                         }
@@ -297,11 +304,13 @@ namespace TracNghiem.Controllers
                             SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
+                            status = (QuizStatus)q.status,
                         }
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                 }
             }
+            
             return View(lstQuiz);
         }
         [Authorize(Roles = "admin,teacher")]

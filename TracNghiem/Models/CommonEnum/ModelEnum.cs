@@ -58,9 +58,22 @@ namespace TracNghiem.Models
     }
     public enum TestStatus
     {
+        [Display(Name = "Nháp")]
         Draft = 0,
+        [Display(Name = "Hiển thị")]
         Active = 1,
+        //NotActive = 2,
+        //Deleted = 3,
+    }
+    public enum TestStatusAd
+    {
+        [Display(Name = "Nháp")]
+        Draft = 0,
+        [Display(Name = "Hiển thị")]
+        Active = 1,
+        [Display(Name = "Ẩn")]
         NotActive = 2,
+        [Display(Name = "Xóa")]
         Deleted = 3,
     }
     public enum HardType
@@ -90,5 +103,22 @@ namespace TracNghiem.Models
         [Display(Name = "Đã Xóa")]
         Deleted = 2,
     }
+    public enum TimeQuiz
+    {
+        [Display(Name = "10 Phút")]
+        TenMin = 10,
+        [Display(Name = "15 Phút")]
+        FifteenMin = 15,
+        [Display(Name = "30 Phút")]
+        ThirdtyMin = 30,
+        [Display(Name = "45 Phút")]
+        FortyFiveMin = 45,
+        [Display(Name = "60 Phút")]
+        SixtyMin = 60,
+        [Display(Name = "90 Phút")]
+        NineTy = 90,
+
+    }
+    
 
 }
