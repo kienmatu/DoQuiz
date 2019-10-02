@@ -5,6 +5,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /**
  * @author anxu <anxu1212@hotmail.com>
  * version: 0.1.0
+ *  Kiendt <kienmatu1@gmail.com> modified
  */
 (function ($, window) {
     'use strict';
@@ -12,7 +13,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
      * 获取select 中选择的数据
      * @param {Select DOM} ele 
      */
-
     var getSelect = function getSelect(ele) {
         var selected = [];
         ele.find('option:selected').each(function () {
@@ -43,7 +43,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         buttons: [{ action: 'add' }, { action: 'addAll' }, { action: 'remove', label: 'Remove', className: 'btn btn-sm btn-block btn-info' }, { action: 'removeAll' }],
         buttonClass: 'btn btn-sm btn-block btn-primary',
         label: {
-            content: ['Available:', 'Selected:']
+            content: ['Danh sách câu hỏi:', 'Đã chọn:']
+            //content: ['Available:', 'Selected:']
         },
         select: {
             size: 15
@@ -89,7 +90,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     PickList.prototype.initSelect = function () {
         var container = $('<div>').addClass('select');
 
-        $('<select>').prop('multiple', true).attr('size', this.options.select.size).appendTo(container);
+        $('<select>').prop('multiple', true)
+            .attr('size', this.options.select.size)
+            .appendTo(container);
         return container;
     };
 
@@ -114,12 +117,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         this.$element.find(".button-group .add").on('click', function () {
             var selectValue = getSelect(el.find(".select.available select"));
-
+            
             $.merge(that.selected, selectValue);
 
             that.available = that.available.filter(function (v) {
                 for (var i = 0, len = selectValue.length; i < len; i++) {
-                    if (selectValue[i].id != v.id) {
+                    if (selectValue[i].id !== v.id) {
                         continue;
                     }
                     return false;
@@ -179,7 +182,36 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         this.$element.trigger($.Event(name), args);
     };
-
+    //@Author KienDT modify
+    PickList.prototype.updateData = function (dat) {
+        var available = this.$element.find('.select.available select');
+        var selected = this.$element.find('.select.selected select');
+        available.empty();
+        this.available = dat;
+        var selected_subject = [];
+        var new_selected = [];
+        $.each(this.selected, function (i, v) {
+            selected_subject.push(v);
+        });
+        $.each(this.available, function (i, v) {
+        //check nếu selected đã có rồi thì ko hiển thị ở available nữa
+            var checkExist = selected_subject.some(s => s.id === v.id);
+            if (checkExist === false) {
+                $('<option>').val(v.id).text(v.label).data('item', v).appendTo(available);
+                new_selected.push(v);
+            }
+        });
+        new_selected.sort();
+        this.available = new_selected;
+        ///console.log(this.available);
+    };
+    //@Author KienDT modify
+    PickList.prototype.resetSelected = function () {
+        //Xóa hết những item selected
+        var selected = this.$element.find('.select.selected select');
+        selected.empty();
+        this.selected = [];
+    };
     PickList.prototype.getSelected = function () {
         var objResult = [];
         this.$element.find(".select.selected select option").each(function () {
@@ -187,8 +219,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         });
         return objResult;
     };
-
-    var allowedMethods = ['getSelected'];
+    PickList.prototype.getSelectedID = function () {
+        var objResult = [];
+        this.$element.find(".select.selected select option").each(function () {
+            var item_add = $(this).data('item');
+            objResult.push(item_add.id);
+        });
+        var objArr = { quizID: objResult };
+        return objArr;
+    };
+    var allowedMethods = ['getSelected', 'updateData', 'resetSelected','getSelectedID'];
     // Plugin definition.
     $.fn.pickList = function (option) {
         var value,

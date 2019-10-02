@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
 
@@ -12,26 +13,38 @@ namespace TracNghiem.Models
             : base("QuizContext")
         {
         }
-        public DbSet<Quiz> Quizzes { get; set; }
-        public DbSet<QuizTest> QuizTests { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<Quiz> Quizzes { get; set; }
+        public virtual DbSet<QuizTest> QuizTests { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            ////base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<QuizTest>()
-                .HasMany(e => e.Quizzes)
-                .WithMany(e => e.QuizTests)
-                .Map(m => m.ToTable("Quiz_Of_Test").MapLeftKey("TestID").MapRightKey("QuizID"));
+                .HasMany<Quiz>(e => e.Quiz)
+                .WithMany(e => e.QuizTest)
+                .Map(m => m.ToTable("Quiz_Of_Test")
+                .MapLeftKey("TestID")
+                .MapRightKey("QuizID"));
+
+            modelBuilder.Entity<User>()
+                .HasMany(i => i.QuizTests)
+                .WithOptional()
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<User>()
                 .HasIndex(e => e.username)
                 .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.username)
+                .IsUnicode(false);
+
             modelBuilder.Entity<User>()
                 .HasIndex(e => e.email)
                 .IsUnique();
-            modelBuilder.Entity<QuizTest>()
-                .HasMany(t => t.Quizzes)
-                .WithOptional()
-                .WillCascadeOnDelete(false);
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
 
         }
     }

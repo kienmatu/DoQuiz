@@ -12,7 +12,7 @@ namespace TracNghiem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QuizTest()
         {
-            Quizzes = new HashSet<Quiz>();
+            Quiz = new HashSet<Quiz>();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -43,7 +43,7 @@ namespace TracNghiem.Models
         public TestStatusAd status { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<Quiz> Quizzes { get; set; }
+        public virtual ICollection<Quiz> Quiz { get; set; }
         [Required]
         public DateTime CreateDate { get; set; }
     }

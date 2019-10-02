@@ -154,6 +154,18 @@
     <Compile Include="Migrations\201909261106392_adddate.Designer.cs">
       <DependentUpon>201909261106392_adddate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910020104263_fixrela.cs" />
+    <Compile Include="Migrations\201910020104263_fixrela.Designer.cs">
+      <DependentUpon>201910020104263_fixrela.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910020234352_fixrelation1.cs" />
+    <Compile Include="Migrations\201910020234352_fixrelation1.Designer.cs">
+      <DependentUpon>201910020234352_fixrelation1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910020257535_fixrelation_new.cs" />
+    <Compile Include="Migrations\201910020257535_fixrelation_new.Designer.cs">
+      <DependentUpon>201910020257535_fixrelation_new.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
     <Compile Include="Models\Quiz.cs" />
@@ -1167,6 +1179,7 @@
     <Content Include="Views\Quiz\Edit.cshtml" />
     <Content Include="Views\Quiz\AllQuiz.cshtml" />
     <Content Include="Views\QuizTest\Create.cshtml" />
+    <Content Include="Views\QuizTest\AllQuizTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1188,6 +1201,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909261106392_adddate.resx">
       <DependentUpon>201909261106392_adddate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910020104263_fixrela.resx">
+      <DependentUpon>201910020104263_fixrela.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910020234352_fixrelation1.resx">
+      <DependentUpon>201910020234352_fixrelation1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910020257535_fixrelation_new.resx">
+      <DependentUpon>201910020257535_fixrelation_new.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

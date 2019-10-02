@@ -27,20 +27,43 @@ namespace TracNghiem.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "admin,teacher")]
-        public ActionResult Create(QuizTestViewModel model)
+        public JsonResult Create(QuizTestViewModel model)
         {
-            if(!ModelState.IsValid)
+            model.Subject = Common.Helper.getSubjectItem();
+            if (!ModelState.IsValid)
             {
-                return View();
+                return Json(new { success = false, Message = "Bạn nhập thiếu các trường yêu cầu" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                model.Subject = Common.Helper.getSubjectItem();
-                return View(model);
+                User u = db.Users.Where(i => i.username == User.Identity.Name).First();
+
+                QuizTest test = new QuizTest
+                {
+                    CreatorID = u.ID,
+                    Creator = u,
+                    CreateDate = DateTime.Now,
+                    SubjectID = model.SubjectID,
+                    TotalMark = model.TotalMark,
+                    name = model.name,
+                    TotalTime = (int)model.TotalTime,
+                    status = (TestStatusAd)model.status,
+                };
+                foreach(var item in model.quizID)
+                {
+                    Quiz q = db.Quizzes.Find(item);
+                    test.Quiz.Add(q);
+                }
+                db.QuizTests.Add(test);
+                db.SaveChanges();
+                return  Json(new { success = true, Message = "Tạo đề thi thành công !" }, JsonRequestBehavior.AllowGet);
             }
             
         }
 
+        public ViewResult MyQuizTest() {
+            return View();
+        }
         public JsonResult SearchQuiz(int subject, string name = null, HardType? hard = null)
         {
             try

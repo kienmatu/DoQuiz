@@ -18,9 +18,57 @@
     #list option:hover{
         cursor:pointer;
     }
+    .picklist .button-group {
+        width: auto !important;
+    }
+    .picklist .select {
+    width: 45% !important;
+}
+    /*LOADING CSS*/
+ #overlay {
+  background: #ffffff;
+  color: #666666;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  float: left;
+  text-align: center;
+  padding-top: 15%;
+  opacity: .80;
+}
+button {
+  margin: 40px;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+.spinner {
+    margin: 0 auto;
+    height: 64px;
+    width: 64px;
+    animation: rotate 0.8s infinite linear;
+    border: 5px solid firebrick;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+@@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 </style>
+<div id="overlay" style="display:none;">
+    <div class="spinner"></div>
+    <br />
+    Loading...
+</div>
 <div class="container-fluid" style="margin-top:15px;padding-top:15px;">
-    <form method="post">
+    <form method="post" id="createTest">
         <div class="form-group">
             <label for="Quiz">Tiêu đề bài thi:</label><br />
             @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Tiêu đề" })
@@ -78,25 +126,49 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" class="btn btn-success" value="Thêm mới" />
+            <button type="submit" class="btn btn-success">Thêm đề</button>
         </div>
     </form>
 </div>
+<div class="modal fade" id="confirmModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Bạn có muốn đổi môn học ?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Modal body..
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" id="ChangeSubjectBtn" class="btn btn-danger">Đổi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!--jQuery Multiselect Plugin-->
 <link rel="stylesheet" type="text/css" href="~/Content/multi-select/css/picklist.min.css">
-
 <script src="~/Content/multi-select/js/picklist.js"></script>
 <script type="text/javascript">
-   var pick;
-   var data ={
+    var pick;
+    var data =
+    {
             available: [
                 
             ],
             selected: [
             ]
-        };
-   var loadData = function () {
+    };
+    var confirmModal = $('#confirmModal');
+    var loadData = function () {
         var subject = $('#SubjectID').val();
         var sname = $('#name_search').val();
         var hardtype = $('#HardTypeChoose').val();
@@ -104,25 +176,14 @@
             type: "POST",
             url: '/QuizTest/SearchQuiz',
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ subject: subject,name : sname }),
+            data: JSON.stringify({ subject: subject,name : sname,hard : hardtype }),
             dataType: "json",
             success: function (recData) {
+                var newavailable = [];
                 recData.QuizList.forEach((e) => {
-                    data.available.push({ id: e.id, label: e.Name,hard: hardtype });
+                    newavailable.push({ id: e.id, label: e.Name,hard: hardtype });
                 });
-                
-
-                $('#button').on('click', function () {
-                    console.log(a.pickList('getSelected'));
-                });
-
-                a.on('picklist.remove', function (event, v) {
-                    console.log(v)
-                });
-
-                a.on('picklist.add', function (event, v) {
-                    console.log(v)
-                });
+                pick.pickList('updateData',newavailable);
             },
             error: function () {
                 var notify = $.notify('<strong>Lỗi</strong><br/>Lỗi hệ thống<br />', {
@@ -132,7 +193,7 @@
             }
         });
         };
-   var initialData = function () {
+    var initialData = function () {
         var subject = $('#SubjectID').val();
         var sname = $('#name_search').val();
         var hardtype = $('#HardTypeChoose').val();
@@ -140,13 +201,12 @@
             type: "POST",
             url: '/QuizTest/SearchQuiz',
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify({ subject: subject,name : sname }),
+            data: JSON.stringify({ subject: subject,name : sname, hard: hardtype }),
             dataType: "json",
             success: function (recData) {
                 recData.QuizList.forEach((e) => {
                     data.available.push({ id: e.id, label: e.Name,hard: hardtype });
                 });
-                //debugger;
                 pick = $('#list').pickList({
                     data: data,
                     buttons: [
@@ -173,11 +233,11 @@
                 });
 
                 pick.on('picklist.remove', function (event, v) {
-                    console.log(v)
+                    console.log('Remove: ' + v[0].label)
                 });
 
                 pick.on('picklist.add', function (event, v) {
-                    console.log(v)
+                    console.log('Add: ' + v[0].label)
                 });
             },
             error: function () {
@@ -189,9 +249,88 @@
         });
     };
     $(function () {
-        initialData();
+    initialData();
     })
-    $('#SubjectID').change((z) => initialData());
-    $('#name_search').change((z) => initialData());
-    $('#HardTypeChoose').change((z) => initialData());
+    $('#SubjectID').change(function () {
+        if (pick.pickList('getSelected').length > 0) {
+            confirmModal.find('.modal-body').text('Nếu đổi, các câu hỏi đã chọn sẽ bị reset');
+            confirmModal.modal('show');
+        }
+        else {
+            loadData();
+        }
+    });
+    $('#name_search').keyup(() => loadData());
+    $('#HardTypeChoose').change(() => loadData());
+    $('#ChangeSubjectBtn').click(() => {
+        loadData();
+        pick.pickList('resetSelected');
+        confirmModal.modal('hide');
+    });
+    
+    $('#createTest').submit(function (e) {
+        e.preventDefault();
+        var tempdata = $(this).serializeFormJSON();
+        var quizID = pick.pickList('getSelectedID').quizID;
+        var data = { ...tempdata, quizID  };
+        console.log(data);
+        $('#overlay').fadeIn();
+        $.ajax({
+            type: "POST",
+            url: '/QuizTest/Create',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ model: data }),
+            dataType: "json",
+            success: function (recData) {
+                $('#overlay').fadeOut();
+                if (recData.success === true) {
+                    var notify = $.notify('<strong>Thành công</strong><br/>' + recData.Message + '<br />', {
+                        type: 'pastel-info',
+                        allow_dismiss: false,
+                        timer: 1000,
+                    });
+                }
+                else {
+                    var notify = $.notify('<strong>Thất bại</strong><br/>' + recData.Message + '<br />', {
+                        type: 'pastel-info',
+                        allow_dismiss: false,
+                        timer: 1000,
+                    });
+                }
+                setTimeout(function () {
+                    window.location.href = '/QuizTest/MyQuizTest';
+                }, 2000);
+
+            },
+            error: function (xhr, status, error) {
+                $('#overlay').fadeOut();
+                var notify = $.notify('<strong>Lỗi</strong><br/>Có lỗi xảy ra<br />', {
+                    type: 'pastel-warning',
+                    allow_dismiss: false,
+                });
+            }
+        });
+       
+    });
+</script>
+<script>
+    //JQUERY PLUGIN
+    (function ($) {
+    $.fn.serializeFormJSON = function () {
+
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+})(jQuery);
 </script>

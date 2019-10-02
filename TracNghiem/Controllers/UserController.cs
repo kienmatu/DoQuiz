@@ -39,29 +39,37 @@ namespace TracNghiem.Controllers
         [Authorize(Roles = "admin")]
         public JsonResult ChangeStatus(int userid,UserStatus status)
         {
-            string prefix = "";
-            switch (status)
+            try
             {
-                case UserStatus.Activated:
-                    prefix = "Đã kích hoạt";
-                    break;
-                case UserStatus.Blocked:
-                    prefix = "Đã block";
-                    break;
-                case UserStatus.Deleted:
-                    prefix = "Đã xóa";
-                    break;
-                case UserStatus.NotActivated:
-                    prefix = "Đã bỏ kích hoạt";
-                    break;
+                string prefix = "";
+                switch (status)
+                {
+                    case UserStatus.Activated:
+                        prefix = "Đã kích hoạt";
+                        break;
+                    case UserStatus.Blocked:
+                        prefix = "Đã block";
+                        break;
+                    case UserStatus.Deleted:
+                        prefix = "Đã xóa";
+                        break;
+                    case UserStatus.NotActivated:
+                        prefix = "Đã bỏ kích hoạt";
+                        break;
+                }
+                User u = db.Users.Find(userid);
+                if (u.username != "admin")
+                {
+                    u.status = status;
+                    return Json(new { Message = prefix + " \"" + u.username + "\"" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { Message = "Không được cấm admin" }, JsonRequestBehavior.AllowGet);
             }
-            User u = db.Users.Find(userid);
-            if (u.username != "admin")
+            catch (Exception)
             {
-                u.status = status;
-                return Json(new { Message = prefix + " \"" + u.username + "\"" }, JsonRequestBehavior.AllowGet);
+                Response.StatusCode = 500;
+                return Json(new { Message = "Lỗi hệ thống" }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { Message = "Không được cấm admin" }, JsonRequestBehavior.AllowGet);
         }
 
     }
