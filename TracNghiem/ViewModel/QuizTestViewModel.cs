@@ -29,6 +29,8 @@ namespace TracNghiem.ViewModel
         public virtual User Creator { get; set; }
 
         public virtual string SubjectName { get; set; }
+        public string CreatorName { get; set; }
+        public DateTime CreateDate { get; set; }
 
         [Required]
         public TestStatus status { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -61,8 +62,284 @@ namespace TracNghiem.Controllers
             
         }
 
-        public ViewResult MyQuizTest() {
-            return View();
+        public ViewResult MyQuizTest(string sortOrder, string CurrentSort, int? page, string titleStr)
+        {
+            int pageSize = 100;
+            int pageIndex = 1;
+            ViewBag.Sort = "tăng dần";
+            ViewBag.CurrentSort = sortOrder;
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "Title" : sortOrder;
+            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            IPagedList<QuizTestViewModel> lstQuiz = null;
+            var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
+            if (String.IsNullOrWhiteSpace(titleStr))
+            {
+                switch (sortOrder)
+                {
+                    case "title":
+                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                        new QuizTestViewModel
+                        {
+                            status = (TestStatus)q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    case "createdate":
+                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id).OrderBy(e => e.CreateDate).Select(q =>
+                        new QuizTestViewModel
+                        {
+                            status = (TestStatus)q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    default:
+                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                        new QuizTestViewModel
+                        {
+                            status = (TestStatus)q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            else
+            {
+                ViewBag.titleStr = titleStr;
+                switch (sortOrder)
+                {
+                    case "title":
+                        ViewBag.sortname = "tiêu đề";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                              new QuizTestViewModel
+                              {
+                                  status = (TestStatus)q.status,
+                                  TestID = q.TestID,
+                                  name = q.name,
+                                  SubjectName = q.Subject.name,
+                                  CreatorName = q.Creator.username,
+                                  CreateDate = q.CreateDate,
+                              }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderByDescending(e => e.name).Select(q =>
+                           new QuizTestViewModel
+                           {
+                               status = (TestStatus)q.status,
+                               TestID = q.TestID,
+                               name = q.name,
+                               SubjectName = q.Subject.name,
+                               CreatorName = q.Creator.username,
+                               CreateDate = q.CreateDate,
+                           }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    case "createdate":
+                        ViewBag.sortname = "ngày tạo";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderBy(e => e.CreateDate).Select(q =>
+                            new QuizTestViewModel
+                            {
+                                status = (TestStatus)q.status,
+                                TestID = q.TestID,
+                                name = q.name,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderByDescending(e => e.CreateDate).Select(q =>
+                            new QuizTestViewModel
+                            {
+                                status = (TestStatus)q.status,
+                                TestID = q.TestID,
+                                name = q.name,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    default:
+                        lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                        new QuizTestViewModel
+                        {
+                            status = (TestStatus)q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            return View(lstQuiz);
+        }
+
+        [Authorize(Roles = "admin")]
+        public ViewResult AllQuizTest(string sortOrder, string CurrentSort, int? page, string titleStr){
+            int pageSize = 100;
+            int pageIndex = 1;
+            ViewBag.Sort = "tăng dần";
+            ViewBag.CurrentSort = sortOrder;
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "Title" : sortOrder;
+            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            IPagedList<QuizTestViewModelAd> lstQuiz = null;
+            var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
+            if (String.IsNullOrWhiteSpace(titleStr))
+            {
+                switch (sortOrder)
+                {
+                    case "title":
+                        lstQuiz = db.QuizTests.OrderBy(e => e.name).Select(q =>
+                        new QuizTestViewModelAd
+                        {
+                            status = q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    case "createdate":
+                        lstQuiz = db.QuizTests.OrderBy(e => e.CreateDate).Select(q =>
+                        new QuizTestViewModelAd
+                        {
+                            status = q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    default:
+                        lstQuiz = db.QuizTests.OrderBy(e => e.name).Select(q =>
+                        new QuizTestViewModelAd
+                        {
+                            status = q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            else
+            {
+                ViewBag.titleStr = titleStr;
+                switch (sortOrder)
+                {
+                    case "title":
+                        ViewBag.sortname = "tiêu đề";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                          new QuizTestViewModelAd
+                          {
+                              status = q.status,
+                              TestID = q.TestID,
+                              name = q.name,
+                              SubjectName = q.Subject.name,
+                              CreatorName = q.Creator.username,
+                              CreateDate = q.CreateDate,
+                          }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.name).Select(q =>
+                            new QuizTestViewModelAd
+                            {
+                                status = q.status,
+                                TestID = q.TestID,
+                                name = q.name,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    case "createdate":
+                        ViewBag.sortname = "ngày tạo";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.CreateDate).Select(q =>
+                            new QuizTestViewModelAd
+                            {
+                                status = q.status,
+                                TestID = q.TestID,
+                                name = q.name,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.CreateDate).Select(q =>
+                            new QuizTestViewModelAd
+                            {
+                                status = q.status,
+                                TestID = q.TestID,
+                                name = q.name,
+                                SubjectName = q.Subject.name,
+                                CreatorName = q.Creator.username,
+                                CreateDate = q.CreateDate,
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    default:
+                        lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                        new QuizTestViewModelAd
+                        {
+                            status = q.status,
+                            TestID = q.TestID,
+                            name = q.name,
+                            SubjectName = q.Subject.name,
+                            CreatorName = q.Creator.username,
+                            CreateDate = q.CreateDate,
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            return View(lstQuiz);
         }
         public JsonResult SearchQuiz(int subject, string name = null, HardType? hard = null)
         {
@@ -119,6 +396,36 @@ namespace TracNghiem.Controllers
                 Response.StatusCode = 500;
                 return Json(new { Message = "Lỗi hệ thống" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteQuizTest(int id)
+        {
+            User u = db.Users.Where(t => t.username == User.Identity.Name).First();
+            QuizTest q = db.QuizTests.Find(id);
+            if (q.CreatorID == u.ID || User.IsInRole("admin"))
+            {
+                string title = q.name;
+                q.status = TestStatusAd.Deleted;
+                db.SaveChanges();
+                return Json(new { Message = "Xóa \"" + title + "\" thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult ChangeStatus(int id, TestStatusAd state = TestStatusAd.Active)
+        {
+            User u = db.Users.Where(t => t.username == User.Identity.Name).First();
+            QuizTest q = db.QuizTests.Find(id);
+            if (q.CreatorID == u.ID || User.IsInRole("admin"))
+            {
+                string title = q.name;
+                q.status = state;
+                string prefix = state == TestStatusAd.Active ? "Đăng" : "Hủy đăng";
+                db.SaveChanges();
+                return Json(new { Message = prefix + " \"" + title + "\" thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

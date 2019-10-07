@@ -178,6 +178,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\QuizSearchViewModel.cs" />
     <Compile Include="ViewModel\QuizTestViewModel.cs" />
+    <Compile Include="ViewModel\QuizTestViewModelAd.cs" />
     <Compile Include="ViewModel\QuizViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\SubjectSelect.cs" />
@@ -1180,6 +1181,7 @@
     <Content Include="Views\Quiz\AllQuiz.cshtml" />
     <Content Include="Views\QuizTest\Create.cshtml" />
     <Content Include="Views\QuizTest\AllQuizTest.cshtml" />
+    <Content Include="Views\QuizTest\MyQuizTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
