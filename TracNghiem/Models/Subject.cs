@@ -18,9 +18,11 @@ namespace TracNghiem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+
         [StringLength(50)]
         [Required]
         public string name { get; set; }
+
         [Required]
         public CommonStatus status { get; set; }
 
