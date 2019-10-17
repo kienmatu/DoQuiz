@@ -211,7 +211,7 @@ namespace TracNghiem.Controllers
             sortOrder = String.IsNullOrEmpty(sortOrder) ? "Title" : sortOrder;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             IPagedList<QuizTestViewModelAd> lstQuiz = null;
-            var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
+            var id = Session["UserID"]; //db.Users.Where(e => e.username == User.Identity.Name).First().ID;
             if (String.IsNullOrWhiteSpace(titleStr))
             {
                 switch (sortOrder)
@@ -340,6 +340,55 @@ namespace TracNghiem.Controllers
                 }
             }
             return View(lstQuiz);
+        }
+        [Authorize(Roles = "admin,teacher")]
+        public ActionResult Edit(int id)
+        {
+            var CurrentID = Session["UserID"];
+            try
+            {
+                var exist = db.QuizTests.Any(e => e.TestID == id);
+                if(!exist)
+                {
+                    return RedirectToAction("MyQuizTest");
+                }
+                QuizTest test = db.QuizTests.Find(id);
+                //Chỉ có admin và chủ nhân của bài test mới có thể sửa, còn lại bị redirect
+                //Bài thi đã xóa cũng ko xem được
+                if((test.CreatorID != (int)CurrentID && User.IsInRole("teacher")) || test.status == TestStatusAd.Deleted)
+                {
+                    return RedirectToAction("MyQuizTest");
+                }
+                QuizTestViewModel quiz = new QuizTestViewModel
+                {
+                    name = test.name,
+                    Subject = Common.Helper.getSubjectItem(),
+                    SubjectID = test.SubjectID,
+                    status = (TestStatus)test.status,
+                    TestID = test.TestID,
+                    TotalMark = test.TotalMark,
+                    TotalTime = (TimeQuiz)test.TotalTime,
+                };
+                ViewBag.id = test.TestID;
+                return View(quiz);
+            }
+            catch
+            {
+                return RedirectToAction("MyQuizTest");
+            }
+        }
+
+        public  JsonResult GetQuizFromTest(int testid)
+        {
+            QuizTest test = db.QuizTests.Find(testid);
+            List<QuizViewModel> quizzes = test.Quiz.Select(
+                c => new QuizViewModel
+                {
+                    ID = c.QuizID,
+                    HardType = c.HardType,
+                    name = c.name,
+                }).ToList();
+            return Json(quizzes);
         }
         public JsonResult SearchQuiz(int subject, string name = null, HardType? hard = null)
         {

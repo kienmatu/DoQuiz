@@ -63,6 +63,8 @@ namespace TracNghiem.Controllers
                         if (user.password == Helper.CalculateMD5Hash(model.Password) && (user.status == UserStatus.Activated || user.status == UserStatus.NotActivated))
                         {
                             setCookie(user.username, model.RememberMe, user.role);
+                            Session["UserID"] = user.ID;
+                            Session["Name"] = user.fullname;
                             if (ReturnUrl != null)
                                 return Redirect(ReturnUrl);
                             return RedirectToAction("Index", "Admin");

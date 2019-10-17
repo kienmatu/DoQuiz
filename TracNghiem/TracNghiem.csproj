@@ -1182,6 +1182,7 @@
     <Content Include="Views\QuizTest\Create.cshtml" />
     <Content Include="Views\QuizTest\AllQuizTest.cshtml" />
     <Content Include="Views\QuizTest\MyQuizTest.cshtml" />
+    <Content Include="Views\QuizTest\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
