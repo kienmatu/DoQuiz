@@ -17,6 +17,10 @@ namespace TracNghiem.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Tạo đề thi mới
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "admin,teacher")]
         public ActionResult Create()
         {
@@ -61,7 +65,14 @@ namespace TracNghiem.Controllers
             }
             
         }
-
+        /// <summary>
+        /// Quản lý đề thi của tôi
+        /// </summary>
+        /// <param name="sortOrder"></param>
+        /// <param name="CurrentSort"></param>
+        /// <param name="page"></param>
+        /// <param name="titleStr"></param>
+        /// <returns></returns>
         public ViewResult MyQuizTest(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
             int pageSize = 100;
@@ -201,7 +212,14 @@ namespace TracNghiem.Controllers
             }
             return View(lstQuiz);
         }
-
+        /// <summary>
+        /// Tất cả đề thi (admin)
+        /// </summary>
+        /// <param name="sortOrder"></param>
+        /// <param name="CurrentSort"></param>
+        /// <param name="page"></param>
+        /// <param name="titleStr"></param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ViewResult AllQuizTest(string sortOrder, string CurrentSort, int? page, string titleStr){
             int pageSize = 100;
@@ -377,7 +395,11 @@ namespace TracNghiem.Controllers
                 return RedirectToAction("MyQuizTest");
             }
         }
-
+        /// <summary>
+        /// Lấy danh sách câu hỏi từ đề thi
+        /// </summary>
+        /// <param name="testid"></param>
+        /// <returns></returns>
         public  JsonResult GetQuizFromTest(int testid)
         {
             QuizTest test = db.QuizTests.Find(testid);
@@ -390,6 +412,13 @@ namespace TracNghiem.Controllers
                 }).ToList();
             return Json(quizzes);
         }
+        /// <summary>
+        /// Tìm câu hỏi
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <param name="name"></param>
+        /// <param name="hard"></param>
+        /// <returns></returns>
         public JsonResult SearchQuiz(int subject, string name = null, HardType? hard = null)
         {
             try
@@ -446,7 +475,11 @@ namespace TracNghiem.Controllers
                 return Json(new { Message = "Lỗi hệ thống" }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        /// <summary>
+        /// Xóa đề thi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult DeleteQuizTest(int id)
         {
@@ -461,6 +494,12 @@ namespace TracNghiem.Controllers
             }
             return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Đổi trạng thái
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult ChangeStatus(int id, TestStatusAd state = TestStatusAd.Active)
         {

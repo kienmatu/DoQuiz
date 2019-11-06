@@ -47,6 +47,15 @@ namespace TracNghiem.Models
         active = 0,
         notactive = 1,
     }
+    public enum DoQuizStatus
+    {
+        [Display(Name = "Đang làm")]
+        Doing = 0,
+        [Display(Name = "Đã hoàn thành")]
+        Finished = 1,
+        [Display(Name = "Chưa nộp bài")]
+        NotFinished = 2,
+    }
     public enum Gender
     {
         [Display(Name = "Nam")]

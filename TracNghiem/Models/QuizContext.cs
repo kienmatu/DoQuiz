@@ -17,6 +17,8 @@ namespace TracNghiem.Models
         public virtual DbSet<QuizTest> QuizTests { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<ActiveTest> ActiveTests { get; set; }
+        public virtual DbSet<QuizResult> QuizResults { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);

@@ -166,10 +166,16 @@
     <Compile Include="Migrations\201910020257535_fixrelation_new.Designer.cs">
       <DependentUpon>201910020257535_fixrelation_new.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911060220214_them2bang.cs" />
+    <Compile Include="Migrations\201911060220214_them2bang.Designer.cs">
+      <DependentUpon>201911060220214_them2bang.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ActiveTest.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
     <Compile Include="Models\Quiz.cs" />
     <Compile Include="Models\QuizContext.cs" />
+    <Compile Include="Models\QuizResult.cs" />
     <Compile Include="Models\QuizTest.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\User.cs" />
@@ -1213,6 +1219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910020257535_fixrelation_new.resx">
       <DependentUpon>201910020257535_fixrelation_new.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911060220214_them2bang.resx">
+      <DependentUpon>201911060220214_them2bang.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
