@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-md-1">
                         <br />
-                        <a href="/Quiz/MyQuiz" style="font-size: 14px;font-weight: normal;" class="badge badge-danger">RESET bộ lọc</a>
+                        <a href="/QuizTest/MyQuizTest" style="font-size: 14px;font-weight: normal;" class="badge badge-danger">RESET bộ lọc</a>
                     </div>
                 </div>
             </div>
@@ -102,9 +102,9 @@
                                     @{
                                         if (User.Identity.Name == item.CreatorName || User.IsInRole("admin"))
                                         {
+                                            <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>
                                             @Html.ActionLink("Sửa", "Edit", new { id = item.TestID }, new { @class = "badge badge-primary" })
                                             <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>
-
                                         }
                                     }
 

@@ -119,8 +119,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/Content/AdminLTE/plugins/font-awesome/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    @*<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Content/AdminLTE/dist/css/adminlte.min.css">
     <link href="~/Content/animate.min.css" rel="stylesheet" />
@@ -234,7 +232,7 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @if(User.IsInRole("admin") || User.IsInRole("teacher"))
+                                @if (User.IsInRole("admin") || User.IsInRole("teacher"))
                                 {
                                     <li class="nav-item">
                                         <a href="/QuizTest/Create" class="nav-link">
@@ -242,7 +240,7 @@
                                             <p>Thêm đề thi mới</p>
                                         </a>
                                     </li>
-                                    if(User.IsInRole("admin"))
+                                    if (User.IsInRole("admin"))
                                     {
                                         <li class="nav-item">
                                             <a href="/QuizTest/AllQuizTest" class="nav-link">
@@ -257,8 +255,14 @@
                                             <p>Đề thi của tôi</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="/DoQuiz/MyActiveTest" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon text-info"></i>
+                                            <p>Đề thi đang kiểm tra</p>
+                                        </a>
+                                    </li>
                                 }
-                                @if(User.IsInRole("student"))
+                                @if (User.IsInRole("student"))
                                 {
                                     <li class="nav-item">
                                         <a href="/Test/TestList" class="nav-link">

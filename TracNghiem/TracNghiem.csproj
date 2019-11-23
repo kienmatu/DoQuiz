@@ -135,6 +135,7 @@
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\DoQuizController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuizController.cs" />
     <Compile Include="Controllers\QuizTestController.cs" />
@@ -1189,6 +1190,7 @@
     <Content Include="Views\QuizTest\AllQuizTest.cshtml" />
     <Content Include="Views\QuizTest\MyQuizTest.cshtml" />
     <Content Include="Views\QuizTest\Edit.cshtml" />
+    <Content Include="Views\DoQuiz\MyActiveTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
