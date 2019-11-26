@@ -17,6 +17,14 @@ namespace TracNghiem.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Tất cả câu hỏi
+        /// </summary>
+        /// <param name="sortOrder"></param>
+        /// <param name="CurrentSort"></param>
+        /// <param name="page"></param>
+        /// <param name="titleStr"></param>
+        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ViewResult AllQuiz(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
@@ -165,6 +173,14 @@ namespace TracNghiem.Controllers
             }
             return View(lstQuiz);
         }
+        /// <summary>
+        /// Câu hỏi của tôi
+        /// </summary>
+        /// <param name="sortOrder"></param>
+        /// <param name="CurrentSort"></param>
+        /// <param name="page"></param>
+        /// <param name="titleStr"></param>
+        /// <returns></returns>
         public ViewResult MyQuiz(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
             int pageSize = 100;
@@ -322,6 +338,11 @@ namespace TracNghiem.Controllers
             };
             return View(model);
         }
+        /// <summary>
+        /// Tạo câu hỏi
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Authorize(Roles = "admin,teacher")]
         [HttpPost]
         public ActionResult Create(QuizViewModel model)
@@ -351,7 +372,11 @@ namespace TracNghiem.Controllers
             model.Subject = Common.Helper.getSubjectItem();
             return View(model);
         }
-
+        /// <summary>
+        /// Sửa câu hỏi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "admin,teacher")]
         public ActionResult Edit(int id)
         {
@@ -404,6 +429,11 @@ namespace TracNghiem.Controllers
             model.Subject = Common.Helper.getSubjectItem();
             return View(model);
         }
+        /// <summary>
+        /// Xóa câu hỏi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult DeleteQuiz(int id)
         {
@@ -418,6 +448,12 @@ namespace TracNghiem.Controllers
             }
             return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Đổi status câu hỏi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult ChangeStatus(int id, QuizStatusAd state = QuizStatusAd.Active)
         {

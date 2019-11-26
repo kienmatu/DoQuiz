@@ -1010,9 +1010,14 @@
     <Content Include="Content\multi-select\js\picklist.js" />
     <Content Include="Content\multi-select\js\picklist.min.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\sweetalert\bootstrap-sweetalert.png" />
+    <Content Include="Content\sweetalert\docs.css" />
+    <Content Include="Content\sweetalert\sweet-alert.css" />
+    <Content Include="Content\sweetalert\thumbs-up.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\axios.min.js" />
     <Content Include="Scripts\bootstrap-notify.js" />
     <Content Include="Scripts\bootstrap-notify.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -1131,6 +1136,9 @@
     <Content Include="Content\dual-select\icon_font\font\iconfont.eot" />
     <Content Include="Content\dual-select\icon_font\font\iconfont.ttf" />
     <Content Include="Content\dual-select\icon_font\font\iconfont.woff" />
+    <Content Include="Content\sweetalert\sweet-alert-animations.less" />
+    <Content Include="Content\sweetalert\sweet-alert-combine.less" />
+    <Content Include="Content\sweetalert\sweet-alert.less" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1148,6 +1156,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />

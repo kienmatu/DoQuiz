@@ -125,6 +125,8 @@
     <link rel="stylesheet" href="~/Content/Site.css" />
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <link rel="stylesheet" href="~/Content/sweetalert/sweet-alert.css" />
+    <script src="~/Scripts/sweetalert.min.js"></script>
     <script src="~/Scripts/jquery-ui.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -188,7 +190,7 @@
                                 </p>
                             </a>
                         </li>
-                        @if(User.IsInRole("admin") || User.IsInRole("teacher"))
+                        @if (User.IsInRole("admin") || User.IsInRole("teacher"))
                         {
                             <li class="nav-item has-treeview">
                                 <a href="#" class="nav-link">
@@ -205,7 +207,7 @@
                                             <p>Thêm câu hỏi mới</p>
                                         </a>
                                     </li>
-                                    @if(User.IsInRole("admin"))
+                                    @if (User.IsInRole("admin"))
                                     {
                                         <li class="nav-item">
                                             <a href="/Quiz/AllQuiz" class="nav-link">
@@ -354,6 +356,7 @@
     <!-- AdminLTE App -->
 
     <script src="~/Scripts/bootstrap-notify.min.js"></script>
+    <script src="~/Scripts/axios.min.js"></script>
     <script src="~/Content/AdminLTE/dist/js/adminlte.js"></script>
 </body>
 </html>
