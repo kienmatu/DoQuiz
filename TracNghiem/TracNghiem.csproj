@@ -189,6 +189,7 @@
     <Compile Include="ViewModel\QuizViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\SubjectSelect.cs" />
+    <Compile Include="ViewModel\SubjectViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1005,6 +1006,8 @@
     <Content Include="Content\dual-select\js\jquery.transfer.js" />
     <Content Include="Content\images\apple-icon-120x120.png" />
     <Content Include="Content\images\user.png" />
+    <Content Include="Content\jquery.simple-dtpicker.css" />
+    <Content Include="Content\jquery.simple-dtpicker.js" />
     <Content Include="Content\multi-select\css\picklist.css" />
     <Content Include="Content\multi-select\css\picklist.min.css" />
     <Content Include="Content\multi-select\js\picklist.js" />
@@ -1200,6 +1203,7 @@
     <Content Include="Views\QuizTest\MyQuizTest.cshtml" />
     <Content Include="Views\QuizTest\Edit.cshtml" />
     <Content Include="Views\DoQuiz\MyActiveTest.cshtml" />
+    <Content Include="Views\Quiz\SubjectManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
