@@ -16,12 +16,21 @@ namespace TracNghiem.Controllers
             return View();
         }
 
-        [Authorize(Roles = "teacher")]
+        [Authorize(Roles = "teacher,admin")]
         public ViewResult MyActiveTest()
         {
-            List<ActiveTest> activeTests = db.ActiveTests.ToList();
+            int UserID = (int)Session["UserID"];
+            List<ActiveTest> activeTests = db.ActiveTests.Where(a => a.CreatorID == UserID).ToList();
             return View(activeTests);
         }
+        /// <summary>
+        /// Tạo phòng thi AJAX
+        /// </summary>
+        /// <param name="QuizTestID"></param>
+        /// <param name="Code"></param>
+        /// <param name="FromTime"></param>
+        /// <param name="ToTime"></param>
+        /// <returns></returns>
         public JsonResult CreateActiveTest(int QuizTestID,string Code,DateTime FromTime,DateTime ToTime)
         {
             bool ExistCode = db.ActiveTests.Any(a => a.Code == Code);
@@ -39,6 +48,7 @@ namespace TracNghiem.Controllers
                 IsActive = true,
             };
             db.ActiveTests.Add(test);
+            db.SaveChanges();
             return Json(new { Message = "Tạo thành công", Success = true }, JsonRequestBehavior.AllowGet);
         }
     }

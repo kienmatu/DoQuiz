@@ -6,9 +6,9 @@
 
 <h2>Bài thi đang chạy</h2>
 <div style="margin-top:10px;"></div>
-<div class="row">
+@*<div class="row">
     <button onclick="AddQuizTest" class="btn btn info">Thêm phòng thi</button>
-</div>
+</div>*@
 <table id="lstPost" class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -34,7 +34,7 @@
                     @item.QuizTest.Subject.name
                 </td>
                 <td>
-                    @String.Format("{0:dd/MM/yyyy H:i:s}", item.FromTime) - @String.Format("{0:dd/MM/yyyy H:i:s}", item.ToTime)
+                    @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.FromTime) - @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.ToTime)
                 </td>
                 <td>
                     <label class="switch">
