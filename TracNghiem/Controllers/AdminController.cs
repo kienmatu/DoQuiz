@@ -12,6 +12,10 @@ namespace TracNghiem.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            if(User.IsInRole("student"))
+            {
+                return View("StudentDashboard");
+            }
             return View();
         }
     }

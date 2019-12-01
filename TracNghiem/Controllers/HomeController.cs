@@ -10,7 +10,11 @@ namespace TracNghiem.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            return RedirectToAction("Login","Auth");
         }
 
         public ActionResult About()

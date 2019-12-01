@@ -16,38 +16,41 @@
             <th>Tên</th>
             <th>Môn học</th>
             <th>Thời gian</th>
-            @*<th>Hiển thị</th>*@
+            <th>Code</th>
             <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <p>@item.ID</p>
-                </td>
-                <td>
-                    @item.QuizTest.name
-                </td>
-                <td>
-                    @item.QuizTest.Subject.name
-                </td>
-                <td>
-                    @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.FromTime) - @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.ToTime)
-                </td>
-                @*<td>
-                    <label class="switch">
-                        <input onchange="changeStt(this)" type="checkbox" id="@item.ID" @(item.IsActive ? "checked" : "") class="success">
-                        <span class="slider"></span>
-                    </label>
-                </td>*@
-                <td>
-                    @*@Html.ActionLink("Sửa", "Edit", new { id = item.TestID }, new { @class = "badge badge-primary" })
-                        <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>*@
+        <tr>
+            <td>
+                <p>@item.ID</p>
+            </td>
+            <td>
+                @item.QuizTest.name
+            </td>
+            <td>
+                @item.QuizTest.Subject.name
+            </td>
+            <td>
+                @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.FromTime) - @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.ToTime)
+            </td>
+            <td>
+                @item.Code
+            </td>
+            @*<td>
+            <label class="switch">
+                <input onchange="changeStt(this)" type="checkbox" id="@item.ID" @(item.IsActive ? "checked" : "") class="success">
+                <span class="slider"></span>
+            </label>
+        </td>*@
+            <td>
+                @*@Html.ActionLink("Sửa", "Edit", new { id = item.TestID }, new { @class = "badge badge-primary" })
+            <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>*@
 
-                </td>
-            </tr>
+            </td>
+        </tr>
         }
     </tbody>
     <tfoot>
@@ -56,7 +59,7 @@
             <th>Tên</th>
             <th>Môn học</th>
             <th>Thời gian</th>
-            @*<th>Hiển thị</th>*@
+            <th>Code</th>
             <th>Hành động</th>
         </tr>
     </tfoot>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TracNghiem.Models;
+using TracNghiem.ViewModel;
 
 namespace TracNghiem.Controllers
 {
@@ -51,5 +52,64 @@ namespace TracNghiem.Controllers
             db.SaveChanges();
             return Json(new { Message = "Tạo thành công", Success = true }, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Vào phòng thi
+        /// </summary>
+        /// <param name="roomCode"></param>
+        /// <returns></returns>
+        [Authorize(Roles ="student")]
+        public JsonResult EnterRoom(string roomCode)
+        {
+            bool ExistCode = db.ActiveTests.Any(a => a.Code == roomCode);
+            if (!ExistCode)
+            {
+                return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
+            }
+            ActiveTest test = db.ActiveTests.Where(c => c.Code == roomCode).First();
+            //chỉ join vào thời gian cho phép
+            if (test.FromTime <= DateTime.Now && test.ToTime >= DateTime.Now)
+            {
+                DoTestViewModel model = new DoTestViewModel
+                {
+                    RoomID = test.ID,
+                    RoomCode = test.Code,
+                    SubjectName = test.QuizTest.Subject.name,
+                    TestName = test.QuizTest.name,
+                    TotalMark = test.QuizTest.TotalMark,
+                    TotalTime = test.QuizTest.TotalTime,
+                    QuizList = test.QuizTest.Quiz.Select(c => new ShowQuiz
+                    {
+                        answerA = c.answerA,
+                        Content = c.content,
+                        answerC = c.answerC,
+                        answerB = c.answerB,
+                        answerD = c.answerD,
+                        ID = c.QuizID
+                    }),
+                };
+                return Json(new { Quiz = model, Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
+        }
+        [Authorize(Roles = "student")]
+        public ViewResult OpenRoom()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Bắt đầu bài thi
+        /// </summary>
+        /// <param name="roomCode"></param>
+        /// <returns></returns>
+        public JsonResult StartExam(string roomCode)
+        {
+            ActiveTest test = db.ActiveTests.Where(c => c.Code == roomCode).First();
+            if(test.ToTime >= DateTime.Now)
+            {
+                return Json(new { Message = "Start doing exam", Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Message = "Sai mã phòng thi hoặc hết hạn", Success = false }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

@@ -87,7 +87,7 @@ namespace TracNghiem.Models
         [Display(Name = "Đáp án C")]
         C = 2,
         [Display(Name = "Đáp án D")]
-        D = 4
+        D = 3
     }
     public enum TestStatus
     {

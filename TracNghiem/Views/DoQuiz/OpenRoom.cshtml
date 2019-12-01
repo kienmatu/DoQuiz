@@ -1,0 +1,246 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Chuẩn bị vào phòng thi</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/animate.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <script src="/Scripts/jquery-3.1.1.js"></script>
+    <script src="/Scripts/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/sweetalert/sweet-alert.css" />
+    <script src="~/Scripts/sweetalert.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <style>
+        /*LOADING CSS*/
+        #overlay {
+            background: #ffffff;
+            color: #666666;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            z-index: 5000;
+            top: 0;
+            left: 0;
+            float: left;
+            text-align: center;
+            padding-top: 15%;
+            opacity: .80;
+        }
+
+        /*button {
+            margin: 40px;
+            padding: 5px 20px;
+            cursor: pointer;
+        }*/
+
+        .spinner {
+            margin: 0 auto;
+            height: 64px;
+            width: 64px;
+            animation: rotate 0.8s infinite linear;
+            border: 5px solid firebrick;
+            border-right-color: transparent;
+            border-radius: 50%;
+        }
+
+        @@keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .hidden{
+            display:none;
+        }
+        .info{
+          margin-bottom: .2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay" style="display:none;">
+        <div class="spinner"></div>
+        <br />
+        Loading...
+    </div>
+    <div id="infoArea" class="row" style="margin:2em">
+        <button onclick="JoinRoom()" class="btn btn info">Vào phòng thi</button>
+    </div>
+    <div id="QuizInfo" class="hidden">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Thông tin bài thi</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="info" id="quizname"></p>
+                        <p class="info" id="subject"></p>
+                        <p class="info" id="mark"></p>
+                        <p class="info" id="time"></p>
+                        <a href="#" onclick="StartExam()" class="btn btn-danger float-right">Bắt đầu !</a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <div id="quiz"></div>
+
+    <!-- The edit Modal -->
+    <div class="modal fade" id="enterModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Vào phòng thi</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Time">Mã phòng thi:</label><br />
+                        <input class="form-control" type="text" id="roomCode" />
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" onclick="EnterRoom()" class="btn btn-success">Vào</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        var roomCode = '';
+        var Quiz = {};
+        const quizContainer = document.getElementById('quiz');
+        function JoinRoom() {
+            $('#roomCode').val('');
+            $('#enterModal').modal('show');
+        }
+        function EnterRoom() {
+            let code = $('#roomCode').val();
+            if (code) {
+                OpenRoom(code);
+            }
+            else {
+                swal('Lỗi', 'Vui lòng nhập mã phòng', 'warning');
+            }
+        }
+        function Preview(Quiz) {
+            let quizinfo = $('#QuizInfo');
+            quizinfo.find('#quizname').text('Tên bài thi: ' + Quiz.TestName);
+            quizinfo.find('#mark').text('Môn học: ' + Quiz.SubjectName);
+            quizinfo.find('#subject').text('Tổng điểm: ' + Quiz.TotalMark);
+            quizinfo.find('#time').text('Thời gian (phút): '+Quiz.TotalTime)
+            quizinfo.removeClass('hidden');
+            roomCode = Quiz.RoomCode;
+        }
+        function OpenRoom(code) {
+            $('#overlay').fadeIn();
+            axios.post('/DoQuiz/EnterRoom', { roomCode: code }).then(resp => {
+
+                $('#overlay').fadeOut();
+                let data = resp.data;
+                Quiz = data.Quiz;
+                if (data.Success) {
+                    $("#infoArea").remove();
+                    $('#enterModal').modal('hide');
+                    Preview(data.Quiz);
+                }
+                else {
+                    swal('Lỗi', data.Message, 'warning')
+                }
+            })
+        }
+        function StartExam()
+        {
+            $('#overlay').fadeIn();
+            axios.post('/DoQuiz/StartExam', { roomCode: roomCode }).then(resp => {
+                $('#overlay').fadeOut();
+                let data = resp.data;
+                if (data.Success) {
+                    $('#QuizInfo').addClass('hidden');
+                    buildQuiz(Quiz.QuizList);
+                }
+                else {
+                    swal('Lỗi', data.Message, 'warning')
+                }
+            });
+        }
+    </script>
+    <script>
+        function buildQuiz(Quiz) {
+            // we'll need a place to store the HTML output
+            const output = [];
+            // for each question...
+            Quiz.forEach(
+                (currentQuestion, questionNumber) => {
+                    // we'll want to store the list of answer choices
+                    const answers = [];
+                    // ...add an HTML radio button
+                    answers.push(
+                        `<br/><label>
+                        <input type="radio" name="question${currentQuestion.ID}" value="0">
+                        A :
+                        ${currentQuestion.answerA}
+                        </label>`
+                    );
+                    answers.push(
+                        `<br/><label>
+                        <input type="radio" name="question${currentQuestion.ID}" value="1">
+                        B :
+                        ${currentQuestion.answerB}
+                        </label>`
+                    );
+                    answers.push(
+                        `<br/><label>
+                        <input type="radio" name="question${currentQuestion.ID}" value="2">
+                        C :
+                        ${currentQuestion.answerC}
+                        </label>`
+                    );
+                    answers.push(
+                        `<br/><label>
+                        <input type="radio" name="question${currentQuestion.ID}" value="3">
+                        D :
+                        ${currentQuestion.answerD}
+                        </label>`
+                    );
+
+                    // add this question and its answers to the output
+                    output.push(
+                        `<div class="question"> ${currentQuestion.Content} </div>
+                            <div class="answers"> ${answers.join('')} </div>`
+                    );
+                }
+            );
+
+            // finally combine our output list into one string of HTML and put it on the page
+            quizContainer.innerHTML = output.join('');
+        }
+    </script>
+    <script src="~/Scripts/axios.min.js"></script>
+</body>
+</html>
