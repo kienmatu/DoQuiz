@@ -40,6 +40,7 @@ namespace TracNghiem.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "admin")]
         public JsonResult DeleteSubject(int id)
         {
             Subject s = db.Subjects.Find(id);
@@ -59,6 +60,20 @@ namespace TracNghiem.Controllers
             s.name = name;
             db.SaveChanges();
             return Json(new { Message = "Sửa thành công" }, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// Sửa môn học
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "admin")]
+        public JsonResult AddSubject(string name)
+        {
+            Subject s = new Subject { name = name, status = CommonStatus.active };
+            db.Subjects.Add(s);
+            db.SaveChanges();
+            return Json(new { Message = "Thêm thành công" }, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// Tất cả câu hỏi

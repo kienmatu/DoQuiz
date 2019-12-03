@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="col-12">
-
+    <button class="btn btn-success" onclick="addSubject()">Thêm Môn Học</button>
+    <hr/>
     <div class="card">
         <div class="card-body">
             <table id="lstPost" class="table table-bordered table-striped">
@@ -84,6 +85,35 @@
         </div>
     </div>
 </div>
+
+<!-- The add Modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm môn học</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="Time">Tên môn học:</label><br />
+                    <input class="form-control" type="text" id="addSubjectName" />
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" onclick="confirmAdd()" class="btn btn-info">Thêm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script>
     var SubjectID = -1;
     function deleteConfirm(id, name) {
@@ -121,8 +151,27 @@
         axios.post('/Quiz/EditSubject', { id: SubjectID, name: newName }).then(resp => {
             $('#editModal').modal('hide');
             swal('Thành công', resp.data.Message, 'success').then(e => {
-                        location.reload();
-                    })
+                location.reload();
+            })
+        }).catch((err) => {
+            swal('Lỗi',
+                'Lỗi hệ thống',
+                'error'
+            );
+        });
+    }
+    function addSubject() {
+        let modal = $('#addModal');
+        $('#addSubjectName').val('');
+        modal.modal('show');
+    }
+    function confirmAdd() {
+        let newName = $('#addSubjectName').val();
+        axios.post('/Quiz/AddSubject', {name: newName }).then(resp => {
+            $('#addModal').modal('hide');
+            swal('Thành công', resp.data.Message, 'success').then(e => {
+                location.reload();
+            })
         }).catch((err) => {
             swal('Lỗi',
                 'Lỗi hệ thống',
