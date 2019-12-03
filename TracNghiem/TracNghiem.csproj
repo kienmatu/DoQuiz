@@ -1006,6 +1006,8 @@
     <Content Include="Content\dual-select\icon_font\font\iconfont.svg" />
     <Content Include="Content\dual-select\js\jquery.transfer.js" />
     <Content Include="Content\images\apple-icon-120x120.png" />
+    <Content Include="Content\images\libbg.jpg" />
+    <Content Include="Content\images\notebook-hero-workspace-minimal.jpg" />
     <Content Include="Content\images\user.png" />
     <Content Include="Content\jquery.simple-dtpicker.css" />
     <Content Include="Content\jquery.simple-dtpicker.js" />
