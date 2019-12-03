@@ -2,12 +2,250 @@
 @{
     ViewBag.Title = "Đăng Nhập";
 }
-<div class="container">
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+.site {
+  min-height: 100%;
+  background-image: url("/Content/images/notebook-hero-workspace-minimal.jpg");
+  animation: background 2s ease-in-out forwards;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 9999;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-size: cover;
+  background-position: center 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.language {
+  display: flex;
+  color: #DD9B31;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  border-radius: 4px;
+  overflow: hidden;
+  user-select: none;
+  transition: 0.2s ease;
+  animation: content 2s ease-in-out forwards;
+}
+
+.language-logo {
+  content: url("https://www.svgrepo.com/show/56214/earth-globe.svg");
+  width: 14px;
+  height: 14px;
+  margin: 3px 5px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.header {
+  animation: transition: .2s ease;
+  display: flex;
+  margin-top: 45px;
+}
+
+.header-logo {
+  content: url("https://www.svgrepo.com/show/276083/beehive-honey.svg");
+  width: 64px;
+  height: 64px;
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.header-text {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login {
+  animation: show 1s ease-in-out forwards;
+  padding: 10px 25px;
+  margin: 10vh auto;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+}
+
+.footer {
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 300;
+  max-width: 700px;
+  opacity: 0.3;
+  text-shadow: none;
+  display: block;
+  margin: auto;
+  margin-bottom: 24px;
+}
+
+h2,
+input {
+  text-align: center;
+  display: block;
+}
+
+h1 {
+  letter-spacing: 0.15em;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  text-shadow: none;
+  transition: 0.2s ease;
+  font-size: 64px;
+}
+
+h2 {
+  color: #fff;
+  font-size: 40px;
+  margin: 30px auto;
+}
+
+input,
+button {
+  width: 100%;
+  height: 45px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: lighter;
+  margin-bottom: 30px;
+}
+
+input {
+  background: #ecf0f1;
+}
+
+input::placeholder {
+  color: #424953;
+}
+
+button {
+  color: #424953;
+  cursor: pointer;
+  margin-top: 20px;
+  background: #f4bc44;
+  transition: 0.2s;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #DD9B31;
+  
+  &:after {
+    left: 120%;
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+}
+
+.seperator {
+  height: 1px;
+  margin: 0 35px;
+  opacity: 0.1;
+  background-color: #fff;
+}
+
+.create-acc {
+  margin: 20px 40px;
+  line-height: 18px;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
+a {
+  color: #DD9B31;
+  text-decoration: none;
+}
+
+
+
+</style>
+<div class="site">
+    <div class="content">
+        @*<div class="language">
+            <div class="language-logo"> </div>
+            <div class="language-text">
+                <p>Deutsch</p>
+            </div>
+        </div>*@
+        @*<div class="header">
+            <div class="header-logo"></div>
+            <div class="header-text">
+                <h1>Hive</h1>
+            </div>
+        </div>*@
+        <div class="center">
+            <div class="login">
+                <h2 style="font-family:serif">ĐĂNG NHẬP</h2>
+                <div class="text-center text-danger">@ViewBag.Error</div>
+                <form class="form-signin" method="post">
+                    @Html.TextBoxFor(m => m.Username, new { @placeholder = "UserName" })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Password" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    <button type="submit">Login</button>
+                </form>
+                <div class="seperator"></div>
+                @*<div class="create-acc">
+            <p>Dont have an Hive-Account?</p><a href="#">Create an Account</a>
+        </div>*@
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2019 Ngọc Nguyễn </p>
+        </div>
+    </div>
+    </div>
+
+
+@*<div class="container">
     <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div class="card card-signin my-5">
                 <div class="card-body">
-
                     <h5 class="card-title text-center">Đăng Nhập</h5>
                     <div class="text-center text-danger">@ViewBag.Error</div>
                     <form class="form-signin" method="post">
@@ -28,7 +266,7 @@
                         </div>
 
                         <div class="form-group">
-                            @*<input type="checkbox" class="custom-control-input" id="customCheck1">*@
+                            <input type="checkbox" class="custom-control-input" id="customCheck1">
                             @Html.CheckBoxFor(m => m.RememberMe, new { @class = "" })
                             Remember me
                         </div>
@@ -38,6 +276,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 
