@@ -84,7 +84,7 @@ namespace TracNghiem.Controllers
                 switch (sortOrder)
                 {
                     case "title":
-                        lstQuiz = db.Quizzes.OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.Quizzes.Where(a=>a.status != QuizStatusAd.NotActive).OrderBy(e => e.name).Select(q =>
                         new QuizViewModelAd
                         {
                             status = q.status,
@@ -98,7 +98,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     case "createdate":
-                        lstQuiz = db.Quizzes.OrderBy(e => e.CreateDate).Select(q =>
+                        lstQuiz = db.Quizzes.Where(a => a.status != QuizStatusAd.NotActive).OrderBy(e => e.CreateDate).Select(q =>
                         new QuizViewModelAd
                         {
                             status = q.status,
@@ -112,7 +112,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     default:
-                        lstQuiz = db.Quizzes.OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.Quizzes.Where(a => a.status != QuizStatusAd.NotActive).OrderBy(e => e.name).Select(q =>
                         new QuizViewModelAd
                         {
                             status = q.status,
@@ -136,7 +136,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "tiêu đề";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr) && t.status != QuizStatusAd.NotActive).OrderBy(e => e.name).Select(q =>
                            new QuizViewModelAd
                            {
                                status = q.status,
@@ -151,7 +151,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.name).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr) && t.status != QuizStatusAd.NotActive).OrderByDescending(e => e.name).Select(q =>
                             new QuizViewModelAd
                             {
                                 status = q.status,
@@ -169,7 +169,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "ngày tạo";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr) && t.status != QuizStatusAd.NotActive).OrderBy(e => e.CreateDate).Select(q =>
                             new QuizViewModelAd
                             {
                                 status = q.status,
@@ -184,7 +184,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr) && t.status != QuizStatusAd.NotActive).OrderByDescending(e => e.CreateDate).Select(q =>
                             new QuizViewModelAd
                             {
                                 status = q.status,
@@ -199,7 +199,7 @@ namespace TracNghiem.Controllers
                         }
                         break;
                     default:
-                        lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.Quizzes.Where(t => t.name.Contains(titleStr) && t.status != QuizStatusAd.NotActive).OrderBy(e => e.name).Select(q =>
                         new QuizViewModelAd
                         {
                             status = q.status,

@@ -22,9 +22,10 @@ namespace TracNghiem
             if (HttpContext.Current.User.Identity.IsAuthenticated && HttpContext.Current.Session["UserID"] == null)
             {
                 QuizContext db = new QuizContext();
-                var user = db.Users.Where(e => e.username == HttpContext.Current.User.Identity.Name).First();
-                if (user != null)
+                bool Exist = db.Users.Any(e => e.username == HttpContext.Current.User.Identity.Name);
+                if (Exist)
                 {
+                    var user = db.Users.Where(e => e.username == HttpContext.Current.User.Identity.Name).First();
                     HttpContext.Current.Session["UserID"] = user.ID;
                     HttpContext.Current.Session["Name"] = user.fullname;
                 }

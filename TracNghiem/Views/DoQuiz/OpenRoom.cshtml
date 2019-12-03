@@ -77,8 +77,22 @@
         <br />
         Loading...
     </div>
-    <div id="infoArea" class="row" style="margin:2em">
-        <button onclick="JoinRoom()" class="btn btn info">Vào phòng thi</button>
+    <div id="infoArea" style="margin:2em">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">VÀO PHÒNG THI</h5>
+                        <div class="form-label-group">
+                            <label for="Username">Mã Phòng Thi:</label><br />
+                            <input class="form-control" type="text" id="roomCode" />
+                            <br/>
+                        </div>
+                        <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="EnterRoom()">Mở Phòng Thi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="QuizInfo" class="hidden">
         <div class="row">
@@ -103,34 +117,6 @@
     </div>
     <div id="quiz"></div>
 
-    <!-- The edit Modal -->
-    <div class="modal fade" id="enterModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Vào phòng thi</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="Time">Mã phòng thi:</label><br />
-                        <input class="form-control" type="text" id="roomCode" />
-                    </div>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" onclick="EnterRoom()" class="btn btn-success">Vào</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <script>
         var roomCode = '';
         var Quiz = {};
@@ -165,8 +151,7 @@
                 let data = resp.data;
                 Quiz = data.Quiz;
                 if (data.Success) {
-                    $("#infoArea").remove();
-                    $('#enterModal').modal('hide');
+                    $("#infoArea").addClass('hidden');
                     Preview(data.Quiz);
                 }
                 else {
