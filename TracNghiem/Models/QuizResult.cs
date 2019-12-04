@@ -17,10 +17,13 @@ namespace TracNghiem.Models
         public int StudentID { get; set; }
         public virtual User Student { get; set; }
         [Required]
-        public int Score { get; set; }
+        public double Score { get; set; }
         public DateTime DoneAt { get; set; }
 
         public DoQuizStatus Status { get; set; }
-
+        [ForeignKey("ActiveTest")]
+        [Required]
+        public int ActiveTestID { get; set; }
+        public virtual ActiveTest ActiveTest { get; set; }
     }
 }

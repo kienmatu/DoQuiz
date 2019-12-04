@@ -46,6 +46,10 @@ namespace TracNghiem.Models
                 .HasIndex(e => e.email)
                 .IsUnique();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+            modelBuilder.Entity<ActiveTest>()
+                .HasMany(c => c.QuizResults)
+                .WithRequired(c => c.ActiveTest)
+                .WillCascadeOnDelete(false);
 
 
         }

@@ -171,6 +171,10 @@
     <Compile Include="Migrations\201911060220214_them2bang.Designer.cs">
       <DependentUpon>201911060220214_them2bang.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912041211573_fixtablequizresult.cs" />
+    <Compile Include="Migrations\201912041211573_fixtablequizresult.Designer.cs">
+      <DependentUpon>201912041211573_fixtablequizresult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
@@ -191,6 +195,7 @@
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\SubjectSelect.cs" />
     <Compile Include="ViewModel\SubjectViewModel.cs" />
+    <Compile Include="ViewModel\SubmitExamViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1242,6 +1247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911060220214_them2bang.resx">
       <DependentUpon>201911060220214_them2bang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912041211573_fixtablequizresult.resx">
+      <DependentUpon>201912041211573_fixtablequizresult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

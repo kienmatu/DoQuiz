@@ -24,6 +24,9 @@
     <style>
         body {
             background-image: url('/Content/images/libbg2.jpg');
+            background-size: cover;
+             background-repeat: no-repeat;
+            background-attachment: fixed;
         }
         /*LOADING CSS*/
         #overlay {
@@ -62,16 +65,94 @@
         }
     </style>
     <style>
-        
+        .q-title{
+            font-weight:600;
+        }
+        .radius{
+            border-radius: 5px;
+        }
         .hidden{
             display:none;
         }
         .info{
           margin-bottom: .2rem;
         }
+        .transparent{
+                background-color: rgba(255, 255, 255, 0.84);
+        }
+        .transparent2{
+                background-color: rgba(255, 255, 255, 0.24);
+        }
+        .answer div {
+            margin-top:3px;
+            display:block;
+        }
     </style>
 </head>
 <body>
+    <style>
+        @@keyframes ripple {
+              0% {
+                box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0);
+              }
+              50% {
+                box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0.1);
+              }
+              100% {
+                box-shadow: 0px 0px 0px 15px rgba(0, 0, 0, 0);
+              }
+        }
+        .md-radio {
+          margin: 8px 0;
+        }
+        .md-radio.md-radio-inline {
+          display: inline-block;
+        }
+        .md-radio input[type=radio] {
+          display: none;
+        }
+        .md-radio input[type=radio]:checked + label:before {
+          border-color: #337ab7;
+          animation: ripple 0.2s linear forwards;
+        }
+        .md-radio input[type=radio]:checked + label:after {
+          transform: scale(1);
+        }
+        .md-radio label {
+          display: inline-block;
+          min-height: 20px;
+          position: relative;
+          padding: 0 30px;
+          margin-bottom: 0;
+          cursor: pointer;
+          vertical-align: bottom;
+        }
+        .md-radio label:before, .md-radio label:after {
+          position: absolute;
+          content: "";
+          border-radius: 50%;
+          transition: all 0.3s ease;
+          transition-property: transform, border-color;
+        }
+        .md-radio label:before {
+          left: 0;
+          top: 0;
+          width: 20px;
+          height: 20px;
+          border: 2px solid rgba(0, 0, 0, 0.54);
+        }
+        .md-radio label:after {
+          top: 5px;
+          left: 5px;
+          width: 10px;
+          height: 10px;
+          transform: scale(0);
+          background: #337ab7;
+        }
+        *, *:before, *:after {
+  box-sizing: border-box;
+}
+    </style>
     <div id="overlay" style="display:none;">
         <div class="spinner"></div>
         <br />
@@ -80,12 +161,12 @@
     <div id="infoArea" style="margin:2em">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5" style="background-color: rgba(255, 255, 255, 0.07);">
+                <div class="card card-signin my-5 transparent2">
                     <div class="card-body">
                         <h5 class="card-title text-center text-white">VÀO PHÒNG THI</h5>
                         <div class="form-label-group">
                             <label for="Username" class="text-white font-weight-bold">Mã Phòng Thi:</label><br />
-                            <input class="form-control" type="text" id="roomCode" />
+                            <input class="form-control" type="text" id="roomCode" value="WNvjyzS" />
                             <br/>
                         </div>
                         <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="EnterRoom()">Mở Phòng Thi</button>
@@ -95,27 +176,27 @@
         </div>
     </div>
     <div id="QuizInfo" class="hidden">
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                <div class="card">
+        <div class="row pl-4">
+            <div class="col-md-4 mt-5 p-5" id="quiz"></div>
+            <div class="col-md-4 mt-5" id="centerPanel">
+                <div class="card radius transparent position-fixed mr-3">
                     <div class="card-header">
                         <h5 class="card-title">Thông tin bài thi</h5>
                     </div>
                     <div class="card-body">
-                        <p class="info" id="quizname"></p>
-                        <p class="info" id="subject"></p>
-                        <p class="info" id="mark"></p>
-                        <p class="info" id="time"></p>
-                        <a href="#" onclick="StartExam()" class="btn btn-danger float-right">Bắt đầu !</a>
+                        <p class="info" id="quizname">Demo name</p>
+                        <p class="info" id="subject">Demo subject</p>
+                        <p class="info" id="mark">Demo mark</p>
+                        <p class="info" id="time">Demo time</p>
+                        <a href="#" id="startBtn" onclick="StartExam()" class="btn btn-danger float-right">Bắt đầu !</a>
+                        <a href="#" id="submitBtn" onclick="SubmitExam()" class="btn btn-warning float-right hidden">NỘP BÀI</a>
                     </div>
                 </div>
                 
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-4" id="rightPanel"></div>
         </div>
     </div>
-    <div id="quiz"></div>
 
     <script>
         var roomCode = '';
@@ -136,10 +217,10 @@
         }
         function Preview(Quiz) {
             let quizinfo = $('#QuizInfo');
-            quizinfo.find('#quizname').text('Tên bài thi: ' + Quiz.TestName);
-            quizinfo.find('#mark').text('Môn học: ' + Quiz.SubjectName);
-            quizinfo.find('#subject').text('Tổng điểm: ' + Quiz.TotalMark);
-            quizinfo.find('#time').text('Thời gian (phút): '+Quiz.TotalTime)
+            quizinfo.find('#quizname').html('<b>Tên bài thi:</b> ' + Quiz.TestName);
+            quizinfo.find('#mark').html('<b>Môn học:</b> ' + Quiz.SubjectName);
+            quizinfo.find('#subject').html('<b>Tổng điểm:</b> ' + Quiz.TotalMark);
+            quizinfo.find('#time').html('<b>Thời gian (phút):</b> '+Quiz.TotalTime)
             quizinfo.removeClass('hidden');
             roomCode = Quiz.RoomCode;
         }
@@ -166,7 +247,14 @@
                 $('#overlay').fadeOut();
                 let data = resp.data;
                 if (data.Success) {
-                    $('#QuizInfo').addClass('hidden');
+                    $('#rightPanel').addClass('hidden');
+                    $('#quiz').removeClass('col-md-4');
+                    $('#quiz').addClass('col-md-8');
+                    $('#quiz').addClass('transparent');
+                    $('#quiz').addClass('radius');
+                    $('#startBtn').addClass('hidden');
+                    $('#submitBtn').removeClass('hidden');
+                    $('title').html('Đang làm bài thi');
                     buildQuiz(Quiz.QuizList);
                 }
                 else {
@@ -186,44 +274,90 @@
                     const answers = [];
                     // ...add an HTML radio button
                     answers.push(
-                        `<br/><label>
-                        <input type="radio" name="question${currentQuestion.ID}" value="0">
-                        A :
+                        `<div>
+                        <input type="radio" id="question${currentQuestion.ID}1" qid="${currentQuestion.ID}" value="0">
+                        <label for="question${currentQuestion.ID}1" >
                         ${currentQuestion.answerA}
-                        </label>`
+                        </label>
+                        </div>`
                     );
                     answers.push(
-                        `<br/><label>
-                        <input type="radio" name="question${currentQuestion.ID}" value="1">
-                        B :
+                        `<div>
+                        <input type="radio" id="question${currentQuestion.ID}2" qid="${currentQuestion.ID}" value="1">
+                        <label for="question${currentQuestion.ID}2">
                         ${currentQuestion.answerB}
-                        </label>`
+                        </label>
+                        </div>`
                     );
                     answers.push(
-                        `<br/><label>
-                        <input type="radio" name="question${currentQuestion.ID}" value="2">
-                        C :
+                        `<div>
+                        <input type="radio" id="question${currentQuestion.ID}3" qid="${currentQuestion.ID}" value="2">
+                        <label for="question${currentQuestion.ID}3">
                         ${currentQuestion.answerC}
-                        </label>`
+                        </label>
+                        </div>`
                     );
                     answers.push(
-                        `<br/><label>
-                        <input type="radio" name="question${currentQuestion.ID}" value="3">
-                        D :
+                        `<div>
+                        <input type="radio" id="question${currentQuestion.ID}4" qid="${currentQuestion.ID}" value="3">
+                        <label for="question${currentQuestion.ID}4">
                         ${currentQuestion.answerD}
-                        </label>`
+                        </label>
+                        </div>`
                     );
 
                     // add this question and its answers to the output
                     output.push(
-                        `<div class="question"> ${currentQuestion.Content} </div>
-                            <div class="answers"> ${answers.join('')} </div>`
+                        `<div>
+                            <div class="question mt-1 q-title">${questionNumber + 1}. ${currentQuestion.Content}</div>
+                            <div class="answers md-radio"> ${answers.join('')} </div>
+                         </div>`
                     );
                 }
             );
 
             // finally combine our output list into one string of HTML and put it on the page
-            quizContainer.innerHTML = output.join('');
+            quizContainer.innerHTML = `<form id="quizForm">`+output.join('')+`</form>`;
+        }
+    </script>
+    <script>
+        function SubmitExam() {
+            let countCheck = checkedAll();
+            if (countCheck != Quiz.QuizList.length) {
+                swal('Lỗi', 'Bạn chưa chọn hết đáp án', 'warning')
+            }
+            else {
+                let answerList = [];
+                $("form#quizForm :input").each(function () {
+                    var input = $(this);
+                    if (input.is(':checked')) {
+                        let value = input.val();
+                        let QuizID = input.attr("qid");
+                        answerList.push({ QuizID: QuizID, Answer: value });
+                    }
+                });
+                SendData(answerList);
+            }
+            
+        }
+        function SendData(answerList)
+        {
+            axios.post('/DoQuiz/SubmitExam', { roomCode: roomCode, answerList: answerList }).then(resp => {
+
+                swal('Đã nộp bài', 'Bạn đạt ' + resp.data.score + '/' + resp.data.maxScore + ' điểm', 'success').then((e) => {
+                    location.reload();
+                })
+            });
+        }
+        function checkedAll() {
+            var count = 0;
+            $("form#quizForm :input").each(function () {
+                var input = $(this); 
+                if (input.is(':checked')) {
+                    count++;
+                }
+            });
+            return count;
         }
     </script>
     <script src="~/Scripts/axios.min.js"></script>

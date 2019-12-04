@@ -9,6 +9,10 @@ namespace TracNghiem.Models
 {
     public class ActiveTest
     {
+        public ActiveTest()
+        {
+            QuizResults = new HashSet<QuizResult>();
+        }
         [Key]
         public int ID { get; set; }
 
@@ -32,5 +36,8 @@ namespace TracNghiem.Models
         public DateTime FromTime { get; set; }
         [Required]
         public DateTime ToTime { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+        public virtual ICollection<QuizResult> QuizResults { get; set; }
     }
 }
