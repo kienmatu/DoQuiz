@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<TracNghiem.ViewModel.QuizResultViewModel>
 @{
-    ViewBag.Title = "Kết quả bài thi " + Model.First().Name;
+    ViewBag.Title = "Kết quả bài thi " + ViewBag.TestName;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="card  mt-3">
     <div class="card-header">
-        Bài thi: @Model.First().Name
+        Bài thi: @ViewBag.TestName
     </div>
     <div class="card-body">
         <table id="lstPost" class="table table-bordered table-striped">

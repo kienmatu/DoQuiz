@@ -61,6 +61,7 @@ namespace TracNghiem.Controllers
                            MaxScore = c.ActiveTest.QuizTest.TotalMark,
                            //SubjectName = c.ActiveTest.QuizTest.Subject.name,
                        }).ToList();
+                ViewBag.TestName = db.ActiveTests.Where(c => c.ID == roomID).First().QuizTest.name;
                 return View(resultList);
             }
             catch
