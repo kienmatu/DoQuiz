@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TracNghiem.ViewModel.QuizResultViewModel>
+@{
+    ViewBag.Title = "Kết quả bài thi " + Model.First().Name;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="card  mt-3">
+    <div class="card-header">
+        Bài thi: @Model.First().Name
+    </div>
+    <div class="card-body">
+        <table id="lstPost" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Học sinh</th>
+                    <th>Điểm</th>
+                    <th>Tình trạng</th>
+                    <th>Thời gian </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <p>@item.StudentName</p>
+                        </td>
+                        <td>
+                            @item.Score / @item.MaxScore
+                        </td>
+                        <td>
+                            @item.Status
+                        </td>
+                        <td>
+                            @item.SubmitDate.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Học sinh</th>
+                    <th>Điểm</th>
+                    <th>Tình trạng</th>
+                    <th>Thời gian </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

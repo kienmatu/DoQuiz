@@ -46,8 +46,8 @@
             </label>
         </td>*@
             <td>
-                @*@Html.ActionLink("Sửa", "Edit", new { id = item.TestID }, new { @class = "badge badge-primary" })
-            <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>*@
+                @Html.ActionLink("Xem kết quả", "TestResult","Admin", new { roomID = item.ID }, new { @class = "badge badge-primary" })
+            @*<a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>*@
 
             </td>
         </tr>

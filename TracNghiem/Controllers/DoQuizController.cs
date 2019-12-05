@@ -137,10 +137,17 @@ namespace TracNghiem.Controllers
         public JsonResult SubmitExam(string roomCode,List<SubmitExamViewModel> answerList)
         {
             ActiveTest test = db.ActiveTests.Where(c => c.Code == roomCode).FirstOrDefault();
+            List<Quiz> quiz = test.QuizTest.Quiz.ToList();
             double score = 0;
             double trueAnswer = 0;
-            List<Quiz> quiz = test.QuizTest.Quiz.ToList();
-            foreach(var item in quiz)
+            int countQuestion = quiz.Count();
+            double maxScore = test.QuizTest.TotalMark;
+            double scorePerQuestion = maxScore / quiz.Count();
+            if(answerList == null || answerList.Count == 0)
+            {
+                return Json(new { score = score, maxScore = maxScore, trueAnswer = trueAnswer, success = true }, JsonRequestBehavior.AllowGet);
+            }
+            foreach (var item in quiz)
             {
                 foreach(var answer in answerList)
                 {
@@ -157,9 +164,6 @@ namespace TracNghiem.Controllers
                 }
             }
 
-            int countQuestion = quiz.Count();
-            double maxScore = test.QuizTest.TotalMark;
-            double scorePerQuestion = maxScore / quiz.Count();
             if (trueAnswer > 0)
             {
                 score = scorePerQuestion * trueAnswer;

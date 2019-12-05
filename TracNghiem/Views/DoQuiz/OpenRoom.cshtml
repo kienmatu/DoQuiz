@@ -23,9 +23,8 @@
     <script src="~/Scripts/jquery-ui.js"></script>
     <style>
         body {
-            background-image: url('/Content/images/libbg2.jpg');
             background-size: cover;
-             background-repeat: no-repeat;
+            background-repeat: no-repeat;
             background-attachment: fixed;
         }
         /*LOADING CSS*/
@@ -89,7 +88,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background-image: url('/Content/images/libbg2.jpg');">
     <style>
         @@keyframes ripple {
               0% {
@@ -167,9 +166,10 @@
                         <div class="form-label-group">
                             <label for="Username" class="text-white font-weight-bold">Mã Phòng Thi:</label><br />
                             <input class="form-control" type="text" id="roomCode" value="WNvjyzS" />
-                            <br/>
+                            <br />
                         </div>
                         <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="EnterRoom()">Mở Phòng Thi</button>
+                        <a class="btn btn-lg btn-block text-uppercase btn-info" href="/Admin" >QUAY LẠI</a>
                     </div>
                 </div>
             </div>
@@ -189,10 +189,15 @@
                         <p class="info" id="mark">Demo mark</p>
                         <p class="info" id="time">Demo time</p>
                         <a href="#" id="startBtn" onclick="StartExam()" class="btn btn-danger float-right">Bắt đầu !</a>
-                        <a href="#" id="submitBtn" onclick="SubmitExam()" class="btn btn-warning float-right hidden">NỘP BÀI</a>
+                        <div id="timePanel" class="hidden">
+                            <hr class="mt-2" />
+                            <h5 class="card-title">Thời gian còn lại:</h5>
+                            <div id="timer" style="font-size:35px;"></div>
+                            <a href="#" id="submitBtn" onclick="SubmitExam()" class="btn btn-warning float-right hidden">NỘP BÀI</a>
+                        </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-md-4" id="rightPanel"></div>
         </div>
@@ -255,27 +260,33 @@
                     $('#startBtn').addClass('hidden');
                     $('#submitBtn').removeClass('hidden');
                     $('title').html('Đang làm bài thi');
+                    $('#timePanel').removeClass('hidden');
+                    let imageUrl = '/Content/images/prewhite.png';
+                    $('body').css("background-image", "url(" + imageUrl + ")"); 
                     buildQuiz(Quiz.QuizList);
+                    StartTimer(Quiz.TotalTime);
                 }
                 else {
                     swal('Lỗi', data.Message, 'warning')
                 }
             });
         }
-    </script>
-    <script>
         function buildQuiz(Quiz) {
             // we'll need a place to store the HTML output
             const output = [];
             // for each question...
-            Quiz.forEach(
+            let tempQuiz = Quiz.sort(function(a, b) {  
+              return 0.6 - Math.random();
+            } );  
+
+            tempQuiz.forEach(
                 (currentQuestion, questionNumber) => {
                     // we'll want to store the list of answer choices
                     const answers = [];
                     // ...add an HTML radio button
                     answers.push(
                         `<div>
-                        <input type="radio" id="question${currentQuestion.ID}1" qid="${currentQuestion.ID}" value="0">
+                        <input type="radio" id="question${currentQuestion.ID}1" name="${currentQuestion.ID}" value="0">
                         <label for="question${currentQuestion.ID}1" >
                         ${currentQuestion.answerA}
                         </label>
@@ -283,7 +294,7 @@
                     );
                     answers.push(
                         `<div>
-                        <input type="radio" id="question${currentQuestion.ID}2" qid="${currentQuestion.ID}" value="1">
+                        <input type="radio" id="question${currentQuestion.ID}2" name="${currentQuestion.ID}" value="1">
                         <label for="question${currentQuestion.ID}2">
                         ${currentQuestion.answerB}
                         </label>
@@ -291,7 +302,7 @@
                     );
                     answers.push(
                         `<div>
-                        <input type="radio" id="question${currentQuestion.ID}3" qid="${currentQuestion.ID}" value="2">
+                        <input type="radio" id="question${currentQuestion.ID}3" name="${currentQuestion.ID}" value="2">
                         <label for="question${currentQuestion.ID}3">
                         ${currentQuestion.answerC}
                         </label>
@@ -299,7 +310,7 @@
                     );
                     answers.push(
                         `<div>
-                        <input type="radio" id="question${currentQuestion.ID}4" qid="${currentQuestion.ID}" value="3">
+                        <input type="radio" id="question${currentQuestion.ID}4" name="${currentQuestion.ID}" value="3">
                         <label for="question${currentQuestion.ID}4">
                         ${currentQuestion.answerD}
                         </label>
@@ -332,7 +343,7 @@
                     var input = $(this);
                     if (input.is(':checked')) {
                         let value = input.val();
-                        let QuizID = input.attr("qid");
+                        let QuizID = input.attr("name");
                         answerList.push({ QuizID: QuizID, Answer: value });
                     }
                 });
@@ -342,8 +353,9 @@
         }
         function SendData(answerList)
         {
+            $('#overlay').fadeIn();
             axios.post('/DoQuiz/SubmitExam', { roomCode: roomCode, answerList: answerList }).then(resp => {
-
+                $('#overlay').fadeOut();
                 swal('Đã nộp bài', 'Bạn đạt ' + resp.data.score + '/' + resp.data.maxScore + ' điểm', 'success').then((e) => {
                     location.reload();
                 })
@@ -358,6 +370,97 @@
                 }
             });
             return count;
+        }
+        function EndTime() {
+            let answerList = [];
+            $("form#quizForm :input").each(function () {
+                var input = $(this);
+                if (input.is(':checked')) {
+                    let value = input.val();
+                    let QuizID = input.attr("name");
+                    answerList.push({ QuizID: QuizID, Answer: value });
+                }
+            });
+            SendData(answerList);
+        }
+    </script>
+    <script language="JavaScript" type="text/javascript">
+        function CountDownTimer(duration, granularity) {
+            this.duration = duration * 60;
+            this.granularity = granularity || 1000;
+            this.tickFtns = [];
+            this.running = false;
+        }
+
+        CountDownTimer.prototype.start = function () {
+            if (this.running) {
+                return;
+            }
+            this.running = true;
+            var start = Date.now(),
+                that = this,
+                diff, obj;
+
+            (function timer() {
+                diff = that.duration - (((Date.now() - start) / 1000) | 0);
+
+                if (diff > 0) {
+                    setTimeout(timer, that.granularity);
+                } else {
+                    diff = 0;
+                    that.running = false;
+                }
+
+                obj = CountDownTimer.parse(diff);
+                that.tickFtns.forEach(function (ftn) {
+                    ftn.call(this, obj.minutes, obj.seconds);
+                }, that);
+            }());
+        };
+
+        CountDownTimer.prototype.onTick = function (ftn) {
+            if (typeof ftn === 'function') {
+                this.tickFtns.push(ftn);
+            }
+            return this;
+        };
+
+        CountDownTimer.prototype.expired = function () {
+            return !this.running;
+        };
+
+        CountDownTimer.parse = function (seconds) {
+            return {
+                'minutes': (seconds / 60) | 0,
+                'seconds': (seconds % 60) | 0
+            };
+        };
+        CountDownTimer.parseMinutes = function (minutes) {
+            return {
+                'minutes': (minutes) | 0,
+                'seconds': 0
+            };
+        };
+        function StartTimer(min) {
+            var display = document.querySelector('#timer'),
+                timer = new CountDownTimer(min),
+                timeObj = CountDownTimer.parseMinutes(min);
+
+            format(timeObj.minutes, timeObj.seconds);
+            timer.onTick(format);
+            timer.start();
+
+            function format(minutes, seconds) {
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.textContent = minutes + ':' + seconds;
+
+                ///console.log(display.textContent);
+                
+                if (display.textContent == "00:00") {
+                    EndTime();
+                }
+            }
         }
     </script>
     <script src="~/Scripts/axios.min.js"></script>
