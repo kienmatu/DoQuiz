@@ -9,22 +9,22 @@ namespace TracNghiem.ViewModel
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Bạn chưa nhập password")]
         [DataType(DataType.Password)]
         [MaxLength(20)]
         public string password { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bạn chưa chọn giới tính")]
         public Gender gender { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bạn chưa nhập username")]
         [MaxLength(20)]
         public string username { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bạn chưa nhập tên đầy đủ")]
         [MaxLength(50)]
         public string fullname { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bạn chưa nhập email")]
         [MaxLength(50)]
         public string email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bạn chưa chọn loại người dùng")]
         public RegisterType type { get; set; }
         public string role { get; set; }
         public int CountQuestion = 0;

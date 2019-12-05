@@ -132,6 +132,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Common\EnumExtension.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
@@ -1018,6 +1019,7 @@
     <Content Include="Content\images\user.png" />
     <Content Include="Content\jquery.simple-dtpicker.css" />
     <Content Include="Content\jquery.simple-dtpicker.js" />
+    <Content Include="Content\login.css" />
     <Content Include="Content\multi-select\css\picklist.css" />
     <Content Include="Content\multi-select\css\picklist.min.css" />
     <Content Include="Content\multi-select\js\picklist.js" />
@@ -1217,6 +1219,7 @@
     <Content Include="Views\Admin\StudentDashboard.cshtml" />
     <Content Include="Views\DoQuiz\OpenRoom.cshtml" />
     <Content Include="Views\Admin\TestResult.cshtml" />
+    <Content Include="Views\Admin\TeacherDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

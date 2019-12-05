@@ -29,6 +29,16 @@ namespace TracNghiem.Controllers
                     }).ToList();
                 return View("StudentDashboard",resultList);
             }
+            if (User.IsInRole("teacher"))
+            {
+                ViewBag.countQuiz = db.Quizzes.Count(c => c.CreatorID == UserID && c.status != QuizStatusAd.Deleted);
+                ViewBag.countTest = db.QuizTests.Count(c => c.CreatorID == UserID);
+                ViewBag.countRoom = db.ActiveTests.Count(c => c.CreatorID == UserID);
+                return View("TeacherDashboard");
+            }
+            ViewBag.countQuiz = db.Quizzes.Count(c => c.status != QuizStatusAd.Deleted);
+            ViewBag.countTest = db.QuizTests.Count();
+            ViewBag.countRoom = db.ActiveTests.Count();
             return View();
         }
         public ActionResult TestResult(int? roomID)

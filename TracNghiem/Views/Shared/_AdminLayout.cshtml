@@ -147,9 +147,12 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="/" class="nav-link">Trang chủ</a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/DoQuiz/OpenRoom" class="nav-link">Vào thi</a>
-                </li>
+                @if (User.IsInRole("student"))
+                {
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="/DoQuiz/OpenRoom" class="nav-link">Vào thi</a>
+                    </li>
+                }
 
             </ul>
 

@@ -49,7 +49,7 @@ namespace TracNghiem.Models
     }
     public enum DoQuizStatus
     {
-        [Display(Name = "Đang làm")]
+        [Display(Name = "Đang làm dở")]
         Doing = 0,
         [Display(Name = "Đã hoàn thành")]
         Finished = 1,
