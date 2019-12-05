@@ -171,6 +171,7 @@ namespace TracNghiem.Controllers
                 int UserID = (int)Session["UserID"];
                 QuizResult result = db.QuizResults.Where(c => c.ActiveTestID == test.ID && c.StudentID == UserID).FirstOrDefault();
                 result.Score = score;
+                result.Status = DoQuizStatus.Finished;
                 db.SaveChanges();
             }
             
