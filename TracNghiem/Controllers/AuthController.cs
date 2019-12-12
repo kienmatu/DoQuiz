@@ -24,11 +24,13 @@ namespace TracNghiem.Controllers
             {
                 return RedirectToAction("Index", "Admin");
             }
+            Session.Clear();
             return View();
         }
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+            Session.Clear();
             return RedirectToAction("Index", "Home");
         }
         public void setCookie(string username, bool rememberme = false, string role = "normal")
