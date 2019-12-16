@@ -289,6 +289,9 @@ button {
                         allow_dismiss: false,
                         timer: 1000,
                     });
+                    setTimeout(function () {
+                    window.location.href = '/QuizTest/MyQuizTest';
+                    }, 2000);
                 }
                 else {
                     var notify = $.notify('<strong>Thất bại</strong><br/>' + recData.Message + '<br />', {
@@ -297,9 +300,7 @@ button {
                         timer: 1000,
                     });
                 }
-                setTimeout(function () {
-                    window.location.href = '/QuizTest/MyQuizTest';
-                }, 2000);
+                
 
             },
             error: function (xhr, status, error) {
