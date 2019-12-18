@@ -25,8 +25,10 @@ namespace TracNghiem.Controllers
                         SubmitDate = c.DoneAt,
                         Score = c.Score,
                         Status = c.Status,
+                        MaxScore = c.ActiveTest.QuizTest.TotalMark,
                         SubjectName = c.ActiveTest.QuizTest.Subject.name,
-                    }).ToList();
+                    })
+                    .ToList();
                 return View("StudentDashboard",resultList);
             }
             if (User.IsInRole("teacher"))
