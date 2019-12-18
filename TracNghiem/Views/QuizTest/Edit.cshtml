@@ -53,14 +53,17 @@
                     <label for="Quiz">Tìm theo tên :</label>
                     <input class="form-control" name="name_search" id="name_search" type="text" placeholder="Tìm kiếm câu hỏi">
                     @*<div class="spinner-border text-info" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>*@
+                <span class="sr-only">Loading...</span>
+            </div>*@
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="Quiz">Độ khó:</label><br />
                         @Html.EnumDropDownListFor(m => m.HardTypeChoose, new { @class = "form-control" })
                     </div>
+                </div>
+                <div class="col-md-7">
+                    <p class="pull-right" id="countSelected">Đã chọn 0 câu</p>
                 </div>
             </div>
             <div id="list"></div>
@@ -100,6 +103,9 @@
 <link rel="stylesheet" type="text/css" href="~/Content/multi-select/css/picklist.min.css">
 <script src="~/Content/multi-select/js/picklist.js"></script>
 <script type="text/javascript">
+    function updateSelectedCount() {
+
+    }
     var pick;
     var data =
     {
@@ -168,16 +174,20 @@
                     ]
                 });
 
-                $('#button').on('click', function () {
+                 $('#button').on('click', function () {
                     console.log(pick.pickList('getSelected'));
+                    updateSelectedCount();
                 });
 
                 pick.on('picklist.remove', function (event, v) {
-                    console.log('Remove: ' + v[0].label)
+                    updateSelectedCount();
                 });
 
                 pick.on('picklist.add', function (event, v) {
-                    console.log('Add: ' + v[0].label)
+                    updateSelectedCount();
+                });
+                pick.on('picklist.removeAll', function (event, v) {
+                    updateSelectedCount();
                 });
             },
             error: function () {
@@ -273,4 +283,9 @@
         return o;
     };
 })(jQuery);
+</script>
+<script>
+    function updateSelectedCount() {
+        $('#countSelected').text("Đã chọn " + pick.pickList('getSelected').length + " câu.")
+    }
 </script>

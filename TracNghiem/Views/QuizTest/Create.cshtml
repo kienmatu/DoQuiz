@@ -120,6 +120,9 @@ button {
                         @Html.EnumDropDownListFor(m => m.HardTypeChoose, new { @class = "form-control" })
                     </div>
                 </div>
+                <div class="col-md-7">
+                    <p class="pull-right" id="countSelected">Đã chọn 0 câu</p>
+                </div>
             </div>
             <div id="list"></div>
             @*<button type="button" class="btn btn-sm btn-block btn-info" id="button">selected</button>*@
@@ -230,14 +233,18 @@ button {
 
                 $('#button').on('click', function () {
                     console.log(pick.pickList('getSelected'));
+                    updateSelectedCount();
                 });
 
                 pick.on('picklist.remove', function (event, v) {
-                    console.log('Remove: ' + v[0].label)
+                    updateSelectedCount();
                 });
 
                 pick.on('picklist.add', function (event, v) {
-                    console.log('Add: ' + v[0].label)
+                    updateSelectedCount();
+                });
+                pick.on('picklist.removeAll', function (event, v) {
+                    updateSelectedCount();
                 });
             },
             error: function () {
@@ -334,4 +341,9 @@ button {
         return o;
     };
 })(jQuery);
+</script>
+<script>
+    function updateSelectedCount() {
+        $('#countSelected').text("Đã chọn " + pick.pickList('getSelected').length+" câu.")
+    }
 </script>
