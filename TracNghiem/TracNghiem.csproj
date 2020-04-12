@@ -1233,6 +1233,9 @@
     <Content Include="Views\Admin\TeacherDashboard.cshtml" />
     <Content Include="Views\Lesson\Index.cshtml" />
     <Content Include="Views\Lesson\Create.cshtml" />
+    <Content Include="Views\Lesson\AllLesson.cshtml" />
+    <Content Include="Views\Lesson\AllMyLesson.cshtml" />
+    <Content Include="Views\Lesson\LessonDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

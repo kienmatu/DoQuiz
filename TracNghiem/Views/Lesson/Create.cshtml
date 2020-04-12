@@ -19,8 +19,8 @@
         </div>
 
         <div class="form-group">
-            <label for="Lesson">Thời lượng bài học:</label><br />
-            @Html.TextAreaFor(m => m.Time, new { @class = "form-control", @placeholder = "Thời gian bài học" })
+            <label for="Lesson">Thời gian tối thiểu để học (Phút):</label><br />
+            @Html.TextBoxFor(m => m.Time, new { @class = "form-control", @placeholder = "Thời gian học" })
             @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
         </div>
 
