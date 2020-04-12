@@ -224,7 +224,7 @@
                                             <p>Thêm câu hỏi mới</p>
                                         </a>
                                     </li>
-                                    @if(User.IsInRole("admin"))
+                                    @if (User.IsInRole("admin"))
                                     {
                                         <li class="nav-item">
                                             <a href="/Quiz/AllQuiz" class="nav-link">
@@ -248,7 +248,7 @@
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fa fa-edit"></i>
                                     <p>
-                                        Kho đề thi
+                                        Kho bài tập
                                         <i class="right fa fa-angle-left"></i>
                                     </p>
                                 </a>
@@ -257,28 +257,73 @@
                                     <li class="nav-item">
                                         <a href="/QuizTest/Create" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon text-success"></i>
-                                            <p>Thêm đề thi mới</p>
+                                            <p>Thêm bài tập mới</p>
                                         </a>
                                     </li>
-                                    @if(User.IsInRole("admin"))
+                                    @if (User.IsInRole("admin"))
                                     {
-                                    <li class="nav-item">
-                                        <a href="/QuizTest/AllQuizTest" class="nav-link">
-                                            <i class="fa fa-circle-o nav-icon text-info"></i>
-                                            <p>Tất cả đề thi</p>
-                                        </a>
-                                    </li>
+                                        <li class="nav-item">
+                                            <a href="/QuizTest/AllQuizTest" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon text-info"></i>
+                                                <p>Tất cả bài tập</p>
+                                            </a>
+                                        </li>
                                     }
                                     <li class="nav-item">
                                         <a href="/QuizTest/MyQuizTest" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon text-info"></i>
-                                            <p>Đề thi của tôi</p>
+                                            <p>Bài tập của tôi</p>
                                         </a>
                                     </li>
+                                    @if (User.IsInRole("student"))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="/DoQuiz/MyActiveTest" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon text-info"></i>
+                                                <p>Bài tập đang làm</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="/Test/TestList" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon text-info"></i>
+                                                <p>Danh sách bài tập</p>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole("admin") || User.IsInRole("teacher"))
+                        {
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa fa-edit"></i>
+                                    <p>
+                                        Kho bài học
+                                        <i class="right fa fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+
                                     <li class="nav-item">
-                                        <a href="/DoQuiz/MyActiveTest" class="nav-link">
+                                        <a href="/Lesson/Create" class="nav-link">
+                                            <i class="fa fa-circle-o nav-icon text-success"></i>
+                                            <p>Thêm bài học mới</p>
+                                        </a>
+                                    </li>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="/QuizTest/AllQuizTest" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon text-info"></i>
+                                                <p>Tất cả bài học</p>
+                                            </a>
+                                        </li>
+                                    }
+                                    <li class="nav-item">
+                                        <a href="/QuizTest/MyQuizTest" class="nav-link">
                                             <i class="fa fa-circle-o nav-icon text-info"></i>
-                                            <p>Đề thi đang kiểm tra</p>
+                                            <p>Bài học của tôi</p>
                                         </a>
                                     </li>
                                     @if (User.IsInRole("student"))
@@ -286,58 +331,50 @@
                                         <li class="nav-item">
                                             <a href="/Test/TestList" class="nav-link">
                                                 <i class="fa fa-circle-o nav-icon text-info"></i>
-                                                <p>Danh sách bài thi</p>
+                                                <p>Danh sách bài học</p>
                                             </a>
                                         </li>
                                     }
                                 </ul>
                             </li>
                         }
-                            <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fa fa-user-circle"></i>
-                                    <p>
-                                        Người dùng
-                                        <i class="fa fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="/Auth/ChangePass" class="nav-link">
-                                            <i class="fa fa-circle-o nav-icon text-danger"></i>
-                                            <p>Đổi mật khẩu</p>
-                                        </a>
-                                    </li>
-                                    @{ if (User.IsInRole("admin"))
-                                        {
-                                            <li class="nav-item">
-                                                <a href="/User/Manage" class="nav-link">
-                                                    <i class="fa fa-circle-o nav-icon text-success"></i>
-                                                    <p>Quản lý người dùng</p>
-                                                </a>
-                                            </li>
-                                        }
-                                    }
 
-                                </ul>
-                            </li>
-                            <li class="nav-header" style="font-size:1.1rem">Công cụ</li>
-                            @if (User.IsInRole("admin"))
-                            {
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-user-circle"></i>
+                                <p>
+                                    Người dùng
+                                    <i class="fa fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="/Quiz/SubjectManager" class="nav-link">
-                                        <i class="nav-icon fa fa-circle-o text-success"></i>
-                                        <p>Quản lý môn học</p>
+                                    <a href="/Auth/ChangePass" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon text-danger"></i>
+                                        <p>Đổi mật khẩu</p>
                                     </a>
                                 </li>
-                            }
-                            <li class="nav-item">
-                                <a href="/Auth/Logout" class="nav-link">
-                                    <i class="nav-icon fa fa-sign-out text-danger"></i>
-                                    <p>Đăng xuất</p>
-                                </a>
-                            </li>
-                        </ul>
+                                @{ if (User.IsInRole("admin"))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="/User/Manage" class="nav-link">
+                                                <i class="fa fa-circle-o nav-icon text-success"></i>
+                                                <p>Quản lý người dùng</p>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        <li class="nav-header" style="font-size:1.1rem">Công cụ</li>
+                        <li class="nav-item">
+                            <a href="/Auth/Logout" class="nav-link">
+                                <i class="nav-icon fa fa-sign-out text-danger"></i>
+                                <p>Đăng xuất</p>
+                            </a>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </aside>

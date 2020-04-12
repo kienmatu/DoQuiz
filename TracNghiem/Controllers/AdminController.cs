@@ -26,7 +26,7 @@ namespace TracNghiem.Controllers
                         Score = c.Score,
                         Status = c.Status,
                         MaxScore = c.ActiveTest.QuizTest.TotalMark,
-                        SubjectName = c.ActiveTest.QuizTest.Subject.name,
+                        LessonName = c.ActiveTest.QuizTest.Lesson.Name
                     })
                     .ToList();
                 return View("StudentDashboard",resultList);
@@ -61,7 +61,7 @@ namespace TracNghiem.Controllers
                            Score = c.Score,
                            Status = c.Status,
                            MaxScore = c.ActiveTest.QuizTest.TotalMark,
-                           //SubjectName = c.ActiveTest.QuizTest.Subject.name,
+                           LessonName = c.ActiveTest.QuizTest.Lesson.Name
                        }).ToList();
                 ViewBag.TestName = db.ActiveTests.Where(c => c.ID == roomID).First().QuizTest.name;
                 return View(resultList);

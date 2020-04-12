@@ -23,15 +23,13 @@ namespace TracNghiem.ViewModel
         //[StringLength(100)]
         //public string image { get; set; }
 
-        
-        public IEnumerable<SelectListItem> Subject { get; set; }
-        [Required(ErrorMessage = "Chưa chọn môn học")]
-        public int SubjectID { get; set; }
+       
         public int ID { get; set; }
         public string CreatorName { get; set; }
         public DateTime CreateDate { get; set; }
-        public string SubjectName { get; set; }
-
+        public string LessonName { get; set; }
+        public int LessonId { get; set; }
+        public IEnumerable<SelectListItem> Lessons { get; set; }
         [StringLength(200)]
         [Required(ErrorMessage = "Chưa nhập đáp án A")]
         public string answerA { get; set; }
@@ -57,21 +55,15 @@ namespace TracNghiem.ViewModel
         [StringLength(500)]
         [Required]
         public string content { get; set; }
-
+        public string LessonName { get; set; }
         [Required]
         public HardType HardType { get; set; }
 
         //[StringLength(100)]
         //public string image { get; set; }
-
-
-        public IEnumerable<SelectListItem> Subject { get; set; }
-        [Required(ErrorMessage = "Chưa chọn môn học")]
-        public int SubjectID { get; set; }
         public int ID { get; set; }
         public string CreatorName { get; set; }
         public DateTime CreateDate { get; set; }
-        public string SubjectName { get; set; }
 
         [StringLength(200)]
         [Required(ErrorMessage = "Chưa nhập đáp án A")]

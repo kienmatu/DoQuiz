@@ -138,6 +138,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\DoQuizController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LessonController.cs" />
     <Compile Include="Controllers\QuizController.cs" />
     <Compile Include="Controllers\QuizTestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -176,18 +177,31 @@
     <Compile Include="Migrations\201912041211573_fixtablequizresult.Designer.cs">
       <DependentUpon>201912041211573_fixtablequizresult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004111506176_addLesson.cs" />
+    <Compile Include="Migrations\202004111506176_addLesson.Designer.cs">
+      <DependentUpon>202004111506176_addLesson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004111524036_convertDatetime.cs" />
+    <Compile Include="Migrations\202004111524036_convertDatetime.Designer.cs">
+      <DependentUpon>202004111524036_convertDatetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004111619212_edit.cs" />
+    <Compile Include="Migrations\202004111619212_edit.Designer.cs">
+      <DependentUpon>202004111619212_edit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
+    <Compile Include="Models\Lesson.cs" />
     <Compile Include="Models\Quiz.cs" />
     <Compile Include="Models\QuizContext.cs" />
     <Compile Include="Models\QuizResult.cs" />
     <Compile Include="Models\QuizTest.cs" />
-    <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\ChangepassViewModel.cs" />
     <Compile Include="ViewModel\DoTestViewModel.cs" />
+    <Compile Include="ViewModel\LessonViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\QuizResultViewModel.cs" />
     <Compile Include="ViewModel\QuizSearchViewModel.cs" />
@@ -195,8 +209,6 @@
     <Compile Include="ViewModel\QuizTestViewModelAd.cs" />
     <Compile Include="ViewModel\QuizViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
-    <Compile Include="ViewModel\SubjectSelect.cs" />
-    <Compile Include="ViewModel\SubjectViewModel.cs" />
     <Compile Include="ViewModel\SubmitExamViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
@@ -1215,14 +1227,17 @@
     <Content Include="Views\QuizTest\MyQuizTest.cshtml" />
     <Content Include="Views\QuizTest\Edit.cshtml" />
     <Content Include="Views\DoQuiz\MyActiveTest.cshtml" />
-    <Content Include="Views\Quiz\SubjectManager.cshtml" />
     <Content Include="Views\Admin\StudentDashboard.cshtml" />
     <Content Include="Views\DoQuiz\OpenRoom.cshtml" />
     <Content Include="Views\Admin\TestResult.cshtml" />
     <Content Include="Views\Admin\TeacherDashboard.cshtml" />
+    <Content Include="Views\Lesson\Index.cshtml" />
+    <Content Include="Views\Lesson\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\js\" />
+    <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1256,6 +1271,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912041211573_fixtablequizresult.resx">
       <DependentUpon>201912041211573_fixtablequizresult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004111506176_addLesson.resx">
+      <DependentUpon>202004111506176_addLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004111524036_convertDatetime.resx">
+      <DependentUpon>202004111524036_convertDatetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004111619212_edit.resx">
+      <DependentUpon>202004111619212_edit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -82,13 +82,13 @@ button {
                     @Html.ValidationMessageFor(model => model.TotalTime, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-3">
+            @*<div class="col-md-3">
                 <div class="form-group">
                     <label for="Quiz">Môn học:</label><br />
                     @Html.DropDownListFor(m => m.SubjectID, Model.Subject, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="Quiz">Trạng thái:</label><br />

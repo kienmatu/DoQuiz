@@ -14,6 +14,7 @@ namespace TracNghiem.Models
         {
             Quizzes = new HashSet<Quiz>();
             QuizTests = new HashSet<QuizTest>();
+            Lessons = new HashSet<Lesson>();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -57,7 +58,7 @@ namespace TracNghiem.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<QuizTest> QuizTests { get; set; }
 
-
+        public ICollection<Lesson> Lessons { set; get; }
 
     }
    

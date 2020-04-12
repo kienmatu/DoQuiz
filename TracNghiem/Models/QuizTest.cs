@@ -34,17 +34,17 @@ namespace TracNghiem.Models
 
         public virtual User Creator { get; set; }
 
-        [ForeignKey("Subject")]
-        public int SubjectID { get; set; }
-
-        public virtual Subject Subject { get; set; }
-
         [Required]
         public TestStatusAd status { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Quiz> Quiz { get; set; }
         [Required]
+        [Column(TypeName = "datetime2")]
         public DateTime CreateDate { get; set; }
+        [ForeignKey("Lesson")]
+        public int LessonId { get; set; }
+
+        public virtual Lesson Lesson { get; set; }
     }
 }

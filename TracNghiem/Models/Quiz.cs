@@ -13,6 +13,7 @@ namespace TracNghiem.Models
         public Quiz()
         {
             QuizTest = new HashSet<QuizTest>();
+            CreateDate = DateTime.Now;
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,12 +21,12 @@ namespace TracNghiem.Models
         [Required]
         [StringLength(100)]
         public string name { get; set; }
-
+       
         [ForeignKey("Creator")]
         [Required]
         public int CreatorID { get; set; }
         public virtual User Creator { get; set; }
-        [Required]
+        [Column(TypeName = "datetime2")]
         public DateTime CreateDate { get; set; }
         [StringLength(500)]
         [Required]
@@ -36,11 +37,6 @@ namespace TracNghiem.Models
 
         [StringLength(100)]
         public string image { get; set; }
-
-        [ForeignKey("Subject")]
-        public int SubjectID { get; set; }
-
-        public virtual Subject Subject { get; set; }
 
         [StringLength(200)]
         [Required]
@@ -58,6 +54,10 @@ namespace TracNghiem.Models
         public Answer trueAnswer { get; set; }
         [Required]
         public QuizStatusAd status { get; set; }
+        [ForeignKey("lesson")]
+        [Required]
+        public int LessonId { get; set; }
+        public virtual Lesson lesson { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuizTest> QuizTest { get; set; }

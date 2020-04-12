@@ -26,18 +26,18 @@ namespace TracNghiem.Common
             }
             return sb.ToString();
         }
-        public static IEnumerable<SelectListItem> getSubjectItem()
+        public static IEnumerable<SelectListItem> getLessonItem()
         {
             QuizContext db = new QuizContext();
-            List<SelectListItem> lstSub = db.Subjects
+            List<SelectListItem> lstLess = db.Lessons
                 .Select(m =>
                 new SelectListItem
                 {
-                    Text = m.name,
+                    Text = m.Name,
                     Value = m.ID.ToString(),
                 }
                 ).ToList();
-            return lstSub;
+            return lstLess;
         }
     }
 }

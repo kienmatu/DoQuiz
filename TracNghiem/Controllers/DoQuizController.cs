@@ -79,8 +79,8 @@ namespace TracNghiem.Controllers
                 {
                     RoomID = test.ID,
                     RoomCode = test.Code,
-                    SubjectName = test.QuizTest.Subject.name,
                     TestName = test.QuizTest.name,
+                    LessonName = test.QuizTest.Lesson.Name,
                     TotalMark = test.QuizTest.TotalMark,
                     TotalTime = test.QuizTest.TotalTime,
                     QuizList = test.QuizTest.Quiz.Select(c => new ShowQuiz

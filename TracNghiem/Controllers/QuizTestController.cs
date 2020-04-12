@@ -17,16 +17,13 @@ namespace TracNghiem.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// Tạo đề thi mới
-        /// </summary>
-        /// <returns></returns>
+        [HttpGet]
         [Authorize(Roles = "admin,teacher")]
         public ActionResult Create()
         {
             var model = new QuizTestViewModel
             {
-                Subject = Common.Helper.getSubjectItem(),
+                 Lessons= Common.Helper.getLessonItem(),
             };
             return View(model);
         }
@@ -34,7 +31,6 @@ namespace TracNghiem.Controllers
         [Authorize(Roles = "admin,teacher")]
         public JsonResult Create(QuizTestViewModel model)
         {
-            model.Subject = Common.Helper.getSubjectItem();
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, Message = "Bạn nhập thiếu các trường yêu cầu" }, JsonRequestBehavior.AllowGet);
@@ -48,7 +44,6 @@ namespace TracNghiem.Controllers
                     CreatorID = u.ID,
                     Creator = u,
                     CreateDate = DateTime.Now,
-                    SubjectID = model.SubjectID,
                     TotalMark = model.TotalMark,
                     name = model.name,
                     TotalTime = (int)model.TotalTime,
@@ -94,7 +89,6 @@ namespace TracNghiem.Controllers
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -107,7 +101,6 @@ namespace TracNghiem.Controllers
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -120,7 +113,6 @@ namespace TracNghiem.Controllers
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -143,7 +135,6 @@ namespace TracNghiem.Controllers
                                   status = (TestStatus)q.status,
                                   TestID = q.TestID,
                                   name = q.name,
-                                  SubjectName = q.Subject.name,
                                   CreatorName = q.Creator.username,
                                   CreateDate = q.CreateDate,
                               }
@@ -157,7 +148,6 @@ namespace TracNghiem.Controllers
                                status = (TestStatus)q.status,
                                TestID = q.TestID,
                                name = q.name,
-                               SubjectName = q.Subject.name,
                                CreatorName = q.Creator.username,
                                CreateDate = q.CreateDate,
                            }
@@ -174,7 +164,6 @@ namespace TracNghiem.Controllers
                                 status = (TestStatus)q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                SubjectName = q.Subject.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -188,7 +177,6 @@ namespace TracNghiem.Controllers
                                 status = (TestStatus)q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                SubjectName = q.Subject.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -202,7 +190,6 @@ namespace TracNghiem.Controllers
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -241,7 +228,6 @@ namespace TracNghiem.Controllers
                             status = q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -254,7 +240,6 @@ namespace TracNghiem.Controllers
                             status = q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -267,7 +252,7 @@ namespace TracNghiem.Controllers
                             status = q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
+                            
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -290,7 +275,7 @@ namespace TracNghiem.Controllers
                               status = q.status,
                               TestID = q.TestID,
                               name = q.name,
-                              SubjectName = q.Subject.name,
+                              
                               CreatorName = q.Creator.username,
                               CreateDate = q.CreateDate,
                           }
@@ -304,7 +289,7 @@ namespace TracNghiem.Controllers
                                 status = q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                SubjectName = q.Subject.name,
+                                
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -321,7 +306,7 @@ namespace TracNghiem.Controllers
                                 status = q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                SubjectName = q.Subject.name,
+                                
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -335,7 +320,7 @@ namespace TracNghiem.Controllers
                                 status = q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                SubjectName = q.Subject.name,
+                                
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -349,7 +334,7 @@ namespace TracNghiem.Controllers
                             status = q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            SubjectName = q.Subject.name,
+                            
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -379,9 +364,7 @@ namespace TracNghiem.Controllers
                 }
                 QuizTestViewModel quiz = new QuizTestViewModel
                 {
-                    name = test.name,
-                    Subject = Common.Helper.getSubjectItem(),
-                    SubjectID = test.SubjectID,
+                    name = test.name,                    
                     status = (TestStatus)test.status,
                     TestID = test.TestID,
                     TotalMark = test.TotalMark,
@@ -428,16 +411,7 @@ namespace TracNghiem.Controllers
                 {
                     if (hard.HasValue)
                     {
-                        lst = db.Quizzes.Where(i => i.SubjectID == subject && i.HardType == hard).Take(30).Select(a => new QuizSearchViewModel
-                        {
-                            HardType = a.HardType,
-                            id = a.QuizID,
-                            Name = a.name,
-                        }).ToList();
-                    }
-                    else
-                    {
-                        lst = db.Quizzes.Where(i => i.SubjectID == subject).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.HardType == hard).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,
@@ -449,7 +423,7 @@ namespace TracNghiem.Controllers
                 {
                     if (hard.HasValue)
                     {
-                        lst = db.Quizzes.Where(i => i.SubjectID == subject && i.HardType == hard && i.name.Contains(name)).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.name.Contains(name)).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,
@@ -458,7 +432,7 @@ namespace TracNghiem.Controllers
                     }
                     else
                     {
-                        lst = db.Quizzes.Where(i => i.SubjectID == subject && i.name.Contains(name)).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.name.Contains(name)).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,

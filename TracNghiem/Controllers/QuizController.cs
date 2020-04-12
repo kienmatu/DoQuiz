@@ -17,72 +17,6 @@ namespace TracNghiem.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// Quản lý môn học
-        /// </summary>
-        /// <returns></returns>
-        [Authorize(Roles ="admin")]
-        public ViewResult SubjectManager()
-        {
-            var result = (from s in db.Subjects
-                          where s.status == CommonStatus.active
-                         select new SubjectViewModel
-                         {
-                             ID = s.ID,
-                             SubjectName = s.name,
-                             QuizCount = s.Quizzes.Count(),
-                             QuizTestCount = s.QuizTests.Count()
-                         }).ToList();
-            return View(result);
-        }
-        /// <summary>
-        /// Xóa môn học AJAX
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Authorize(Roles = "admin")]
-        public JsonResult DeleteSubject(int id)
-        {
-            Subject s = db.Subjects.Find(id);
-            s.status = CommonStatus.notactive;
-            db.SaveChanges();
-            return Json(new { Message = "Xóa thành công" }, JsonRequestBehavior.AllowGet);
-        }
-        /// <summary>
-        /// Sửa môn học
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public JsonResult EditSubject(int id, string name)
-        {
-            Subject s = db.Subjects.Find(id);
-            s.name = name;
-            db.SaveChanges();
-            return Json(new { Message = "Sửa thành công" }, JsonRequestBehavior.AllowGet);
-        }
-        /// <summary>
-        /// Sửa môn học
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [Authorize(Roles = "admin")]
-        public JsonResult AddSubject(string name)
-        {
-            Subject s = new Subject { name = name, status = CommonStatus.active };
-            db.Subjects.Add(s);
-            db.SaveChanges();
-            return Json(new { Message = "Thêm thành công" }, JsonRequestBehavior.AllowGet);
-        }
-        /// <summary>
-        /// Tất cả câu hỏi
-        /// </summary>
-        /// <param name="sortOrder"></param>
-        /// <param name="CurrentSort"></param>
-        /// <param name="page"></param>
-        /// <param name="titleStr"></param>
-        /// <returns></returns>
         [Authorize(Roles = "admin")]
         public ViewResult AllQuiz(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
@@ -104,9 +38,9 @@ namespace TracNghiem.Controllers
                         {
                             status = q.status,
                             ID = q.QuizID,
+                            LessonName = q.lesson.Name,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -120,7 +54,7 @@ namespace TracNghiem.Controllers
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+                            LessonName = q.lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -134,7 +68,7 @@ namespace TracNghiem.Controllers
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+                            LessonName = q.lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -158,7 +92,7 @@ namespace TracNghiem.Controllers
                                ID = q.QuizID,
                                name = q.name,
                                HardType = q.HardType,
-                               SubjectName = q.Subject.name,
+                               LessonName = q.lesson.Name,
                                CreatorName = q.Creator.username,
                                CreateDate = q.CreateDate,
                            }
@@ -173,7 +107,7 @@ namespace TracNghiem.Controllers
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -191,7 +125,7 @@ namespace TracNghiem.Controllers
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -206,7 +140,7 @@ namespace TracNghiem.Controllers
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -221,7 +155,7 @@ namespace TracNghiem.Controllers
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+                            LessonName = q.lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -254,13 +188,13 @@ namespace TracNghiem.Controllers
                 switch (sortOrder)
                 {
                     case "title":
-                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted).OrderBy(e => e.name).Select(q =>
                         new QuizViewModel
                         {
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                             status = (QuizStatus)q.status,
@@ -268,13 +202,13 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     case "createdate":
-                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active).OrderBy(e => e.CreateDate).Select(q =>
+                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted).OrderBy(e => e.CreateDate).Select(q =>
                         new QuizViewModel
                         {
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+                            LessonName = q.lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                             status = (QuizStatus)q.status,
@@ -282,13 +216,13 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     default:
-                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted).OrderBy(e => e.name).Select(q =>
                         new QuizViewModel
                         {
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+                            LessonName = q.lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                             status = (QuizStatus)q.status,
@@ -306,13 +240,13 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "tiêu đề";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active && t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
                             new QuizViewModel
                             {
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                                 status = (QuizStatus)q.status,
@@ -321,13 +255,13 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active && t.name.Contains(titleStr)).OrderByDescending(e => e.name).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.name.Contains(titleStr)).OrderByDescending(e => e.name).Select(q =>
                             new QuizViewModel
                             {
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                                 status = (QuizStatus)q.status,
@@ -339,13 +273,13 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "ngày tạo";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active && t.name.Contains(titleStr)).OrderBy(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.name.Contains(titleStr)).OrderBy(e => e.CreateDate).Select(q =>
                             new QuizViewModel
                             {
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                                 status = (QuizStatus)q.status,
@@ -354,13 +288,13 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active && t.name.Contains(titleStr)).OrderByDescending(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.name.Contains(titleStr)).OrderByDescending(e => e.CreateDate).Select(q =>
                             new QuizViewModel
                             {
                                 ID = q.QuizID,
                                 name = q.name,
                                 HardType = q.HardType,
-                                SubjectName = q.Subject.name,
+                                LessonName = q.lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                                 status = (QuizStatus)q.status,
@@ -369,13 +303,13 @@ namespace TracNghiem.Controllers
                         }
                         break;
                     default:
-                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.Subject.status == CommonStatus.active && t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.Quizzes.Where(t => t.CreatorID == id && t.status != QuizStatusAd.Deleted && t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
                         new QuizViewModel
                         {
                             ID = q.QuizID,
                             name = q.name,
                             HardType = q.HardType,
-                            SubjectName = q.Subject.name,
+                            LessonName = q.lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                             status = (QuizStatus)q.status,
@@ -388,19 +322,15 @@ namespace TracNghiem.Controllers
             return View(lstQuiz);
         }
         [Authorize(Roles = "admin,teacher")]
+        [HttpGet]
         public ViewResult Create()
         {
             QuizViewModel model = new QuizViewModel
             {
-                Subject = Common.Helper.getSubjectItem(),
+                Lessons = Common.Helper.getLessonItem()
             };
             return View(model);
         }
-        /// <summary>
-        /// Tạo câu hỏi
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         [Authorize(Roles = "admin,teacher")]
         [HttpPost]
         public ActionResult Create(QuizViewModel model)
@@ -418,16 +348,14 @@ namespace TracNghiem.Controllers
                     answerC = model.answerC,
                     answerD = model.answerD,
                     trueAnswer = model.trueAnswer,
+                    LessonId = model.LessonId,
                     status = (QuizStatusAd)model.status,
-                    SubjectID = model.SubjectID,
                     HardType = model.HardType,
-                    CreateDate = DateTime.Now,
                 };
                 db.Quizzes.Add(q);
                 db.SaveChanges();
                 return RedirectToAction("MyQuiz");
             }
-            model.Subject = Common.Helper.getSubjectItem();
             return View(model);
         }
         /// <summary>
@@ -436,6 +364,7 @@ namespace TracNghiem.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize(Roles = "admin,teacher")]
+        [HttpGet]
         public ActionResult Edit(int id)
         {
             Quiz q = db.Quizzes.Find(id);
@@ -443,8 +372,7 @@ namespace TracNghiem.Controllers
             {
                 QuizViewModel model = new QuizViewModel
                 {
-                    Subject = Common.Helper.getSubjectItem(),
-                    SubjectID = q.SubjectID,
+                    LessonId = q.LessonId,
                     answerD = q.answerD,
                     answerA = q.answerA,
                     status = (QuizStatus)q.status,
@@ -472,6 +400,7 @@ namespace TracNghiem.Controllers
             {
                 Quiz q = db.Quizzes.Find(model.ID);
                 q.name = model.name;
+                q.LessonId = model.LessonId;
                 q.content = model.content;
                 q.answerA = model.answerA;
                 q.answerB = model.answerB;
@@ -479,12 +408,10 @@ namespace TracNghiem.Controllers
                 q.answerD = model.answerD;
                 q.trueAnswer = model.trueAnswer;
                 q.status = (QuizStatusAd)model.status;
-                q.SubjectID = model.SubjectID;
                 q.HardType = model.HardType;
                 db.SaveChanges();
                 return RedirectToAction("MyQuiz");
             }
-            model.Subject = Common.Helper.getSubjectItem();
             return View(model);
         }
         /// <summary>

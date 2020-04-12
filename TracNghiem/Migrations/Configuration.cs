@@ -61,31 +61,7 @@
                 AvatarImage = "default-avatar.jpg",
                 password = "0192023A7BBD73250516F069DF18B500", // = admin123
                 gender = Gender.Male,
-            });
-            context.Subjects.AddOrUpdate(e => e.ID, new Subject
-            {
-                ID = 1,
-                name = "Lập Trình Nhúng",
-                status = CommonStatus.active,
-            });
-            context.Subjects.AddOrUpdate(e => e.ID, new Subject
-            {
-                ID = 2,
-                name = "Lập Trình C#",
-                status = CommonStatus.active,
-            });
-            context.Subjects.AddOrUpdate(e => e.ID, new Subject
-            {
-                ID = 3,
-                name = "Toán rời rạc",
-                status = CommonStatus.active,
-            });
-            context.Subjects.AddOrUpdate(e => e.ID, new Subject
-            {
-                ID = 4,
-                name = "Cấu trúc dữ liệu và giải thuật",
-                status = CommonStatus.active,
-            });
+            });            
         }
     }
 }

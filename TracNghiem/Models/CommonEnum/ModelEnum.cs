@@ -151,7 +151,12 @@ namespace TracNghiem.Models
         [Display(Name = "90 Phút")]
         NineTy = 90,
 
+    }  
+    public enum LessonStatus
+    {
+        [Display(Name ="Đã có")]
+        Open = 1,
+        [Display(Name ="Chưa có")]
+        Close = 0,
     }
-    
-
 }

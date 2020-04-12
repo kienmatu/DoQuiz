@@ -34,9 +34,9 @@ namespace TracNghiem.ViewModel
 
         [Required]
         public TestStatus status { get; set; }
-        public IEnumerable<SelectListItem> Subject { get; set; }
-        [Required(ErrorMessage = "Chưa chọn môn học")]
-        public int SubjectID { get; set; }
+        public int LessonId { get; set; }
+        public string LessonName { get; set; }
+        public IEnumerable<SelectListItem> Lessons { get; set; }
         public HardType HardTypeChoose { get; set; }
 
         [LimitCount(10,200,ErrorMessage = "Số câu hỏi từ 10 tới 200")]
