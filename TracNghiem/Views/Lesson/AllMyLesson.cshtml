@@ -9,7 +9,7 @@
         @foreach (var item in Model)
         {
             <div class="col-sm-6">
-                <div id="card-advance" class="card card-default" style="margin-top:5px;width:500px;height:210px;box-shadow:2px 2px 10px #a2a2a2">
+                <div id="card-advance" class="card card-default" style="margin-top:5px;width:500px;height:230px;box-shadow:2px 2px 10px #a2a2a2">
                     <div class="card-body" style="padding: 0px 20px">
                         <h3 style="padding-top:10px">@item.Name</h3>
                         <div>
@@ -23,12 +23,13 @@
                                     <p style="margin-bottom:0">@item.Description</p>
                                 }
                             }
-                            <p style="margin:0px">Video tài liệu thêm: <a href="https://www.youtube.com/watch?v=gmCJClr6tg0">Tại đây</a></p>
+                            <p style="margin:0px">Tải tài liệu thêm: @item.File</p>
+                            <p style="margin-bottom:8px">Thời lượng: @item.Time phút</p>
                             <p style="margin:0px;color:red;font-weight:600">Tác giả: @item.CreatedBy.</p>
                         </div>
                         <div class="card-header" style="border-bottom:none">
                             <div class="card-controls">
-                                <a href="/Lesson/LessonDetail" class="btn btn-primary">Tham gia</a>
+                                <a href="/Lesson/LessonDetail/@item.Id" class="btn btn-primary">Tham gia</a>
                             </div>
                         </div>
                     </div>

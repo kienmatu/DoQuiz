@@ -1,4 +1,4 @@
-﻿
+﻿@model TracNghiem.ViewModel.LessonViewModel
 @{
     ViewBag.Title = "LessonDetail";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,15 +8,15 @@
         <div class="row mb-3">
             <div class="col-md-5">
                 <div class="px-lg-0">
-                    <h3 class="text-primary">Bài 1. Chuẩn bị đồ nghề</h3>
+                    <h3 class="text-primary">Bài @Model.Id. @Model.Name</h3>
                     <p>
-                        Nếu bạn người mới bắt đầu học lập trình, bạn nên học một ngôn ngữ lập trình trước để làm quen với tư duy, cách hoạt động của máy tính. Thứ tự học làm web đã trở nên lỗi thời là: HTML/CSS/JS. Thứ tự mới sẽ là: JS/HTML/CSS. Ngoài ra, nếu bạn đang làm web developer, nên xem lại để củng cố kiến thức, JavaScript là một ngôn ngữ dễ học nhưng khó làm chủ.
+                        @Model.Description
                     </p>
                 </div>
             </div>
             <div class="col-md-7">
                 <div>
-                    <iframe frameborder="0" allowfullscreen="1" style="width:600px;height:360px" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/Oo9MAd40lbI?enablejsapi=1&amp;origin=https%3A%2F%2Fschool.coders-x.com&amp;widgetid=1" id="widget2"></iframe>
+                    <iframe frameborder="0" allowfullscreen="1" style="width:600px;height:360px" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="@Model.YoutubeLink" id="widget2"></iframe>
                 </div>
             </div>
         </div>

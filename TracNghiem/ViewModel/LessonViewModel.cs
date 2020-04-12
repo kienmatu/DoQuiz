@@ -15,7 +15,9 @@ namespace TracNghiem.ViewModel
         public string Name { get; set; }
         [Required]
         public int Time { get; set; }
+        [Required]
         public string File { get; set; }
+        [Required]
         public string YoutubeLink { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }

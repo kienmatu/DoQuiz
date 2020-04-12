@@ -30,6 +30,7 @@ namespace TracNghiem.Models
         [DataType(DataType.Upload)]
         [Display(Name = "Upload File")]
         public string File { get; set; }
+        [Required]
         public string YoutubeLink { get; set; }
         [Required]
         [MaxLength(256)]

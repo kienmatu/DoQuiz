@@ -440,7 +440,7 @@ namespace TracNghiem.Controllers
         /// <param name="state"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult ChangeStatus(int id, QuizStatusAd state = QuizStatusAd.Active)
+        public JsonResult ChangeStatus(int id, QuizStatusAd state)
         {
             User u = db.Users.Where(t => t.username == User.Identity.Name).First();
             Quiz q = db.Quizzes.Find(id);

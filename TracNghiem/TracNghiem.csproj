@@ -189,6 +189,10 @@
     <Compile Include="Migrations\202004111619212_edit.Designer.cs">
       <DependentUpon>202004111619212_edit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004121320352_editLesson.cs" />
+    <Compile Include="Migrations\202004121320352_editLesson.Designer.cs">
+      <DependentUpon>202004121320352_editLesson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
@@ -1283,6 +1287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004111619212_edit.resx">
       <DependentUpon>202004111619212_edit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004121320352_editLesson.resx">
+      <DependentUpon>202004121320352_editLesson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

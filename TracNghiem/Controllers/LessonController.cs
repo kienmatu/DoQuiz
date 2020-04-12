@@ -9,6 +9,7 @@ using TracNghiem.ViewModel;
 
 namespace TracNghiem.Controllers
 {
+    [Authorize]
     public class LessonController : Controller
     {
         QuizContext db = new QuizContext();
@@ -18,6 +19,7 @@ namespace TracNghiem.Controllers
             return View();
         }
         [Authorize(Roles = "admin,teacher")]
+        [HttpGet]
         public ViewResult AllLesson(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
             int pageSize = 10;
@@ -33,7 +35,7 @@ namespace TracNghiem.Controllers
                 switch (sortOrder)
                 {
                     case "title":
-                        lstLesson = db.Lessons.Where(a => a.Status != LessonStatus.Open).OrderBy(e => e.Name).Select(q =>
+                        lstLesson = db.Lessons.OrderBy(e => e.Name).Select(q =>
                           new LessonViewModel
                           {
                               Name = q.Name,
@@ -46,7 +48,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     case "createdate":
-                        lstLesson = db.Lessons.Where(a => a.Status != LessonStatus.Open).OrderBy(e => e.CreatedDate).Select(q =>
+                        lstLesson = db.Lessons.OrderBy(e => e.CreatedDate).Select(q =>
                         new LessonViewModel
                         {
                             Name = q.Name,
@@ -59,7 +61,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     default:
-                        lstLesson = db.Lessons.Where(a => a.Status != LessonStatus.Open).OrderBy(e => e.Name).Select(q =>
+                        lstLesson = db.Lessons.OrderBy(e => e.Name).Select(q =>
                         new LessonViewModel
                         {
                             Name = q.Name,
@@ -82,7 +84,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "tiêu đề";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.Open).OrderBy(e => e.Name).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderBy(e => e.Name).Select(q =>
                            new LessonViewModel
                            {
                                Name = q.Name,
@@ -96,7 +98,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.Open).OrderByDescending(e => e.Name).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderByDescending(e => e.Name).Select(q =>
                             new LessonViewModel
                             {
                                 Name = q.Name,
@@ -113,7 +115,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "ngày tạo";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.Open).OrderBy(e => e.CreatedDate).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderBy(e => e.CreatedDate).Select(q =>
                             new LessonViewModel
                             {
                                 Name = q.Name,
@@ -127,7 +129,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.Open).OrderByDescending(e => e.CreatedDate).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderByDescending(e => e.CreatedDate).Select(q =>
                             new LessonViewModel
                             {
                                 Name = q.Name,
@@ -141,7 +143,7 @@ namespace TracNghiem.Controllers
                         }
                         break;
                     default:
-                        lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.Open).OrderBy(e => e.Name).Select(q =>
+                        lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderBy(e => e.Name).Select(q =>
                         new LessonViewModel
                         {
                             Name = q.Name,
@@ -164,10 +166,13 @@ namespace TracNghiem.Controllers
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             IPagedList<LessonViewModel> lstLesson = null;
             var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
-            lstLesson = db.Lessons.Where(x => x.Status == LessonStatus.Close).OrderBy(x => x.ID).Select(
+            lstLesson = db.Lessons.Where(x => x.Status == LessonStatus.Open).OrderBy(x => x.ID).Select(
                 x => new LessonViewModel
                 {
+                    Id = x.ID,
                     Name = x.Name,
+                    Time = x.Time,
+                    File = x.File,
                     Description = x.Description,
                     CreatedBy = x.CreatedBy,
                     YoutubeLink = x.YoutubeLink
@@ -218,9 +223,8 @@ namespace TracNghiem.Controllers
                 {
                     ModelState.AddModelError("", "Tệp tài liệu không được trống");
                 }
-
             }
-            return View("Create");
+            return RedirectToAction("Create");
         }
         [HttpGet]
         [Authorize(Roles = "admin,teacher")]
@@ -237,7 +241,7 @@ namespace TracNghiem.Controllers
                     Description = model.Description,
                     YoutubeLink = model.YoutubeLink
                 };
-                return View(model);
+                return View(lesson);
             }
             else
             {
@@ -263,14 +267,45 @@ namespace TracNghiem.Controllers
                     l.ModifiedDate = DateTime.Now;
                     db.Lessons.Add(l);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("AllLesson");
                 }
             }
             return View(model);
         }
-        public ActionResult LessonDetail()
+        [HttpGet]
+        public ActionResult LessonDetail(int id)
         {
-            return View();
+            var lesson = db.Lessons.Where(x => x.ID == id && x.Status == LessonStatus.Open).SingleOrDefault();
+            if (lesson != null)
+            {
+                LessonViewModel l = new LessonViewModel()
+                {
+                    Id = lesson.ID,
+                    Name = lesson.Name,
+                    File = lesson.File,
+
+                    YoutubeLink = lesson.YoutubeLink,
+                    Description = lesson.Description
+                };
+                return View(l);
+            }
+            return RedirectToAction("AllMyLesson");
+        }
+        [HttpPost]
+        [Authorize(Roles ="admin,teacher")]
+        public JsonResult ChangeStatus(int id, LessonStatus status)
+        {
+            Lesson lesson = db.Lessons.Find(id);
+            User user = db.Users.Where(x => x.username == User.Identity.Name).First();
+            if(lesson.CreatorID == user.ID && User.IsInRole("admin") || User.IsInRole("teacher"))
+            {
+                string title = lesson.Name;
+                lesson.Status = status;
+                string prefix = status == LessonStatus.Open ? "Mở" : "Đóng";
+                db.SaveChanges();
+                return Json(new { Message = prefix + " \"" + title + "\" thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
         }
     }
 }
