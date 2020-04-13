@@ -44,6 +44,7 @@ namespace TracNghiem.Controllers
                     CreatorID = u.ID,
                     Creator = u,
                     CreateDate = DateTime.Now,
+                    LessonId = model.LessonId,
                     TotalMark = model.TotalMark,
                     name = model.name,
                     TotalTime = (int)model.TotalTime,
@@ -88,6 +89,7 @@ namespace TracNghiem.Controllers
                         {
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
+                            LessonName = q.Lesson.Name,
                             name = q.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
@@ -100,6 +102,7 @@ namespace TracNghiem.Controllers
                         {
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
+                            LessonName = q.Lesson.Name,
                             name = q.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
@@ -112,6 +115,7 @@ namespace TracNghiem.Controllers
                         {
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
+                            LessonName = q.Lesson.Name,
                             name = q.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
@@ -134,6 +138,7 @@ namespace TracNghiem.Controllers
                               {
                                   status = (TestStatus)q.status,
                                   TestID = q.TestID,
+                                  LessonName = q.Lesson.Name,
                                   name = q.name,
                                   CreatorName = q.Creator.username,
                                   CreateDate = q.CreateDate,
@@ -148,6 +153,7 @@ namespace TracNghiem.Controllers
                                status = (TestStatus)q.status,
                                TestID = q.TestID,
                                name = q.name,
+                               LessonName = q.Lesson.Name,
                                CreatorName = q.Creator.username,
                                CreateDate = q.CreateDate,
                            }
@@ -163,6 +169,7 @@ namespace TracNghiem.Controllers
                             {
                                 status = (TestStatus)q.status,
                                 TestID = q.TestID,
+                                LessonName = q.Lesson.Name,
                                 name = q.name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
@@ -177,6 +184,7 @@ namespace TracNghiem.Controllers
                                 status = (TestStatus)q.status,
                                 TestID = q.TestID,
                                 name = q.name,
+                                LessonName = q.Lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -189,6 +197,7 @@ namespace TracNghiem.Controllers
                         {
                             status = (TestStatus)q.status,
                             TestID = q.TestID,
+                            LessonName = q.Lesson.Name,
                             name = q.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
@@ -227,6 +236,7 @@ namespace TracNghiem.Controllers
                         {
                             status = q.status,
                             TestID = q.TestID,
+                            LessonName = q.Lesson.Name,
                             name = q.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
@@ -239,6 +249,7 @@ namespace TracNghiem.Controllers
                         {
                             status = q.status,
                             TestID = q.TestID,
+                            LessonName = q.Lesson.Name,
                             name = q.name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
@@ -252,7 +263,7 @@ namespace TracNghiem.Controllers
                             status = q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            
+                            LessonName = q.Lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -275,7 +286,7 @@ namespace TracNghiem.Controllers
                               status = q.status,
                               TestID = q.TestID,
                               name = q.name,
-                              
+                              LessonName = q.Lesson.Name,
                               CreatorName = q.Creator.username,
                               CreateDate = q.CreateDate,
                           }
@@ -289,7 +300,7 @@ namespace TracNghiem.Controllers
                                 status = q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                
+                                LessonName = q.Lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -306,7 +317,7 @@ namespace TracNghiem.Controllers
                                 status = q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                
+                                LessonName = q.Lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -320,7 +331,7 @@ namespace TracNghiem.Controllers
                                 status = q.status,
                                 TestID = q.TestID,
                                 name = q.name,
-                                
+                                LessonName = q.Lesson.Name,
                                 CreatorName = q.Creator.username,
                                 CreateDate = q.CreateDate,
                             }
@@ -334,7 +345,7 @@ namespace TracNghiem.Controllers
                             status = q.status,
                             TestID = q.TestID,
                             name = q.name,
-                            
+                            LessonName = q.Lesson.Name,
                             CreatorName = q.Creator.username,
                             CreateDate = q.CreateDate,
                         }
@@ -344,29 +355,31 @@ namespace TracNghiem.Controllers
             }
             return View(lstQuiz);
         }
-        [Authorize(Roles = "admin,teacher")]
+        [HttpGet]
+        [Authorize(Roles ="admin,teacher")]
         public ActionResult Edit(int id)
         {
             var CurrentID = Session["UserID"];
             try
             {
                 var exist = db.QuizTests.Any(e => e.TestID == id);
-                if(!exist)
+                if (!exist)
                 {
                     return RedirectToAction("MyQuizTest");
                 }
                 QuizTest test = db.QuizTests.Find(id);
                 //Chỉ có admin và chủ nhân của bài test mới có thể sửa, còn lại bị redirect
                 //Bài thi đã xóa cũng ko xem được
-                if((test.CreatorID != (int)CurrentID && User.IsInRole("teacher")) || test.status == TestStatusAd.Deleted)
+                if ((test.CreatorID != (int)CurrentID && User.IsInRole("teacher")) || test.status == TestStatusAd.Deleted)
                 {
                     return RedirectToAction("MyQuizTest");
                 }
                 QuizTestViewModel quiz = new QuizTestViewModel
                 {
-                    name = test.name,                    
+                    name = test.name,
                     status = (TestStatus)test.status,
                     TestID = test.TestID,
+                    Lessons = Common.Helper.getLessonItem(),
                     TotalMark = test.TotalMark,
                     TotalTime = (TimeQuiz)test.TotalTime,
                 };
@@ -376,6 +389,40 @@ namespace TracNghiem.Controllers
             catch
             {
                 return RedirectToAction("MyQuizTest");
+            }
+        }
+    
+        [Authorize(Roles = "admin,teacher")]
+        [HttpPost]
+        public ActionResult Edit(QuizTestViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, Message = "Bạn nhập thiếu các trường yêu cầu" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                User u = db.Users.Where(i => i.username == User.Identity.Name).First();
+
+                QuizTest test = new QuizTest
+                {
+                    CreatorID = u.ID,
+                    Creator = u,
+                    CreateDate = DateTime.Now,
+                    LessonId = model.LessonId,
+                    TotalMark = model.TotalMark,
+                    name = model.name,
+                    TotalTime = (int)model.TotalTime,
+                    status = (TestStatusAd)model.status,
+                };
+                foreach (var item in model.quizID)
+                {
+                    Quiz q = db.Quizzes.Find(item);
+                    test.Quiz.Add(q);
+                }
+                db.QuizTests.Add(test);
+                db.SaveChanges();
+                return Json(new { success = true, Message = "Cập nhật bài tập thành công !" }, JsonRequestBehavior.AllowGet);
             }
         }
         /// <summary>
@@ -402,7 +449,7 @@ namespace TracNghiem.Controllers
         /// <param name="name"></param>
         /// <param name="hard"></param>
         /// <returns></returns>
-        public JsonResult SearchQuiz(int subject, string name = null, HardType? hard = null)
+        public JsonResult SearchQuiz(int subject, string name, HardType? hard)
         {
             try
             {
@@ -411,7 +458,7 @@ namespace TracNghiem.Controllers
                 {
                     if (hard.HasValue)
                     {
-                        lst = db.Quizzes.Where(i =>  i.HardType == hard).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.LessonId == subject).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,
@@ -423,7 +470,7 @@ namespace TracNghiem.Controllers
                 {
                     if (hard.HasValue)
                     {
-                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.name.Contains(name)).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.name.Contains(name) && i.LessonId == subject).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,
@@ -432,7 +479,7 @@ namespace TracNghiem.Controllers
                     }
                     else
                     {
-                        lst = db.Quizzes.Where(i =>  i.name.Contains(name)).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.name.Contains(name) && i.LessonId == subject).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,

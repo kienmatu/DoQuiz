@@ -14,7 +14,7 @@
         <tr>
             <th>ID</th>
             <th>Tên</th>
-            <th>Môn học</th>
+            <th>Bài học</th>
             <th>Thời gian</th>
             <th>Code</th>
             <th>Hành động</th>
@@ -31,7 +31,7 @@
                 @item.QuizTest.name
             </td>
             <td>
-                @item.QuizTest.Subject.name
+                @item.QuizTest.Lesson.Name
             </td>
             <td>
                 @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.FromTime) - @String.Format("{0:dd/MM/yyyy hh:mm tt}", item.ToTime)
@@ -57,7 +57,7 @@
         <tr>
             <th>ID</th>
             <th>Tên</th>
-            <th>Môn học</th>
+            <th>Bài học</th>
             <th>Thời gian</th>
             <th>Code</th>
             <th>Hành động</th>

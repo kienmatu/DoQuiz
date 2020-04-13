@@ -1,7 +1,7 @@
 ﻿@model PagedList.IPagedList<TracNghiem.ViewModel.QuizTestViewModel>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Đề thi của tôi";
+    ViewBag.Title = "bài tập của tôi";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -50,13 +50,13 @@
                 @if (Model.PageNumber > 1)
                 {
                     <h3 class="card-title">
-                        100 đề thi thứ @Model.PageNumber
+                        10 bài tập thứ @Model.PageNumber
                     </h3>
                 }
                 else
                 {
                     <h3 class="card-title">
-                        100 đề thi đầu tiên
+                        10 bài tập đầu tiên
                     </h3>
                 }
             </div>
@@ -83,9 +83,9 @@
                                 <td>
                                     @item.name
                                 </td>
-                                @*<td>
-                                    @item.SubjectName
-                                </td>*@
+                                <td>
+                                    @item.LessonName
+                                </td>
                                 <td>
                                     @item.CreatorName
                                 </td>
@@ -104,7 +104,7 @@
                                         {
                                             <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>
                                             @Html.ActionLink("Sửa", "Edit", new { id = item.TestID }, new { @class = "badge badge-primary" })
-                                            <a onclick="createRoom(@item.TestID,'@item.name')" href="#" class="badge badge-info">Tạo phòng thi</a>
+                                            @*<a onclick="createRoom(@item.TestID,'@item.name')" href="#" class="badge badge-info">Tạo phòng thi</a>*@
                                         }
                                     }
 
@@ -164,7 +164,7 @@
     </div>
 </div>
 <!-- The create room Modal -->
-<div class="modal fade" id="roomModal">
+@*<div class="modal fade" id="roomModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -199,7 +199,7 @@
 
         </div>
     </div>
-</div>
+</div>*@
 <script src="~/Content/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="~/Content/AdminLTE/plugins/datatables/dataTables.bootstrap4.min.js"></script>
 <!--Load Script and Stylesheet -->
@@ -269,13 +269,13 @@
             error: function () { alert('An error occured'); }
         });
     }
-    function createRoom(QtestID, testName) {
-        testID = QtestID;
-        let modal = $('#roomModal');
-        modal.find('#testname').text(testName);
-        modal.find('#roomCode').val(RandomCode(7));
-        modal.modal('show');
-    }
+    //function createRoom(QtestID, testName) {
+    //    testID = QtestID;
+    //    let modal = $('#roomModal');
+    //    modal.find('#testname').text(testName);
+    //    modal.find('#roomCode').val(RandomCode(7));
+    //    modal.modal('show');
+    //}
     function RandomCode(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

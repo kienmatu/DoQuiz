@@ -185,7 +185,7 @@
                     </div>
                     <div class="card-body">
                         <p class="info" id="quizname">Demo name</p>
-                        <p class="info" id="subject">Demo subject</p>
+                        <p class="info" id="lesson">Demo Lesson</p>
                         <p class="info" id="mark">Demo mark</p>
                         <p class="info" id="time">Demo time</p>
                         <a href="#" id="startBtn" onclick="StartExam()" class="btn btn-danger float-right">Bắt đầu !</a>
@@ -223,7 +223,7 @@
         function Preview(Quiz) {
             let quizinfo = $('#QuizInfo');
             quizinfo.find('#quizname').html('<b>Tên bài thi:</b> ' + Quiz.TestName);
-            quizinfo.find('#mark').html('<b>Môn học:</b> ' + Quiz.SubjectName);
+            quizinfo.find('#mark').html('<b>Môn học:</b> ' + Quiz.LessonName);
             quizinfo.find('#subject').html('<b>Tổng điểm:</b> ' + Quiz.TotalMark);
             quizinfo.find('#time').html('<b>Thời gian (phút):</b> '+Quiz.TotalTime)
             quizinfo.removeClass('hidden');

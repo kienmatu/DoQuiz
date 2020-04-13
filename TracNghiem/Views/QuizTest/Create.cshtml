@@ -82,13 +82,13 @@ button {
                     @Html.ValidationMessageFor(model => model.TotalTime, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @*<div class="col-md-3">
+            <div class="col-md-3">
                 <div class="form-group">
-                    <label for="Quiz">Môn học:</label><br />
-                    @Html.DropDownListFor(m => m.SubjectID, Model.Subject, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+                    <label for="Quiz">Bài học:</label><br />
+                    @Html.DropDownListFor(m => m.LessonId, Model.Lessons, new { @class = "form-control" , @id="SubjectID" })
+                    @Html.ValidationMessageFor(model => model.LessonId, "", new { @class = "text-danger" })
                 </div>
-            </div>*@
+            </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="Quiz">Trạng thái:</label><br />
@@ -200,6 +200,7 @@ button {
         var subject = $('#SubjectID').val();
         var sname = $('#name_search').val();
         var hardtype = $('#HardTypeChoose').val();
+        
         $.ajax({
             type: "POST",
             url: '/QuizTest/SearchQuiz',
@@ -277,6 +278,7 @@ button {
     
     $('#createTest').submit(function (e) {
         e.preventDefault();
+        debugger
         var tempdata = $(this).serializeFormJSON();
         var quizID = pick.pickList('getSelectedID').quizID;
         var data = { ...tempdata, quizID  };

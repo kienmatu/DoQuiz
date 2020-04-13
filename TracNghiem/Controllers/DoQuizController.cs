@@ -97,7 +97,7 @@ namespace TracNghiem.Controllers
             }
             return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
         }
-        [Authorize(Roles = "student")]
+        
         public ViewResult OpenRoom()
         {
             return View();

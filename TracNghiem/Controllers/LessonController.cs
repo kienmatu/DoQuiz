@@ -239,7 +239,7 @@ namespace TracNghiem.Controllers
                     Time = model.Time,
                     File = model.File,
                     Description = model.Description,
-                    YoutubeLink = model.YoutubeLink
+                    YoutubeLink = model.YoutubeLink,
                 };
                 return View(lesson);
             }

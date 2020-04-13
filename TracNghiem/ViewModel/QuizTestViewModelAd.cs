@@ -21,7 +21,7 @@ namespace TracNghiem.ViewModel
         [Required]
         [StringLength(100)]
         public string name { get; set; }
-
+        public string LessonName { get; set; }
         public int CreatorID { get; set; }
 
         public string  CreatorName { get; set; }

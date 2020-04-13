@@ -28,7 +28,6 @@ namespace TracNghiem.ViewModel
 
         public virtual User Creator { get; set; }
 
-        public virtual string SubjectName { get; set; }
         public string CreatorName { get; set; }
         public DateTime CreateDate { get; set; }
 
@@ -39,7 +38,7 @@ namespace TracNghiem.ViewModel
         public IEnumerable<SelectListItem> Lessons { get; set; }
         public HardType HardTypeChoose { get; set; }
 
-        [LimitCount(10,200,ErrorMessage = "Số câu hỏi từ 10 tới 200")]
+        [LimitCount(1,20,ErrorMessage = "Số câu hỏi từ 1 tới 20")]
         public List<int> quizID { get; set; }
     }
 }
