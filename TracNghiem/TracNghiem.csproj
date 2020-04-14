@@ -193,6 +193,10 @@
     <Compile Include="Migrations\202004121320352_editLesson.Designer.cs">
       <DependentUpon>202004121320352_editLesson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004140804423_fixdatetime.cs" />
+    <Compile Include="Migrations\202004140804423_fixdatetime.Designer.cs">
+      <DependentUpon>202004140804423_fixdatetime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
@@ -1240,6 +1244,7 @@
     <Content Include="Views\Lesson\AllLesson.cshtml" />
     <Content Include="Views\Lesson\AllMyLesson.cshtml" />
     <Content Include="Views\Lesson\LessonDetail.cshtml" />
+    <Content Include="Views\Lesson\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1290,6 +1295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004121320352_editLesson.resx">
       <DependentUpon>202004121320352_editLesson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004140804423_fixdatetime.resx">
+      <DependentUpon>202004140804423_fixdatetime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

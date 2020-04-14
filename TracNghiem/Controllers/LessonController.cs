@@ -254,21 +254,15 @@ namespace TracNghiem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = db.Users.Where(t => t.username == User.Identity.Name).First();
                 Lesson l = db.Lessons.Where(x => x.ID == model.Id).SingleOrDefault();
-                if (l != null)
-                {
-                    l.Name = model.Name;
-                    l.Time = model.Time;
-                    l.Description = model.Description;
-                    l.File = model.File;
-                    l.YoutubeLink = model.YoutubeLink;
-                    l.ModifiedBy = user.fullname;
-                    l.ModifiedDate = DateTime.Now;
-                    db.Lessons.Add(l);
-                    db.SaveChanges();
-                    return RedirectToAction("AllLesson");
-                }
+                l.Name = model.Name;
+                l.Time = model.Time;
+                l.Description = model.Description;
+                l.File = model.File;
+                l.YoutubeLink = model.YoutubeLink;
+                l.CreatedDate = DateTime.Now;
+                db.SaveChanges();
+                return RedirectToAction("AllLesson");
             }
             return View(model);
         }
@@ -283,7 +277,6 @@ namespace TracNghiem.Controllers
                     Id = lesson.ID,
                     Name = lesson.Name,
                     File = lesson.File,
-
                     YoutubeLink = lesson.YoutubeLink,
                     Description = lesson.Description
                 };
@@ -304,6 +297,20 @@ namespace TracNghiem.Controllers
                 string prefix = status == LessonStatus.Open ? "Mở" : "Đóng";
                 db.SaveChanges();
                 return Json(new { Message = prefix + " \"" + title + "\" thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [Authorize(Roles ="admin,teacher")]
+        public JsonResult DeleteLesson(int id, string title)
+        {
+            var lesson = db.Lessons.Find(id);
+            string prefix = lesson.Name;
+            if(lesson != null)
+            {
+                db.Lessons.Remove(lesson);
+                db.SaveChanges();
+                return Json(new { Message = prefix + " \"" + title + "\"xóa thành công" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
         }

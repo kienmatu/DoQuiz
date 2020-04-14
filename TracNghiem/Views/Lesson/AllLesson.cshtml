@@ -103,8 +103,7 @@
                                     if (User.Identity.Name == item.CreatedBy || User.IsInRole("admin"))
                                     {
                                         @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, new { @class = "badge badge-primary" })
-                                        <a onclick="deleteConfirm(@item.Name,'@item.Name')" href="#" class="badge badge-danger">Xóa</a>
-
+                                        <a onclick="deleteConfirm(@item.Id,'@item.Name')" href="#" class="badge badge-danger">Xóa</a>
                                     }
                                 }
 
@@ -147,7 +146,7 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Bạn có muốn xóa bài học ?</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="submit" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
@@ -174,18 +173,18 @@ $(function () {
 var delmodal = $('#deleteModal');
 var idx;
 var deleteConfirm = function (id, title) {
+    debugger
     idx = id;
     delmodal.find('.modal-body').text(title);
     delmodal.modal('show');
-
-}
+};
 $('#deleteBtn').click(function () {
+    debugger
     delmodal.modal('hide');
     $.ajax({
         type: "POST",
-        url: '/Lesson/DeleteLesson',
+        url: '/Lesson/DeleteLesson/' + idx,
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({ id: idx }),
         dataType: "json",
         success: function (recData) {
             var notify = $.notify('<strong>Thành công</strong><br/>' + recData.Message + '<br />', {

@@ -26,7 +26,6 @@ namespace TracNghiem.Models
         [Required]
         public int CreatorID { get; set; }
         public virtual User Creator { get; set; }
-        [Column(TypeName = "datetime2")]
         public DateTime CreateDate { get; set; }
         [StringLength(500)]
         [Required]

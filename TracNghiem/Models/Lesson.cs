@@ -14,6 +14,7 @@ namespace TracNghiem.Models
         {
             QuizTests = new HashSet<QuizTest>();
             Quizzes = new HashSet<Quiz>();
+            CreatedDate = DateTime.Now;
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -36,11 +37,9 @@ namespace TracNghiem.Models
         [MaxLength(256)]
         public string Description { get; set; }
         public string CreatedBy { get; set; }
-        [Column(TypeName = "datetime2")]
+
         public DateTime CreatedDate { get; set; }
-        public string ModifiedBy { get; set; }
-        [Column(TypeName = "datetime2")]
-        public DateTime ModifiedDate { get; set; }
+
         public LessonStatus Status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Quiz> Quizzes { get; set; }

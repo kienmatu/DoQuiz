@@ -15,6 +15,7 @@ namespace TracNghiem.Models
             Quizzes = new HashSet<Quiz>();
             QuizTests = new HashSet<QuizTest>();
             Lessons = new HashSet<Lesson>();
+            register_date = DateTime.Now;
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

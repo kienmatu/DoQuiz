@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TracNghiem.Common;
 using TracNghiem.Models;
 using TracNghiem.ViewModel;
 
@@ -372,7 +373,7 @@ namespace TracNghiem.Controllers
             {
                 QuizViewModel model = new QuizViewModel
                 {
-                    LessonId = q.LessonId,
+                    Lessons = Helper.getLessonItem(),
                     answerD = q.answerD,
                     answerA = q.answerA,
                     status = (QuizStatus)q.status,

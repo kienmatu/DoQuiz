@@ -1,0 +1,50 @@
+﻿@model TracNghiem.ViewModel.LessonViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("Edit", "Lesson", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container-fluid" style="margin-top:15px;padding-top:15px;">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label for="Lesson">Tiêu đề bài học:</label><br />
+            @Html.TextAreaFor(m => m.Name, new { @class = "form-control", @placeholder = "Tiêu đề bài học" })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="Lesson">Thời lượng bài học(phút):</label><br />
+            @Html.TextBoxFor(m => m.Time, new { @class = "form-control", @placeholder = "Thời gian học" })
+            @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="Lesson">Tệp tài liệu đính kèm:</label><br />
+            @Html.EditorFor(model => model.File, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
+            @Html.ValidationMessageFor(model => model.File, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="Lesson">Link Youtube:</label><br />
+            @Html.TextAreaFor(m => m.YoutubeLink, new { @class = "form-control", @placeholder = "Link Youtube" })
+            @Html.ValidationMessageFor(model => model.YoutubeLink, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="Lesson">Nội dung bài học:</label><br />
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Nội dung bài học" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Cập nhật bài học" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

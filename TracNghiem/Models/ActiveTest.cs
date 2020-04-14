@@ -33,10 +33,8 @@ namespace TracNghiem.Models
         public virtual User Creator { get; set; }
         public virtual QuizTest QuizTest { get; set; }
         [Required]
-        [Column(TypeName = "datetime2")]
         public DateTime FromTime { get; set; }
         [Required]
-        [Column(TypeName = "datetime2")]
         public DateTime ToTime { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
