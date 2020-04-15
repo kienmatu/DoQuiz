@@ -506,10 +506,10 @@ namespace TracNghiem.Controllers
         {
             User u = db.Users.Where(t => t.username == User.Identity.Name).First();
             QuizTest q = db.QuizTests.Find(id);
-            if (q.CreatorID == u.ID || User.IsInRole("admin"))
+            if (q != null || User.IsInRole("admin"))
             {
                 string title = q.name;
-                q.status = TestStatusAd.Deleted;
+                db.QuizTests.Remove(q);
                 db.SaveChanges();
                 return Json(new { Message = "Xóa \"" + title + "\" thành công" }, JsonRequestBehavior.AllowGet);
             }

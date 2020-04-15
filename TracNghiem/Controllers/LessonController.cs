@@ -165,7 +165,6 @@ namespace TracNghiem.Controllers
             int pageIndex = 1;
             pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
             IPagedList<LessonViewModel> lstLesson = null;
-            var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
             lstLesson = db.Lessons.Where(x => x.Status == LessonStatus.Open).OrderBy(x => x.ID).Select(
                 x => new LessonViewModel
                 {
@@ -199,7 +198,7 @@ namespace TracNghiem.Controllers
                     if (file.ContentLength > 0 && fileExt == ".PDF")
                     {
                         var fileName = Path.GetFileName(file.FileName);
-                        model.File = Path.Combine(Server.MapPath("~/UploadedFiles"), fileName);
+                        model.File = Path.Combine(Server.MapPath("~/UploadedFiles/web"), fileName);                        
                         file.SaveAs(model.File);
                         var user = db.Users.Where(t => t.username == User.Identity.Name).First();
                         Lesson l = new Lesson()
@@ -270,13 +269,14 @@ namespace TracNghiem.Controllers
         public ActionResult LessonDetail(int id)
         {
             var lesson = db.Lessons.Where(x => x.ID == id && x.Status == LessonStatus.Open).SingleOrDefault();
+            string[] arr = lesson.File.Split('\\');
             if (lesson != null)
             {
                 LessonViewModel l = new LessonViewModel()
                 {
                     Id = lesson.ID,
                     Name = lesson.Name,
-                    File = lesson.File,
+                    File = arr[arr.Length-1],
                     YoutubeLink = lesson.YoutubeLink,
                     Description = lesson.Description
                 };
@@ -314,5 +314,6 @@ namespace TracNghiem.Controllers
             }
             return Json(new { Message = "Hack thành công, chúc mừng :>" }, JsonRequestBehavior.AllowGet);
         }
+
     }
 }
