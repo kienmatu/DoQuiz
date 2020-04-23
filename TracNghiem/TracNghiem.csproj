@@ -197,6 +197,18 @@
     <Compile Include="Migrations\202004140804423_fixdatetime.Designer.cs">
       <DependentUpon>202004140804423_fixdatetime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004161023498_editlesson2.cs" />
+    <Compile Include="Migrations\202004161023498_editlesson2.Designer.cs">
+      <DependentUpon>202004161023498_editlesson2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004231447399_editactivetest.cs" />
+    <Compile Include="Migrations\202004231447399_editactivetest.Designer.cs">
+      <DependentUpon>202004231447399_editactivetest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004231458019_editactivetest2.cs" />
+    <Compile Include="Migrations\202004231458019_editactivetest2.Designer.cs">
+      <DependentUpon>202004231458019_editactivetest2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
     <Compile Include="Models\CommonEnum\ModelEnum.cs" />
@@ -1346,7 +1358,7 @@
     <Content Include="Views\Lesson\Index.cshtml" />
     <Content Include="Views\Lesson\Create.cshtml" />
     <Content Include="Views\Lesson\AllLesson.cshtml" />
-    <Content Include="Views\Lesson\AllMyLesson.cshtml" />
+    <Content Include="Views\Lesson\LessonActive.cshtml" />
     <Content Include="Views\Lesson\LessonDetail.cshtml" />
     <Content Include="Views\Lesson\Edit.cshtml" />
     <Content Include="UploadedFiles\build\pdf.js.map" />
@@ -1623,6 +1635,7 @@
     <Content Include="UploadedFiles\web\locale\zh-CN\viewer.properties" />
     <Content Include="UploadedFiles\web\locale\zh-TW\viewer.properties" />
     <Content Include="UploadedFiles\web\viewer.js.map" />
+    <Content Include="Views\Lesson\MyLesson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1675,6 +1688,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004140804423_fixdatetime.resx">
       <DependentUpon>202004140804423_fixdatetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004161023498_editlesson2.resx">
+      <DependentUpon>202004161023498_editlesson2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004231447399_editactivetest.resx">
+      <DependentUpon>202004231447399_editactivetest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004231458019_editactivetest2.resx">
+      <DependentUpon>202004231458019_editactivetest2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

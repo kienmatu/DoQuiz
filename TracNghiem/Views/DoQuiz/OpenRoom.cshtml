@@ -164,11 +164,11 @@
                     <div class="card-body">
                         <h5 class="card-title text-center text-white">VÀO PHÒNG THI</h5>
                         <div class="form-label-group">
-                            <label for="Username" class="text-white font-weight-bold">Mã Phòng Thi:</label><br />
-                            <input class="form-control" type="text" id="roomCode" value="WNvjyzS" />
+                            <label for="Username" class="text-white font-weight-bold">Bài tập:</label><br />
+                            <input class="form-control" type="text" id="roomCode" value="1" />
                             <br />
                         </div>
-                        <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="EnterRoom()">Mở Phòng Thi</button>
+                        <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="EnterRoom()">Mở bài tập</button>
                         <a class="btn btn-lg btn-block text-uppercase btn-info" href="/Admin" >QUAY LẠI</a>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
             <div class="col-md-4 mt-5" id="centerPanel">
                 <div class="card radius transparent position-fixed mr-3">
                     <div class="card-header">
-                        <h5 class="card-title">Thông tin bài thi</h5>
+                        <h5 class="card-title">Thông tin bài tập</h5>
                     </div>
                     <div class="card-body">
                         <p class="info" id="quizname">Demo name</p>
@@ -204,7 +204,7 @@
     </div>
 
     <script>
-        var roomCode = '';
+        var roomCode = 2;
         var Quiz = {};
         const quizContainer = document.getElementById('quiz');
         function JoinRoom() {
@@ -231,7 +231,7 @@
         }
         function OpenRoom(code) {
             $('#overlay').fadeIn();
-            axios.post('/DoQuiz/EnterRoom', { roomCode: code }).then(resp => {
+            axios.post('/DoQuiz/EnterRoom/'+code).then(resp => {
 
                 $('#overlay').fadeOut();
                 let data = resp.data;
@@ -248,7 +248,7 @@
         function StartExam()
         {
             $('#overlay').fadeIn();
-            axios.post('/DoQuiz/StartExam', { roomCode: roomCode }).then(resp => {
+            axios.post('/DoQuiz/StartExam/2').then(resp => {
                 $('#overlay').fadeOut();
                 let data = resp.data;
                 if (data.Success) {

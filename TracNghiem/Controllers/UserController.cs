@@ -61,6 +61,7 @@ namespace TracNghiem.Controllers
                 if (u.username != "admin")
                 {
                     u.status = status;
+                    db.SaveChanges();
                     return Json(new { Message = prefix + " \"" + u.username + "\"" }, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new { Message = "Không được cấm admin" }, JsonRequestBehavior.AllowGet);

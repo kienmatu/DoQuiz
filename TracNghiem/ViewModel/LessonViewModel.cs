@@ -18,6 +18,8 @@ namespace TracNghiem.ViewModel
         [Required]
         public string File { get; set; }
         [Required]
+        public int OrderId { get; set; }
+        [Required]
         public string YoutubeLink { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

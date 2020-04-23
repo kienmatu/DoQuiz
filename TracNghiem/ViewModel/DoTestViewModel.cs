@@ -10,7 +10,7 @@ namespace TracNghiem.ViewModel
     {
         public int RoomID { get; set; }
         public string TestName { get; set; }
-        public string RoomCode { get; set; }
+        public int LessonId { get; set; }
         public int TotalTime { get; set; }
         public int TotalMark { get; set; }
         public IEnumerable<ShowQuiz> QuizList { get; set; }

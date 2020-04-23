@@ -34,6 +34,8 @@ namespace TracNghiem.Models
         [Required]
         public string YoutubeLink { get; set; }
         [Required]
+        public int OrderId { get; set; }
+        [Required]
         [MaxLength(256)]
         public string Description { get; set; }
         public string CreatedBy { get; set; }

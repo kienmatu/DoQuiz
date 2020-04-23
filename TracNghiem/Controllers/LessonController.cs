@@ -18,6 +18,7 @@ namespace TracNghiem.Controllers
         {
             return View();
         }
+        //All lesson
         [Authorize(Roles = "admin,teacher")]
         [HttpGet]
         public ViewResult AllLesson(string sortOrder, string CurrentSort, int? page, string titleStr)
@@ -35,11 +36,13 @@ namespace TracNghiem.Controllers
                 switch (sortOrder)
                 {
                     case "title":
-                        lstLesson = db.Lessons.OrderBy(e => e.Name).Select(q =>
+                        lstLesson = db.Lessons.Where(x=>x.Status != LessonStatus.IsDelete).OrderBy(e => e.Name).Select(q =>
                           new LessonViewModel
                           {
                               Name = q.Name,
                               Id = q.ID,
+                              OrderId = q.OrderId,
+                              Status = q.Status,
                               Time = q.Time,
                               File = q.File,
                               CreatedBy = q.CreatedBy,
@@ -48,11 +51,13 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     case "createdate":
-                        lstLesson = db.Lessons.OrderBy(e => e.CreatedDate).Select(q =>
+                        lstLesson = db.Lessons.Where(x=>x.Status!= LessonStatus.IsDelete).OrderBy(e => e.CreatedDate).Select(q =>
                         new LessonViewModel
                         {
                             Name = q.Name,
                             Id = q.ID,
+                            OrderId = q.OrderId,
+                            Status = q.Status,
                             Time = q.Time,
                             File = q.File,
                             CreatedBy = q.CreatedBy,
@@ -61,11 +66,13 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     default:
-                        lstLesson = db.Lessons.OrderBy(e => e.Name).Select(q =>
+                        lstLesson = db.Lessons.Where(x=>x.Status!=LessonStatus.IsDelete).OrderBy(e => e.Name).Select(q =>
                         new LessonViewModel
                         {
                             Name = q.Name,
                             Id = q.ID,
+                            OrderId = q.OrderId,
+                            Status = q.Status,
                             Time = q.Time,
                             File = q.File,
                             CreatedBy = q.CreatedBy,
@@ -84,11 +91,13 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "tiêu đề";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderBy(e => e.Name).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete).OrderBy(e => e.Name).Select(q =>
                            new LessonViewModel
                            {
                                Name = q.Name,
                                Id = q.ID,
+                               OrderId = q.OrderId,
+                               Status = q.Status,
                                Time = q.Time,
                                File = q.File,
                                CreatedBy = q.CreatedBy,
@@ -98,12 +107,14 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderByDescending(e => e.Name).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete).OrderByDescending(e => e.Name).Select(q =>
                             new LessonViewModel
                             {
                                 Name = q.Name,
                                 Id = q.ID,
                                 Time = q.Time,
+                                OrderId = q.OrderId,
+                                Status = q.Status,
                                 CreatedBy = q.CreatedBy,
                                 File = q.File,
                                 CreatedDate = q.CreatedDate
@@ -115,13 +126,15 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "ngày tạo";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderBy(e => e.CreatedDate).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete).OrderBy(e => e.CreatedDate).Select(q =>
                             new LessonViewModel
                             {
                                 Name = q.Name,
                                 Id = q.ID,
                                 Time = q.Time,
+                                OrderId = q.OrderId,
                                 File = q.File,
+                                Status = q.Status,
                                 CreatedBy = q.CreatedBy,
                                 CreatedDate = q.CreatedDate
                             }
@@ -129,13 +142,15 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderByDescending(e => e.CreatedDate).Select(q =>
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete).OrderByDescending(e => e.CreatedDate).Select(q =>
                             new LessonViewModel
                             {
                                 Name = q.Name,
                                 Id = q.ID,
                                 Time = q.Time,
+                                Status = q.Status,
                                 File = q.File,
+                                OrderId = q.OrderId,
                                 CreatedBy = q.CreatedBy,
                                 CreatedDate = q.CreatedDate
                             }
@@ -143,12 +158,14 @@ namespace TracNghiem.Controllers
                         }
                         break;
                     default:
-                        lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr)).OrderBy(e => e.Name).Select(q =>
+                        lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete).OrderBy(e => e.Name).Select(q =>
                         new LessonViewModel
                         {
                             Name = q.Name,
                             Id = q.ID,
                             Time = q.Time,
+                            Status = q.Status,
+                            OrderId = q.OrderId,
                             CreatedBy = q.CreatedBy,
                             File = q.File,
                             CreatedDate = q.CreatedDate
@@ -159,7 +176,164 @@ namespace TracNghiem.Controllers
             }
             return View(lstLesson);
         }
-        public ActionResult AllMyLesson(int? page)
+        [HttpGet]
+        public ActionResult MyLesson(string sortOrder, string CurrentSort, int? page, string titleStr)
+        {
+            int pageSize = 10;
+            int pageIndex = 1;
+            ViewBag.Sort = "tăng dần";
+            ViewBag.CurrentSort = sortOrder;
+            sortOrder = String.IsNullOrEmpty(sortOrder) ? "Title" : sortOrder;
+            pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            IPagedList<LessonViewModel> lstLesson = null;
+            var id = db.Users.Where(e => e.username == User.Identity.Name).First().ID;
+            if (String.IsNullOrWhiteSpace(titleStr))
+            {
+                switch (sortOrder)
+                {
+                    case "title":
+                        lstLesson = db.Lessons.Where(x => x.Status != LessonStatus.IsDelete && x.CreatorID == id).OrderBy(e => e.Name).Select(q =>
+                            new LessonViewModel
+                            {
+                                Name = q.Name,
+                                Id = q.ID,
+                                OrderId = q.OrderId,
+                                Status = q.Status,
+                                Time = q.Time,
+                                File = q.File,
+                                CreatedBy = q.CreatedBy,
+                                CreatedDate = q.CreatedDate
+                            }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    case "createdate":
+                        lstLesson = db.Lessons.Where(x => x.Status != LessonStatus.IsDelete && x.CreatorID == id).OrderBy(e => e.CreatedDate).Select(q =>
+                           new LessonViewModel
+                           {
+                               Name = q.Name,
+                               Id = q.ID,
+                               OrderId = q.OrderId,
+                               Status = q.Status,
+                               Time = q.Time,
+                               File = q.File,
+                               CreatedBy = q.CreatedBy,
+                               CreatedDate = q.CreatedDate
+                           }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                    default:
+                        lstLesson = db.Lessons.Where(x => x.Status != LessonStatus.IsDelete && x.CreatorID == id).OrderBy(e => e.Name).Select(q =>
+                            new LessonViewModel
+                            {
+                                Name = q.Name,
+                                Id = q.ID,
+                                OrderId = q.OrderId,
+                                Status = q.Status,
+                                Time = q.Time,
+                                File = q.File,
+                                CreatedBy = q.CreatedBy,
+                                CreatedDate = q.CreatedDate
+                            }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            else
+            {
+                ViewBag.titleStr = titleStr;
+                switch (sortOrder)
+                {
+                    case "title":
+                        ViewBag.sortname = "tiêu đề";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete && t.CreatorID == id).OrderBy(e => e.Name).Select(q =>
+                           new LessonViewModel
+                           {
+                               Name = q.Name,
+                               Id = q.ID,
+                               OrderId = q.OrderId,
+                               Status = q.Status,
+                               Time = q.Time,
+                               File = q.File,
+                               CreatedBy = q.CreatedBy,
+                               CreatedDate = q.CreatedDate
+                           }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete && t.CreatorID == id).OrderByDescending(e => e.Name).Select(q =>
+                            new LessonViewModel
+                            {
+                                Name = q.Name,
+                                Id = q.ID,
+                                Time = q.Time,
+                                OrderId = q.OrderId,
+                                Status = q.Status,
+                                CreatedBy = q.CreatedBy,
+                                File = q.File,
+                                CreatedDate = q.CreatedDate
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    case "createdate":
+                        ViewBag.sortname = "ngày tạo";
+                        if (sortOrder.Equals(CurrentSort))
+                        {
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete && t.CreatorID == id).OrderBy(e => e.CreatedDate).Select(q =>
+                            new LessonViewModel
+                            {
+                                Name = q.Name,
+                                Id = q.ID,
+                                Time = q.Time,
+                                OrderId = q.OrderId,
+                                File = q.File,
+                                Status = q.Status,
+                                CreatedBy = q.CreatedBy,
+                                CreatedDate = q.CreatedDate
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        else
+                        {
+                            lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete && t.CreatorID == id).OrderByDescending(e => e.CreatedDate).Select(q =>
+                            new LessonViewModel
+                            {
+                                Name = q.Name,
+                                Id = q.ID,
+                                Time = q.Time,
+                                Status = q.Status,
+                                File = q.File,
+                                OrderId = q.OrderId,
+                                CreatedBy = q.CreatedBy,
+                                CreatedDate = q.CreatedDate
+                            }
+                            ).ToPagedList(pageIndex, pageSize);
+                        }
+                        break;
+                    default:
+                        lstLesson = db.Lessons.Where(t => t.Name.Contains(titleStr) && t.Status != LessonStatus.IsDelete && t.CreatorID == id).OrderBy(e => e.Name).Select(q =>
+                        new LessonViewModel
+                        {
+                            Name = q.Name,
+                            Id = q.ID,
+                            Time = q.Time,
+                            Status = q.Status,
+                            OrderId = q.OrderId,
+                            CreatedBy = q.CreatedBy,
+                            File = q.File,
+                            CreatedDate = q.CreatedDate
+                        }
+                        ).ToPagedList(pageIndex, pageSize);
+                        break;
+                }
+            }
+            return View(lstLesson);
+        }
+        //Lesson is Active
+        public ActionResult LessonActive(int? page)
         {
             int pageSize = 6;
             int pageIndex = 1;
@@ -171,7 +345,9 @@ namespace TracNghiem.Controllers
                     Id = x.ID,
                     Name = x.Name,
                     Time = x.Time,
+                    Status = x.Status,
                     File = x.File,
+                    OrderId = x.OrderId,
                     Description = x.Description,
                     CreatedBy = x.CreatedBy,
                     YoutubeLink = x.YoutubeLink
@@ -198,7 +374,7 @@ namespace TracNghiem.Controllers
                     if (file.ContentLength > 0 && fileExt == ".PDF")
                     {
                         var fileName = Path.GetFileName(file.FileName);
-                        model.File = Path.Combine(Server.MapPath("~/UploadedFiles/web"), fileName);                        
+                        model.File = Path.Combine(Server.MapPath("~/UploadedFiles/web"), fileName);     
                         file.SaveAs(model.File);
                         var user = db.Users.Where(t => t.username == User.Identity.Name).First();
                         Lesson l = new Lesson()
@@ -209,6 +385,7 @@ namespace TracNghiem.Controllers
                             File = model.File,
                             YoutubeLink = model.YoutubeLink,
                             CreatedDate = DateTime.Now,
+                            OrderId = model.OrderId,
                             Description = model.Description,
                             CreatedBy = user.fullname,
                             Status = LessonStatus.Close
@@ -230,6 +407,7 @@ namespace TracNghiem.Controllers
         public ActionResult Edit(int id)
         {
             var model = db.Lessons.Where(x => x.ID == id).SingleOrDefault();
+            var user = db.Users.Where(t => t.username == User.Identity.Name).First();
             if (model != null)
             {
                 LessonViewModel lesson = new LessonViewModel()
@@ -253,15 +431,28 @@ namespace TracNghiem.Controllers
         {
             if (ModelState.IsValid)
             {
-                Lesson l = db.Lessons.Where(x => x.ID == model.Id).SingleOrDefault();
-                l.Name = model.Name;
-                l.Time = model.Time;
-                l.Description = model.Description;
-                l.File = model.File;
-                l.YoutubeLink = model.YoutubeLink;
-                l.CreatedDate = DateTime.Now;
-                db.SaveChanges();
-                return RedirectToAction("AllLesson");
+                HttpPostedFileBase file = Request.Files[0];
+                string fileExt = Path.GetExtension(file.FileName).ToUpper();
+                if (file.ContentLength > 0 && fileExt == ".PDF")
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    model.File = Path.Combine(Server.MapPath("~/UploadedFiles/web"), fileName);
+                    file.SaveAs(model.File);
+                    Lesson l = db.Lessons.Where(x => x.ID == model.Id).SingleOrDefault();
+                    l.Name = model.Name;
+                    l.Time = model.Time;
+                    l.Description = model.Description;
+                    if(l.File != model.File)
+                    {
+                        System.IO.File.Delete(l.File);
+                        l.File = model.File;
+                    }
+                    l.File = l.File;
+                    l.YoutubeLink = model.YoutubeLink;
+                    l.CreatedDate = DateTime.Now;
+                    db.SaveChanges();
+                    return RedirectToAction("AllLesson");
+                }               
             }
             return View(model);
         }
@@ -275,6 +466,7 @@ namespace TracNghiem.Controllers
                 LessonViewModel l = new LessonViewModel()
                 {
                     Id = lesson.ID,
+                    OrderId = lesson.OrderId,
                     Name = lesson.Name,
                     File = arr[arr.Length-1],
                     YoutubeLink = lesson.YoutubeLink,
@@ -308,7 +500,7 @@ namespace TracNghiem.Controllers
             string prefix = lesson.Name;
             if(lesson != null)
             {
-                db.Lessons.Remove(lesson);
+                lesson.Status = LessonStatus.IsDelete;
                 db.SaveChanges();
                 return Json(new { Message = prefix + " \"" + title + "\"xóa thành công" }, JsonRequestBehavior.AllowGet);
             }

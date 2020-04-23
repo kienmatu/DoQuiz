@@ -32,20 +32,21 @@ namespace TracNghiem.Controllers
         /// <param name="FromTime"></param>
         /// <param name="ToTime"></param>
         /// <returns></returns>
-        public JsonResult CreateActiveTest(int QuizTestID,string Code,DateTime FromTime,DateTime ToTime)
+        public JsonResult CreateActiveTest(int QuizTestID)
         {
-            bool ExistCode = db.ActiveTests.Any(a => a.Code == Code);
-            if(ExistCode)
-            {
-                return Json(new { Message = "Trùng mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
-            }
+            //,string Code,DateTime FromTime,DateTime ToTime
+            //bool ExistCode = db.ActiveTests.Any(a => a.Code == Code);
+            //if(ExistCode)
+            //{
+                //return Json(new { Message = "Trùng mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
+            //}
             ActiveTest test = new ActiveTest
             {
                 CreatorID = (int)Session["UserID"],
-                Code = Code,
+                //Code = Code,
                 QuizTestID = QuizTestID,
-                FromTime = FromTime,
-                ToTime = ToTime,
+                //FromTime = FromTime,
+                //ToTime = ToTime,
                 IsActive = true,
             };
             db.ActiveTests.Add(test);
@@ -57,45 +58,41 @@ namespace TracNghiem.Controllers
         /// </summary>
         /// <param name="roomCode"></param>
         /// <returns></returns>
-        [Authorize(Roles ="student")]
-        public JsonResult EnterRoom(string roomCode)
+        //[Authorize(Roles ="student")]
+        public JsonResult EnterRoom(int id)
         {
             int UserID = (int)Session["UserID"];
-            bool ExistCode = db.ActiveTests.Any(a => a.Code == roomCode);
-            if (!ExistCode)
-            {
-                return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
-            }
-            ActiveTest test = db.ActiveTests.Where(c => c.Code == roomCode).First();
-            bool alreadyTest = db.QuizResults.Any(c => c.StudentID == UserID && c.ActiveTestID == test.ID);
-            if(alreadyTest)
-            {
-                return Json(new { Message = "Bạn đã thi bài này trước đó", Success = false }, JsonRequestBehavior.AllowGet);
-            }
+            //bool ExistCode = db.ActiveTests.Any(a => a.Code == roomCode);
+            //if (!ExistCode)
+            //{
+            //    return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
+            //}
+            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id).FirstOrDefault();
+            //bool alreadyTest = db.QuizResults.Any(c => c.StudentID == UserID && c.ActiveTestID == test.ID);
+            //if(alreadyTest)
+            //{
+            //    return Json(new { Message = "Bạn đã thi bài này trước đó", Success = false }, JsonRequestBehavior.AllowGet);
+            //}
             //chỉ join vào thời gian cho phép
-            if (test.FromTime <= DateTime.Now && test.ToTime >= DateTime.Now)
+            DoTestViewModel model = new DoTestViewModel
             {
-                DoTestViewModel model = new DoTestViewModel
+                RoomID = test.ID,
+                LessonId = test.QuizTest.LessonId,
+                TestName = test.QuizTest.name,
+                LessonName = test.QuizTest.Lesson.Name,
+                TotalMark = test.QuizTest.TotalMark,
+                TotalTime = test.QuizTest.TotalTime,
+                QuizList = test.QuizTest.Quiz.Select(c => new ShowQuiz
                 {
-                    RoomID = test.ID,
-                    RoomCode = test.Code,
-                    TestName = test.QuizTest.name,
-                    LessonName = test.QuizTest.Lesson.Name,
-                    TotalMark = test.QuizTest.TotalMark,
-                    TotalTime = test.QuizTest.TotalTime,
-                    QuizList = test.QuizTest.Quiz.Select(c => new ShowQuiz
-                    {
-                        answerA = c.answerA,
-                        Content = c.content,
-                        answerC = c.answerC,
-                        answerB = c.answerB,
-                        answerD = c.answerD,
-                        ID = c.QuizID
-                    }),
-                };
-                return Json(new { Quiz = model, Success = true }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
+                    answerA = c.answerA,
+                    Content = c.content,
+                    answerC = c.answerC,
+                    answerB = c.answerB,
+                    answerD = c.answerD,
+                    ID = c.QuizID
+                }),
+            };
+            return Json(new { Quiz = model, Success = true }, JsonRequestBehavior.AllowGet);
         }
         
         public ViewResult OpenRoom()
@@ -107,25 +104,20 @@ namespace TracNghiem.Controllers
         /// </summary>
         /// <param name="roomCode"></param>
         /// <returns></returns>
-        public JsonResult StartExam(string roomCode)
+        public JsonResult StartExam(int id)
         {
-            ActiveTest test = db.ActiveTests.Where(c => c.Code == roomCode).First();
-            if(test.ToTime >= DateTime.Now)
+            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id).First();
+            QuizResult result = new QuizResult
             {
-                ///Update score board
-                QuizResult result = new QuizResult
-                {
-                    DoneAt = DateTime.Now,
-                    Score = 0,
-                    Status = DoQuizStatus.Doing,
-                    StudentID = (int)Session["UserID"],
-                    ActiveTestID = test.ID,
-                };
-                db.QuizResults.Add(result);
-                db.SaveChanges();
-                return Json(new { Message = "Start doing exam", Success = true }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { Message = "Sai mã phòng thi hoặc hết hạn", Success = false }, JsonRequestBehavior.AllowGet);
+                DoneAt = DateTime.Now,
+                Score = 0,
+                Status = DoQuizStatus.Doing,
+                StudentID = (int)Session["UserID"],
+                ActiveTestID = test.ID,
+            };
+            db.QuizResults.Add(result);
+            db.SaveChanges();
+            return Json(new { Message = "Start doing exam", Success = true }, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// Nộp bài thi
@@ -134,9 +126,9 @@ namespace TracNghiem.Controllers
         /// <param name="answerList"></param>
         /// <returns></returns>
         [Authorize(Roles = "student")]
-        public JsonResult SubmitExam(string roomCode,List<SubmitExamViewModel> answerList)
+        public JsonResult SubmitExam(int id,List<SubmitExamViewModel> answerList)
         {
-            ActiveTest test = db.ActiveTests.Where(c => c.Code == roomCode).FirstOrDefault();
+            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id).FirstOrDefault();
             List<Quiz> quiz = test.QuizTest.Quiz.ToList();
             double score = 0;
             double trueAnswer = 0;

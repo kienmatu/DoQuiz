@@ -428,7 +428,7 @@ namespace TracNghiem.Controllers
             if (q !=null || User.IsInRole("admin"))
             {
                 string title = q.name;
-                db.Quizzes.Remove(q);
+                q.status = QuizStatusAd.Deleted;
                 db.SaveChanges();
                 return Json(new { Message =  "Xóa \"" + title + "\" thành công" }, JsonRequestBehavior.AllowGet);
             }

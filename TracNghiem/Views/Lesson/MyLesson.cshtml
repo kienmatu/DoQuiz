@@ -1,7 +1,7 @@
-﻿@model PagedList.IPagedList<TracNghiem.ViewModel.QuizViewModelAd>
+﻿@model PagedList.IPagedList<TracNghiem.ViewModel.LessonViewModel>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Kho câu hỏi - Admin";
+    ViewBag.Title = "Bài học của tôi";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <link href="~/Content/AdminLTE/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
@@ -18,11 +18,11 @@
                         <div>
                             <label style="display:inline-block;font-weight:normal">Sắp xếp theo <b>@ViewBag.sortname</b> @ViewBag.Sort</label>
                         </div>
-                        @Html.ActionLink("Tiêu đề", "MyQuiz", new { sortOrder = "title", CurrentSort = ViewBag.CurrentSort, titleStr = ViewBag.titleStr }) |
-                        @Html.ActionLink("Ngày tạo", "MyQuiz", new { sortOrder = "createdate", CurrentSort = ViewBag.CurrentSort, titleStr = ViewBag.titleStr }) |
+                        @Html.ActionLink("Tiêu đề", "AllLesson", new { sortOrder = "title", CurrentSort = ViewBag.CurrentSort, titleStr = ViewBag.titleStr }) |
+                        @Html.ActionLink("Ngày tạo", "AllLesson", new { sortOrder = "createdate", CurrentSort = ViewBag.CurrentSort, titleStr = ViewBag.titleStr }) |
                     </div>
                     <div class="col-sm-12 col-md-4">
-                        @using (Html.BeginForm("MyQuiz", "Quiz", FormMethod.Get, new { enctype = "multipart/form-data" }))
+                        @using (Html.BeginForm("AllLesson", "Lesson", FormMethod.Get, new { enctype = "multipart/form-data" }))
                         {
                             <label style="display:inline-block;font-weight:normal;">
                                 Tìm theo tiêu đề:
@@ -34,9 +34,10 @@
                         }
 
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-3">
                         <br />
-                        <a href="/Quiz/MyQuiz" style="font-size: 14px;font-weight: normal;padding: .8em;" class="badge badge-danger">RESET bộ lọc</a>
+                        <a href="/Lesson/AllLesson" style="font-size: 14px;font-weight: normal;padding: .8em;" class="badge badge-danger">RESET bộ lọc</a>
+                        <a href="/Lesson/Create" style="font-size: 14px;font-weight: normal;padding: .8em;" class="badge badge-info">Thêm bài học mới</a>
                     </div>
                 </div>
             </div>
@@ -49,13 +50,13 @@
                 @if (Model.PageNumber > 1)
                 {
                     <h3 class="card-title">
-                        100 câu hỏi thứ @Model.PageNumber
+                        10 Bài học thứ @Model.PageNumber
                     </h3>
                 }
                 else
                 {
                     <h3 class="card-title">
-                        100 câu hỏi đầu tiên
+                        10 Bài học đầu tiên
                     </h3>
                 }
             </div>
@@ -63,12 +64,12 @@
                 <table id="lstPost" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Tên câu hỏi</th>
-                            <th>Độ khó</th>
-                            <th>Môn học</th>
+                            <th>Thứ tự</th>
+                            <th>Tên bài học</th>
+                            <th>Thời lượng(phút)</th>
+                            <th>Người tạo</th>
                             <th>Ngày tạo</th>
-                            <th>Hiển thị</th>
+                            <th>Trạng thái</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -77,34 +78,41 @@
                         {
                             <tr>
                                 <td>
-                                    <p>@item.ID</p>
+                                    <p>@item.OrderId</p>
                                 </td>
                                 <td>
-                                    @item.name
+                                    @item.Name
                                 </td>
                                 <td>
-                                    @item.HardType
+                                    @item.Time phút
                                 </td>
                                 <td>
-                                    @item.LessonName
+                                    @item.CreatedBy
                                 </td>
                                 <td>
-                                    @String.Format("{0:dd/MM/yyyy}", item.CreateDate)
+                                    @String.Format("{0:dd/MM/yyyy}", item.CreatedDate)
                                 </td>
                                 <td>
                                     <label class="switch">
-                                        
-                                        <input onchange="changeStt(this)" type="checkbox" id="@item.ID" @(item.status == TracNghiem.Models.QuizStatusAd.Active ? "checked" : "") class="success">
+                                        @{
+                                            if (item.Status == TracNghiem.Models.LessonStatus.Open)
+                                            {
+                                                <input onchange="changeStt(this)" type="checkbox" id="@item.Id" @(item.Status == TracNghiem.Models.LessonStatus.Open ? "checked" : "") class="primary">
+                                            }
+                                            else
+                                            {
+                                                <input onchange="changeStt(this)" type="checkbox" id="@item.Id" @(item.Status == TracNghiem.Models.LessonStatus.Close ? "" : "checked") class="success">
+                                            }
+                                        }
                                         <span class="slider"></span>
                                     </label>
                                 </td>
                                 <td>
                                     @{
-                                        if (User.Identity.Name == item.CreatorName || User.IsInRole("admin"))
+                                        if (User.Identity.Name == item.CreatedBy || User.IsInRole("admin"))
                                         {
-                                            @Html.ActionLink("Sửa", "Edit", new { id = item.ID }, new { @class = "badge badge-primary" })
-                                            <a onclick="deleteConfirm(@item.ID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>
-
+                                            @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, new { @class = "badge badge-primary" })
+                                            <a onclick="deleteConfirm(@item.Id,'@item.Name')" href="#" class="badge badge-danger">Xóa</a>
                                         }
                                     }
 
@@ -114,12 +122,12 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>ID</th>
-                            <th>Tên câu hỏi</th>
-                            <th>Độ khó</th>
-                            <th>Môn học</th>
+                            <th>Thứ tự</th>
+                            <th>Tên bài học</th>
+                            <th>Thời lượng(phút)</th>
+                            <th>Người tạo</th>
                             <th>Ngày tạo</th>
-                            <th>Hiển thị</th>
+                            <th>Trạng thái</th>
                             <th>Hành động</th>
                         </tr>
                     </tfoot>
@@ -135,7 +143,7 @@
     if (Model.PageCount > 1)
     {
         <nav aria-label="Page navigation example" style="text-align:center">
-            @Html.PagedListPager(Model, page => Url.Action("MyQuiz", new { page, sortOrder = Request.Params["sortOrder"], CurrentSort = Request.Params["CurrentSort"], titleStr = ViewBag.titleStr }), new PagedListRenderOptions { UlElementClasses = new string[] { "pagination" }, LiElementClasses = new string[] { "page-item" } })
+            @Html.PagedListPager(Model, page => Url.Action("AllLesson", new { page, sortOrder = Request.Params["sortOrder"], CurrentSort = Request.Params["CurrentSort"], titleStr = ViewBag.titleStr }), new PagedListRenderOptions { UlElementClasses = new string[] { "pagination" }, LiElementClasses = new string[] { "page-item" } })
         </nav>
     }
 }
@@ -146,8 +154,8 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Bạn có muốn xóa câu hỏi ?</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bạn có muốn xóa bài học ?</h4>
+                <button type="submit" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
@@ -174,18 +182,18 @@ $(function () {
 var delmodal = $('#deleteModal');
 var idx;
 var deleteConfirm = function (id, title) {
+    debugger
     idx = id;
     delmodal.find('.modal-body').text(title);
     delmodal.modal('show');
-
-}
+};
 $('#deleteBtn').click(function () {
+    debugger
     delmodal.modal('hide');
     $.ajax({
         type: "POST",
-        url: '/Quiz/DeleteQuiz',
+        url: '/Lesson/DeleteLesson/' + idx,
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({ id: idx }),
         dataType: "json",
         success: function (recData) {
             var notify = $.notify('<strong>Thành công</strong><br/>' + recData.Message + '<br />', {
@@ -210,11 +218,13 @@ var changeStt = function (xthis) {
     var xid = xthis.id;
     var st = xthis.checked ? 1 : 0;
     $.ajax({
+        url: "/Lesson/ChangeStatus",
         type: "POST",
-        url: '/Quiz/ChangeStatus',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({ id: xid, state: st }),
-        dataType: "json",
+        dataType: "JSON",
+        data: {
+            id: xid,
+            status: st
+        },
         success: function (recData) {
             var notify = $.notify('<strong>Thành công</strong><br/>' + recData.Message + '<br />', {
                 type: 'pastel-info',

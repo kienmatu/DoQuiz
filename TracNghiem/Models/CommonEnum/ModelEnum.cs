@@ -158,5 +158,7 @@ namespace TracNghiem.Models
         Open = 1,
         [Display(Name ="Chưa có")]
         Close = 0,
+        [Display(Name ="Đã xóa")]
+        IsDelete = 2,
     }
 }

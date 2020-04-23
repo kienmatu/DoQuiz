@@ -104,7 +104,7 @@
                                         {
                                             <a onclick="deleteConfirm(@item.TestID,'@item.name')" href="#" class="badge badge-danger">Xóa</a>
                                             @Html.ActionLink("Sửa", "Edit", new { id = item.TestID }, new { @class = "badge badge-primary" })
-                                            @*<a onclick="createRoom(@item.TestID,'@item.name')" href="#" class="badge badge-info">Tạo phòng thi</a>*@
+                                            <a onclick="createRoom(@item.TestID,'@item.name')" href="#" class="badge badge-info">Mở bài tập</a>
                                         }
                                     }
 
@@ -164,7 +164,7 @@
     </div>
 </div>
 <!-- The create room Modal -->
-@*<div class="modal fade" id="roomModal">
+<div class="modal fade" id="roomModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -177,7 +177,7 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <p id="testname"></p>
-                <div class="form-group">
+                @*<div class="form-group">
                     <label for="Time">Bắt đầu lúc:</label><br />
                     <input class="form-control dateselect" type="datetime-local" id="fromTime" />
                 </div>
@@ -188,7 +188,7 @@
                 <div class="form-group">
                     <label for="Time">Mã phòng thi (tạo ngẫu nhiên):</label><br />
                     <input class="form-control" type="text" id="roomCode" placeholder="roomCode" />
-                </div>
+                </div>*@
             </div>
 
             <!-- Modal footer -->
@@ -199,7 +199,7 @@
 
         </div>
     </div>
-</div>*@
+</div>
 <script src="~/Content/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="~/Content/AdminLTE/plugins/datatables/dataTables.bootstrap4.min.js"></script>
 <!--Load Script and Stylesheet -->
@@ -269,13 +269,13 @@
             error: function () { alert('An error occured'); }
         });
     }
-    //function createRoom(QtestID, testName) {
-    //    testID = QtestID;
-    //    let modal = $('#roomModal');
-    //    modal.find('#testname').text(testName);
-    //    modal.find('#roomCode').val(RandomCode(7));
-    //    modal.modal('show');
-    //}
+    function createRoom(qtestid, testname) {
+        testID = qtestid;
+        let modal = $('#roomModal');
+        modal.find('#testname').text(testname);
+        //modal.find('#roomCode').val(RandomCode(7));
+        modal.modal('show');
+    }
     function RandomCode(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -287,21 +287,35 @@
     }
 
     function confirmCreateRoom() {
-        let roomCode = $('#roomCode').val();
-        let fromTime = $('#fromTime').val();
-        let toTime = $('#toTime').val();
-        if (roomCode && fromTime && toTime) {
-            if (roomCode.length > 20 || roomCode.length < 4) {
-                swal('Lỗi', 'Mã phòng thi phải từ 4 đến 20 ký tự', 'warning');
-            }
-            else if (new Date() > new Date(toTime)) {
-                swal('Lỗi', 'Ngày kết thúc phải lớn hơn hiện tại', 'warning');
-            }
-            else if (new Date(fromTime) >= new Date(toTime)) {
-                swal('Lỗi', 'Ngày kết thúc phải lớn hơn ngày bắt đầu', 'warning');
-            }
-            else {
-                axios.post('/DoQuiz/CreateActiveTest', { QuizTestID: testID, Code: roomCode, FromTime: fromTime, ToTime: toTime }).then(resp => {
+        //let roomCode = $('#roomCode').val();
+        //let fromTime = $('#fromTime').val();
+        //let toTime = $('#toTime').val();
+        //if (roomCode && fromTime && toTime) {
+        //    if (roomCode.length > 20 || roomCode.length < 4) {
+        //        swal('Lỗi', 'Mã phòng thi phải từ 4 đến 20 ký tự', 'warning');
+        //    }
+        //    else if (new Date() > new Date(toTime)) {
+        //        swal('Lỗi', 'Ngày kết thúc phải lớn hơn hiện tại', 'warning');
+        //    }
+        //    else if (new Date(fromTime) >= new Date(toTime)) {
+        //        swal('Lỗi', 'Ngày kết thúc phải lớn hơn ngày bắt đầu', 'warning');
+        //    }
+        //    else {
+        //        axios.post('/DoQuiz/CreateActiveTest', { QuizTestID: testID, Code: roomCode, FromTime: fromTime, ToTime: toTime }).then(resp => {
+        //            if (resp.data.Success) {
+        //                swal('Thành công', resp.data.Message, 'success');
+        //                $('#roomModal').modal('hide');
+        //            }
+        //            else {
+        //                swal('Lỗi', resp.data.Message, 'error');
+        //            }
+        //        });
+        //    }
+        //}
+        //else {
+        //    swal('Lỗi', 'Vui lòng nhập đủ thông tin trước', 'warning');
+        //}
+        axios.post('/DoQuiz/CreateActiveTest', { QuizTestID: testID @*Code: roomCode, FromTime: fromTime, ToTime: toTime*@ }).then(resp => {
                     if (resp.data.Success) {
                         swal('Thành công', resp.data.Message, 'success');
                         $('#roomModal').modal('hide');
@@ -309,11 +323,7 @@
                     else {
                         swal('Lỗi', resp.data.Message, 'error');
                     }
-                });
-            }
-        }
-        else {
-            swal('Lỗi', 'Vui lòng nhập đủ thông tin trước', 'warning');
-        }
+        });
+
     }
 </script>

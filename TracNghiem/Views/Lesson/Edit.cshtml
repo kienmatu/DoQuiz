@@ -13,6 +13,11 @@
     <div class="container-fluid" style="margin-top:15px;padding-top:15px;">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
+            <label for="Lesson">Thứ tự bài học:</label><br />
+            @Html.TextAreaFor(m => m.OrderId, new { @class = "form-control", @placeholder = "Thứ tự bài học" })
+            @Html.ValidationMessageFor(model => model.OrderId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
             <label for="Lesson">Tiêu đề bài học:</label><br />
             @Html.TextAreaFor(m => m.Name, new { @class = "form-control", @placeholder = "Tiêu đề bài học" })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
