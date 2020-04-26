@@ -17,7 +17,7 @@ namespace TracNghiem.ViewModel
         public TimeQuiz TotalTime { get; set; }
 
         [Required]
-        [Range(10,1000)]
+        [Range(100,2000)]
         public int TotalMark { get; set; }
 
         [Required]
@@ -38,7 +38,7 @@ namespace TracNghiem.ViewModel
         public IEnumerable<SelectListItem> Lessons { get; set; }
         public HardType HardTypeChoose { get; set; }
 
-        [LimitCount(1,20,ErrorMessage = "Số câu hỏi từ 1 tới 20")]
+        [LimitCount(10,200,ErrorMessage = "Số câu hỏi từ 1 tới 20")]
         public List<int> quizID { get; set; }
     }
 }

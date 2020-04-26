@@ -412,9 +412,9 @@ namespace TracNghiem.Controllers
             {
                 LessonViewModel lesson = new LessonViewModel()
                 {
+                    OrderId = model.OrderId,
                     Name = model.Name,
                     Time = model.Time,
-                    File = model.File,
                     Description = model.Description,
                     YoutubeLink = model.YoutubeLink,
                 };
@@ -431,6 +431,43 @@ namespace TracNghiem.Controllers
         {
             if (ModelState.IsValid)
             {
+                Lesson l = db.Lessons.Where(x => x.ID == model.Id).SingleOrDefault();
+                l.Name = model.Name;
+                l.Time = model.Time;
+                l.OrderId = model.OrderId;
+                l.Description = model.Description;             
+                l.YoutubeLink = model.YoutubeLink;
+                l.CreatedDate = DateTime.Now;
+                db.SaveChanges();
+                return RedirectToAction("AllLesson");
+            }
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult ChangeFile(int id)
+        {
+            var model = db.Lessons.Where(x => x.ID == id).SingleOrDefault();
+            string[] arr = model.File.Split('\\');
+            string fileName = arr[arr.Length - 1];
+            var user = db.Users.Where(t => t.username == User.Identity.Name).First();
+            if (model != null)
+            {
+                LessonViewModelFile lesson = new LessonViewModelFile()
+                {
+                    File = fileName,                   
+                };
+                return View(lesson);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpPost]
+        public ActionResult ChangeFile(LessonViewModelFile model)
+        {
+            if (ModelState.IsValid)
+            {
                 HttpPostedFileBase file = Request.Files[0];
                 string fileExt = Path.GetExtension(file.FileName).ToUpper();
                 if (file.ContentLength > 0 && fileExt == ".PDF")
@@ -439,20 +476,15 @@ namespace TracNghiem.Controllers
                     model.File = Path.Combine(Server.MapPath("~/UploadedFiles/web"), fileName);
                     file.SaveAs(model.File);
                     Lesson l = db.Lessons.Where(x => x.ID == model.Id).SingleOrDefault();
-                    l.Name = model.Name;
-                    l.Time = model.Time;
-                    l.Description = model.Description;
-                    if(l.File != model.File)
+                    if (l.File != model.File)
                     {
                         System.IO.File.Delete(l.File);
                         l.File = model.File;
                     }
                     l.File = l.File;
-                    l.YoutubeLink = model.YoutubeLink;
-                    l.CreatedDate = DateTime.Now;
                     db.SaveChanges();
                     return RedirectToAction("AllLesson");
-                }               
+                }
             }
             return View(model);
         }

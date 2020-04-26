@@ -27,7 +27,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="Quiz">Môn học:</label><br />
-                    @Html.DropDownListFor(m => m.LessonId, Model.Lessons, new { @class = "form-control", @disabled="true", @id="SubjectID" })
+                    @Html.DropDownListFor(m => m.LessonId, Model.Lessons, new { @class = "form-control",  @id="SubjectID" })
                     @Html.ValidationMessageFor(model => model.LessonId, "", new { @class = "text-danger" })
                 </div>
             </div>

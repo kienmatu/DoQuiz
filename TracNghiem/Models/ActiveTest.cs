@@ -20,10 +20,6 @@ namespace TracNghiem.Models
         [Required]
         public int QuizTestID { get; set; }
 
-        //[StringLength(20)]
-        //[MinLength(4)]
-        //[Required]
-        //public string Code { get; set; }
         [Required]
         public bool IsActive { get; set; }
 

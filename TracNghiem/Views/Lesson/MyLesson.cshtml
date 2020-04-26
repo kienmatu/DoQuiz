@@ -113,6 +113,7 @@
                                         {
                                             @Html.ActionLink("Sửa", "Edit", new { id = item.Id }, new { @class = "badge badge-primary" })
                                             <a onclick="deleteConfirm(@item.Id,'@item.Name')" href="#" class="badge badge-danger">Xóa</a>
+                                            @Html.ActionLink("Tệp", "ChangeFile", new { id = item.Id }, new { @class = "badge badge-success" })
                                         }
                                     }
 
@@ -167,6 +168,7 @@
             <div class="modal-footer">
                 <button type="button" id="deleteBtn" class="btn btn-danger">Xóa</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
             </div>
 
         </div>

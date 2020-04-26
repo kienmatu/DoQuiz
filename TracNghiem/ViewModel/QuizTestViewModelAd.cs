@@ -15,7 +15,7 @@ namespace TracNghiem.ViewModel
         public TimeQuiz TotalTime { get; set; }
 
         [Required]
-        [Range(10, 1000)]
+        [Range(100, 2000)]
         public int TotalMark { get; set; }
 
         [Required]

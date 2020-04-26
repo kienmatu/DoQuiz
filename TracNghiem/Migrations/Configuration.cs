@@ -24,8 +24,8 @@
             {
                 ID = 1,
                 username = "admin",
-                email = "ngocbellacntt@gmail.com",
-                fullname = "Nguyễn Ngọc",
+                email = "nguyencongcntt@gmail.com",
+                fullname = "Nguyễn Công",
                 type = UserType.Admin,
                 role = "admin",
                 status = UserStatus.Activated,

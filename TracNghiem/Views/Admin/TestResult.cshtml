@@ -4,15 +4,13 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="card  mt-3">
-    <div class="card-header">
-        Bài thi: @ViewBag.TestName
-    </div>
     <div class="card-body">
         <table id="lstPost" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Học sinh</th>
                     <th>Điểm</th>
+                    <th>Bài học</th>
                     <th>Tình trạng</th>
                     
                 </tr>
@@ -28,6 +26,9 @@
                             @item.Score / @item.MaxScore
                         </td>
                         <td>
+                            @item.LessonName
+                        </td>
+                        <td>
                             @item.Status.GetDisplayName()
                         </td>
                         
@@ -38,8 +39,8 @@
                 <tr>
                     <th>Học sinh</th>
                     <th>Điểm</th>
+                    <th>Bài học</th>
                     <th>Tình trạng</th>
-                    
                 </tr>
             </tfoot>
         </table>

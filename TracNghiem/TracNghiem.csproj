@@ -222,6 +222,7 @@
     <Compile Include="ViewModel\ChangepassViewModel.cs" />
     <Compile Include="ViewModel\DoTestViewModel.cs" />
     <Compile Include="ViewModel\LessonViewModel.cs" />
+    <Compile Include="ViewModel\LessonViewModelFile.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\QuizResultViewModel.cs" />
     <Compile Include="ViewModel\QuizSearchViewModel.cs" />
@@ -1636,6 +1637,7 @@
     <Content Include="UploadedFiles\web\locale\zh-TW\viewer.properties" />
     <Content Include="UploadedFiles\web\viewer.js.map" />
     <Content Include="Views\Lesson\MyLesson.cshtml" />
+    <Content Include="Views\Lesson\ChangeFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

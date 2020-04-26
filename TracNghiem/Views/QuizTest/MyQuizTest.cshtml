@@ -287,35 +287,8 @@
     }
 
     function confirmCreateRoom() {
-        //let roomCode = $('#roomCode').val();
-        //let fromTime = $('#fromTime').val();
-        //let toTime = $('#toTime').val();
-        //if (roomCode && fromTime && toTime) {
-        //    if (roomCode.length > 20 || roomCode.length < 4) {
-        //        swal('Lỗi', 'Mã phòng thi phải từ 4 đến 20 ký tự', 'warning');
-        //    }
-        //    else if (new Date() > new Date(toTime)) {
-        //        swal('Lỗi', 'Ngày kết thúc phải lớn hơn hiện tại', 'warning');
-        //    }
-        //    else if (new Date(fromTime) >= new Date(toTime)) {
-        //        swal('Lỗi', 'Ngày kết thúc phải lớn hơn ngày bắt đầu', 'warning');
-        //    }
-        //    else {
-        //        axios.post('/DoQuiz/CreateActiveTest', { QuizTestID: testID, Code: roomCode, FromTime: fromTime, ToTime: toTime }).then(resp => {
-        //            if (resp.data.Success) {
-        //                swal('Thành công', resp.data.Message, 'success');
-        //                $('#roomModal').modal('hide');
-        //            }
-        //            else {
-        //                swal('Lỗi', resp.data.Message, 'error');
-        //            }
-        //        });
-        //    }
-        //}
-        //else {
-        //    swal('Lỗi', 'Vui lòng nhập đủ thông tin trước', 'warning');
-        //}
-        axios.post('/DoQuiz/CreateActiveTest', { QuizTestID: testID @*Code: roomCode, FromTime: fromTime, ToTime: toTime*@ }).then(resp => {
+        
+        axios.post('/DoQuiz/CreateActiveTest', { QuizTestID: testID }).then(resp => {
                     if (resp.data.Success) {
                         swal('Thành công', resp.data.Message, 'success');
                         $('#roomModal').modal('hide');

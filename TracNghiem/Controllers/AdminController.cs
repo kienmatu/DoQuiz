@@ -35,24 +35,20 @@ namespace TracNghiem.Controllers
             {
                 ViewBag.countQuiz = db.Quizzes.Count(c => c.CreatorID == UserID && c.status != QuizStatusAd.Deleted);
                 ViewBag.countTest = db.QuizTests.Count(c => c.CreatorID == UserID);
-                ViewBag.countRoom = db.ActiveTests.Count(c => c.CreatorID == UserID);
+                ViewBag.countLesson = db.Lessons.Count(c => c.CreatorID == UserID);
+                ViewBag.countActiveTest = db.ActiveTests.Count(c => c.CreatorID == UserID);
                 return View("TeacherDashboard");
             }
             ViewBag.countQuiz = db.Quizzes.Count(c => c.status != QuizStatusAd.Deleted);
-            ViewBag.countTest = db.QuizTests.Count();
-            ViewBag.countRoom = db.ActiveTests.Count();
+            ViewBag.countTest = db.QuizTests.Count(c=>c.status !=TestStatusAd.Deleted);
+            ViewBag.countLesson = db.Lessons.Count(c=>c.Status != LessonStatus.IsDelete);
+            ViewBag.countActiveTest = db.ActiveTests.Count();
             return View();
         }
-        public ActionResult TestResult(int? roomID)
+        [Authorize(Roles ="teacher")]
+        public ActionResult TestResult()
         {
-            if(roomID == null)
-            {
-                return RedirectToAction("Index");
-            }
-            try
-            {
-                var resultList = db.QuizResults
-                       .Where(c => c.ActiveTestID == roomID)
+            var resultList = db.QuizResults
                        .Select(c => new QuizResultViewModel
                        {
                            StudentName = c.Student.fullname,
@@ -63,14 +59,7 @@ namespace TracNghiem.Controllers
                            MaxScore = c.ActiveTest.QuizTest.TotalMark,
                            LessonName = c.ActiveTest.QuizTest.Lesson.Name
                        }).ToList();
-                ViewBag.TestName = db.ActiveTests.Where(c => c.ID == roomID).First().QuizTest.name;
-                return View(resultList);
-            }
-            catch
-            {
-                return RedirectToAction("Index");
-            }
-            
+            return View(resultList);
         }
     }
 }

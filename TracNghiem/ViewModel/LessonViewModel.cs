@@ -15,7 +15,6 @@ namespace TracNghiem.ViewModel
         public string Name { get; set; }
         [Required]
         public int Time { get; set; }
-        [Required]
         public string File { get; set; }
         [Required]
         public int OrderId { get; set; }

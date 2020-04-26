@@ -28,107 +28,120 @@ namespace TracNghiem.Controllers
         /// Tạo phòng thi AJAX
         /// </summary>
         /// <param name="QuizTestID"></param>
-        /// <param name="Code"></param>
-        /// <param name="FromTime"></param>
-        /// <param name="ToTime"></param>
         /// <returns></returns>
         public JsonResult CreateActiveTest(int QuizTestID)
         {
-            //,string Code,DateTime FromTime,DateTime ToTime
-            //bool ExistCode = db.ActiveTests.Any(a => a.Code == Code);
-            //if(ExistCode)
-            //{
-                //return Json(new { Message = "Trùng mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
-            //}
-            ActiveTest test = new ActiveTest
+            var model = db.ActiveTests.Where(x => x.QuizTestID == QuizTestID).SingleOrDefault();
+            if(model == null)
             {
-                CreatorID = (int)Session["UserID"],
-                //Code = Code,
-                QuizTestID = QuizTestID,
-                //FromTime = FromTime,
-                //ToTime = ToTime,
-                IsActive = true,
-            };
-            db.ActiveTests.Add(test);
-            db.SaveChanges();
-            return Json(new { Message = "Tạo thành công", Success = true }, JsonRequestBehavior.AllowGet);
+                ActiveTest test = new ActiveTest
+                {
+                    CreatorID = (int)Session["UserID"],
+                    QuizTestID = QuizTestID,
+                    IsActive = true,
+                };
+                db.ActiveTests.Add(test);
+                db.SaveChanges();
+                return Json(new { Message = "Tạo thành công", Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Message = "Bài tập đã trùng", Success = false }, JsonRequestBehavior.AllowGet);
+            }
         }
         /// <summary>
         /// Vào phòng thi
         /// </summary>
-        /// <param name="roomCode"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        //[Authorize(Roles ="student")]
+        [Authorize(Roles ="student")]
         public JsonResult EnterRoom(int id)
         {
             int UserID = (int)Session["UserID"];
-            //bool ExistCode = db.ActiveTests.Any(a => a.Code == roomCode);
-            //if (!ExistCode)
-            //{
-            //    return Json(new { Message = "Sai mã phòng thi", Success = false }, JsonRequestBehavior.AllowGet);
-            //}
             ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id).FirstOrDefault();
-            //bool alreadyTest = db.QuizResults.Any(c => c.StudentID == UserID && c.ActiveTestID == test.ID);
-            //if(alreadyTest)
-            //{
-            //    return Json(new { Message = "Bạn đã thi bài này trước đó", Success = false }, JsonRequestBehavior.AllowGet);
-            //}
-            //chỉ join vào thời gian cho phép
-            DoTestViewModel model = new DoTestViewModel
+            if(test != null)
             {
-                RoomID = test.ID,
-                LessonId = test.QuizTest.LessonId,
-                TestName = test.QuizTest.name,
-                LessonName = test.QuizTest.Lesson.Name,
-                TotalMark = test.QuizTest.TotalMark,
-                TotalTime = test.QuizTest.TotalTime,
-                QuizList = test.QuizTest.Quiz.Select(c => new ShowQuiz
+                DoTestViewModel model = new DoTestViewModel
                 {
-                    answerA = c.answerA,
-                    Content = c.content,
-                    answerC = c.answerC,
-                    answerB = c.answerB,
-                    answerD = c.answerD,
-                    ID = c.QuizID
-                }),
-            };
-            return Json(new { Quiz = model, Success = true }, JsonRequestBehavior.AllowGet);
+                    RoomID = test.ID,
+                    LessonId = test.QuizTest.LessonId,
+                    TestName = test.QuizTest.name,
+                    LessonName = test.QuizTest.Lesson.Name,
+                    TotalMark = test.QuizTest.TotalMark,
+                    TotalTime = test.QuizTest.TotalTime,
+                    QuizList = test.QuizTest.Quiz.Select(c => new ShowQuiz
+                    {
+                        answerA = c.answerA,
+                        Content = c.content,
+                        answerC = c.answerC,
+                        answerB = c.answerB,
+                        answerD = c.answerD,
+                        ID = c.QuizID
+                    }),
+                };
+                return Json(new { Quiz = model, Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new {Success = false }, JsonRequestBehavior.AllowGet);
         }
-        
-        public ViewResult OpenRoom()
+
+        public ActionResult OpenRoom(int id)
         {
-            return View();
+            var model = db.ActiveTests.Where(x => x.QuizTest.LessonId == id);
+            if (model != null)
+            {
+                var lesson = db.Lessons.Where(x => x.ID == id).Single();
+                LessonViewModel result = new LessonViewModel
+                {
+                    Id = lesson.ID,
+                    Name = lesson.Name
+                };
+                return View(result);
+            }
+            else
+            {
+                return RedirectToAction("OpenRoom", "DoQuiz");
+            }
+            
         }
         /// <summary>
         /// Bắt đầu bài thi
         /// </summary>
-        /// <param name="roomCode"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         public JsonResult StartExam(int id)
         {
-            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id).First();
-            QuizResult result = new QuizResult
+            int UserID = (int)Session["UserID"];
+            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id && c.IsActive == true).First();
+            var result = db.QuizResults.Where(x => x.StudentID == UserID && x.ActiveTestID == test.ID).SingleOrDefault();
+            if(result == null)
             {
-                DoneAt = DateTime.Now,
-                Score = 0,
-                Status = DoQuizStatus.Doing,
-                StudentID = (int)Session["UserID"],
-                ActiveTestID = test.ID,
-            };
-            db.QuizResults.Add(result);
-            db.SaveChanges();
-            return Json(new { Message = "Start doing exam", Success = true }, JsonRequestBehavior.AllowGet);
+                QuizResult qr = new QuizResult
+                {
+                    DoneAt = DateTime.Now,
+                    Score = 0,
+                    Status = DoQuizStatus.Doing,
+                    StudentID = (int)Session["UserID"],
+                    ActiveTestID = test.ID,
+                };
+                db.QuizResults.Add(qr);
+                db.SaveChanges();
+                return Json(new { Message = "Start doing exam", Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { Message = "Start doing exam", Success = true }, JsonRequestBehavior.AllowGet);
+            }
         }
         /// <summary>
         /// Nộp bài thi
         /// </summary>
-        /// <param name="roomCode"></param>
+        /// <param name="id"></param>
         /// <param name="answerList"></param>
         /// <returns></returns>
         [Authorize(Roles = "student")]
         public JsonResult SubmitExam(int id,List<SubmitExamViewModel> answerList)
         {
-            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id).FirstOrDefault();
+            ActiveTest test = db.ActiveTests.Where(c => c.QuizTest.LessonId == id && c.IsActive == true).FirstOrDefault();
             List<Quiz> quiz = test.QuizTest.Quiz.ToList();
             double score = 0;
             double trueAnswer = 0;
@@ -155,18 +168,26 @@ namespace TracNghiem.Controllers
                     }
                 }
             }
-
+            int UserID = (int)Session["UserID"];
+            QuizResult result = db.QuizResults.Where(c => c.ActiveTestID == test.ID && c.StudentID == UserID).SingleOrDefault();
             if (trueAnswer > 0)
             {
                 score = scorePerQuestion * trueAnswer;
-                //update điểm
-                int UserID = (int)Session["UserID"];
-                QuizResult result = db.QuizResults.Where(c => c.ActiveTestID == test.ID && c.StudentID == UserID).FirstOrDefault();
+                //update điểm                
                 result.Score = score;
+                result.DoneAt = DateTime.Now;
                 result.Status = DoQuizStatus.Finished;
                 db.SaveChanges();
             }
-            
+            else
+            {
+                score = 0;
+                //update điểm
+                result.Score = score;
+                result.DoneAt = DateTime.Now;
+                result.Status = DoQuizStatus.Finished;
+                db.SaveChanges();
+            }
             return Json(new { score = score,maxScore =  maxScore, trueAnswer = trueAnswer , success = true }, JsonRequestBehavior.AllowGet);
         }
 

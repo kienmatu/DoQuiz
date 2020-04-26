@@ -1,4 +1,4 @@
-﻿
+﻿@model TracNghiem.ViewModel.LessonViewModel
 @{
     Layout = null;
 }
@@ -162,13 +162,12 @@
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card card-signin my-5 transparent2">
                     <div class="card-body">
-                        <h5 class="card-title text-center text-white">VÀO PHÒNG THI</h5>
+                        <h5 class="card-title text-center text-white">Làm bài tập</h5>
                         <div class="form-label-group">
-                            <label for="Username" class="text-white font-weight-bold">Bài tập:</label><br />
-                            <input class="form-control" type="text" id="roomCode" value="1" />
+                            <label for="Username" class="text-white font-weight-bold">Bài tập: @Model.Name</label><br />
                             <br />
                         </div>
-                        <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="EnterRoom()">Mở bài tập</button>
+                        <button class="btn btn-lg btn-warning btn-block text-uppercase" onclick="OpenRoom(@Model.Id)">Mở bài tập</button>
                         <a class="btn btn-lg btn-block text-uppercase btn-info" href="/Admin" >QUAY LẠI</a>
                     </div>
                 </div>
@@ -188,7 +187,7 @@
                         <p class="info" id="lesson">Demo Lesson</p>
                         <p class="info" id="mark">Demo mark</p>
                         <p class="info" id="time">Demo time</p>
-                        <a href="#" id="startBtn" onclick="StartExam()" class="btn btn-danger float-right">Bắt đầu !</a>
+                        <a href="#" id="startBtn" onclick="StartExam(@Model.Id)" class="btn btn-danger float-right">Bắt đầu !</a>
                         <div id="timePanel" class="hidden">
                             <hr class="mt-2" />
                             <h5 class="card-title">Thời gian còn lại:</h5>
@@ -204,34 +203,19 @@
     </div>
 
     <script>
-        var roomCode = 2;
         var Quiz = {};
         const quizContainer = document.getElementById('quiz');
-        function JoinRoom() {
-            $('#roomCode').val('');
-            $('#enterModal').modal('show');
-        }
-        function EnterRoom() {
-            let code = $('#roomCode').val();
-            if (code) {
-                OpenRoom(code);
-            }
-            else {
-                swal('Lỗi', 'Vui lòng nhập mã phòng', 'warning');
-            }
-        }
         function Preview(Quiz) {
             let quizinfo = $('#QuizInfo');
-            quizinfo.find('#quizname').html('<b>Tên bài thi:</b> ' + Quiz.TestName);
-            quizinfo.find('#mark').html('<b>Môn học:</b> ' + Quiz.LessonName);
-            quizinfo.find('#subject').html('<b>Tổng điểm:</b> ' + Quiz.TotalMark);
+            quizinfo.find('#quizname').html('<b>Tên bài tập:</b> ' + Quiz.TestName);
+            quizinfo.find('#lesson').html('<b>Bài học:</b> ' + Quiz.LessonName);
+            quizinfo.find('#mark').html('<b>Tổng điểm:</b> ' + Quiz.TotalMark);
             quizinfo.find('#time').html('<b>Thời gian (phút):</b> '+Quiz.TotalTime)
             quizinfo.removeClass('hidden');
-            roomCode = Quiz.RoomCode;
         }
-        function OpenRoom(code) {
+        function OpenRoom(id) {
             $('#overlay').fadeIn();
-            axios.post('/DoQuiz/EnterRoom/'+code).then(resp => {
+            axios.post('/DoQuiz/EnterRoom/'+id).then(resp => {
 
                 $('#overlay').fadeOut();
                 let data = resp.data;
@@ -245,10 +229,10 @@
                 }
             })
         }
-        function StartExam()
+        function StartExam(id)
         {
             $('#overlay').fadeIn();
-            axios.post('/DoQuiz/StartExam/2').then(resp => {
+            axios.post('/DoQuiz/StartExam/' + id).then(resp => {
                 $('#overlay').fadeOut();
                 let data = resp.data;
                 if (data.Success) {
@@ -354,7 +338,7 @@
         function SendData(answerList)
         {
             $('#overlay').fadeIn();
-            axios.post('/DoQuiz/SubmitExam', { roomCode: roomCode, answerList: answerList }).then(resp => {
+            axios.post('/DoQuiz/SubmitExam', { id: @Model.Id, answerList: answerList }).then(resp => {
                 $('#overlay').fadeOut();
                 swal('Đã nộp bài', 'Bạn đạt ' + Number(resp.data.score).toFixed(2) + '/' + resp.data.maxScore + ' điểm', 'success').then((e) => {
                     location.reload();
