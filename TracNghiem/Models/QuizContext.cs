@@ -22,6 +22,7 @@ namespace TracNghiem.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<QuizTest>()
                 .HasMany<Quiz>(e => e.Quiz)
                 .WithMany(e => e.QuizTest)

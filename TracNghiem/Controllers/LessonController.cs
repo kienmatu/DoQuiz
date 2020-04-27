@@ -19,11 +19,11 @@ namespace TracNghiem.Controllers
             return View();
         }
         //All lesson
-        [Authorize(Roles = "admin,teacher")]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ViewResult AllLesson(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
-            int pageSize = 10;
+            int pageSize = 100;
             int pageIndex = 1;
             ViewBag.Sort = "tăng dần";
             ViewBag.CurrentSort = sortOrder;
@@ -177,9 +177,10 @@ namespace TracNghiem.Controllers
             return View(lstLesson);
         }
         [HttpGet]
+        [Authorize(Roles = "admin,teacher")]
         public ActionResult MyLesson(string sortOrder, string CurrentSort, int? page, string titleStr)
         {
-            int pageSize = 10;
+            int pageSize = 100;
             int pageIndex = 1;
             ViewBag.Sort = "tăng dần";
             ViewBag.CurrentSort = sortOrder;

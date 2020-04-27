@@ -86,8 +86,9 @@ namespace TracNghiem.Controllers
 
         public ActionResult OpenRoom(int id)
         {
-            var model = db.ActiveTests.Where(x => x.QuizTest.LessonId == id);
-            if (model != null)
+            var model = db.QuizTests.Where(x => x.LessonId == id && x.status == TestStatusAd.Active).SingleOrDefault();
+            var test = db.ActiveTests.Where(x=>x.IsActive == true).SingleOrDefault();
+            if (model != null && test != null)
             {
                 var lesson = db.Lessons.Where(x => x.ID == id).Single();
                 LessonViewModel result = new LessonViewModel
@@ -99,10 +100,14 @@ namespace TracNghiem.Controllers
             }
             else
             {
-                return RedirectToAction("OpenRoom", "DoQuiz");
+                return RedirectToAction("NotFoundQuizTest");
             }
             
         }
+        public ViewResult NotFoundQuizTest() 
+        {
+            return View();
+        } 
         /// <summary>
         /// Bắt đầu bài thi
         /// </summary>

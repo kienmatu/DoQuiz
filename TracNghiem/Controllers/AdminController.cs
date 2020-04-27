@@ -15,7 +15,7 @@ namespace TracNghiem.Controllers
         public ActionResult Index()
         {
             int UserID = (int)Session["UserID"];
-            if(User.IsInRole("student"))
+            if (User.IsInRole("student"))
             {
                 var resultList = db.QuizResults
                     .Where(c => c.StudentID == UserID)
@@ -33,16 +33,20 @@ namespace TracNghiem.Controllers
             }
             if (User.IsInRole("teacher"))
             {
-                ViewBag.countQuiz = db.Quizzes.Count(c => c.CreatorID == UserID && c.status != QuizStatusAd.Deleted);
-                ViewBag.countTest = db.QuizTests.Count(c => c.CreatorID == UserID);
-                ViewBag.countLesson = db.Lessons.Count(c => c.CreatorID == UserID);
-                ViewBag.countActiveTest = db.ActiveTests.Count(c => c.CreatorID == UserID);
+                
+                ViewBag.countQuiz = db.Quizzes.Count(c => c.CreatorID == UserID && c.status != QuizStatusAd.Deleted 
+                && c.lesson.Status == LessonStatus.Open);
+                ViewBag.countTest = db.QuizTests.Count(c => c.CreatorID == UserID && c.Lesson.Status == LessonStatus.Open);
+                ViewBag.countLesson = db.Lessons.Count(c => c.CreatorID == UserID && c.Status != LessonStatus.IsDelete);
+                ViewBag.countActiveTest = db.ActiveTests.Count(c => c.CreatorID == UserID && c.QuizTest.Lesson.Status == LessonStatus.Open 
+                && c.IsActive ==true && c.QuizTest.status != TestStatusAd.Deleted && c.QuizTest.status != TestStatusAd.NotActive);
                 return View("TeacherDashboard");
             }
-            ViewBag.countQuiz = db.Quizzes.Count(c => c.status != QuizStatusAd.Deleted);
-            ViewBag.countTest = db.QuizTests.Count(c=>c.status !=TestStatusAd.Deleted);
+            ViewBag.countQuiz = db.Quizzes.Count(c=> c.status != QuizStatusAd.Deleted && c.lesson.Status != LessonStatus.IsDelete);
+            ViewBag.countTest = db.QuizTests.Count(c=>c.status !=TestStatusAd.Deleted && c.Lesson.Status != LessonStatus.IsDelete);
             ViewBag.countLesson = db.Lessons.Count(c=>c.Status != LessonStatus.IsDelete);
-            ViewBag.countActiveTest = db.ActiveTests.Count();
+            ViewBag.countActiveTest = db.ActiveTests.Count(c=>c.QuizTest.Lesson.Status == LessonStatus.Open && c.IsActive == true 
+            && c.QuizTest.status != TestStatusAd.Deleted && c.QuizTest.status != TestStatusAd.NotActive);
             return View();
         }
         [Authorize(Roles ="teacher")]

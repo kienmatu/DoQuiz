@@ -29,7 +29,7 @@ namespace TracNghiem.Common
         public static IEnumerable<SelectListItem> getLessonItem()
         {
             QuizContext db = new QuizContext();
-            List<SelectListItem> lstLess = db.Lessons
+            List<SelectListItem> lstLess = db.Lessons.Where(x=>x.Status != LessonStatus.IsDelete)
                 .Select(m =>
                 new SelectListItem
                 {

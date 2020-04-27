@@ -21,7 +21,7 @@ namespace TracNghiem.Models
         [Required]
         [StringLength(100)]
         public string name { get; set; }
-       
+
         [ForeignKey("Creator")]
         [Required]
         public int CreatorID { get; set; }
@@ -62,5 +62,5 @@ namespace TracNghiem.Models
         public virtual ICollection<QuizTest> QuizTest { get; set; }
 
     }
-    
+
 }

@@ -84,7 +84,7 @@ namespace TracNghiem.Controllers
                 switch (sortOrder)
                 {
                     case "title":
-                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id && e.status != TestStatusAd.Deleted && e.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                         new QuizTestViewModel
                         {
                             status = (TestStatus)q.status,
@@ -97,7 +97,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     case "createdate":
-                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id).OrderBy(e => e.CreateDate).Select(q =>
+                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id && e.status != TestStatusAd.Deleted && e.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.CreateDate).Select(q =>
                         new QuizTestViewModel
                         {
                             status = (TestStatus)q.status,
@@ -110,7 +110,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     default:
-                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.QuizTests.Where(e => e.CreatorID == id && e.status != TestStatusAd.Deleted && e.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                         new QuizTestViewModel
                         {
                             status = (TestStatus)q.status,
@@ -133,7 +133,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "tiêu đề";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderBy(e => e.name).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                               new QuizTestViewModel
                               {
                                   status = (TestStatus)q.status,
@@ -147,7 +147,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderByDescending(e => e.name).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderByDescending(e => e.name).Select(q =>
                            new QuizTestViewModel
                            {
                                status = (TestStatus)q.status,
@@ -164,7 +164,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "ngày tạo";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderBy(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.CreateDate).Select(q =>
                             new QuizTestViewModel
                             {
                                 status = (TestStatus)q.status,
@@ -178,7 +178,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id).OrderByDescending(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.CreatorID == id && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderByDescending(e => e.CreateDate).Select(q =>
                             new QuizTestViewModel
                             {
                                 status = (TestStatus)q.status,
@@ -231,7 +231,7 @@ namespace TracNghiem.Controllers
                 switch (sortOrder)
                 {
                     case "title":
-                        lstQuiz = db.QuizTests.OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.QuizTests.Where(e=>e.status != TestStatusAd.Deleted && e.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                         new QuizTestViewModelAd
                         {
                             status = q.status,
@@ -244,7 +244,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     case "createdate":
-                        lstQuiz = db.QuizTests.OrderBy(e => e.CreateDate).Select(q =>
+                        lstQuiz = db.QuizTests.Where(e => e.status != TestStatusAd.Deleted && e.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.CreateDate).Select(q =>
                         new QuizTestViewModelAd
                         {
                             status = q.status,
@@ -257,7 +257,7 @@ namespace TracNghiem.Controllers
                         ).ToPagedList(pageIndex, pageSize);
                         break;
                     default:
-                        lstQuiz = db.QuizTests.OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.QuizTests.Where(e => e.status != TestStatusAd.Deleted && e.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                         new QuizTestViewModelAd
                         {
                             status = q.status,
@@ -280,7 +280,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "tiêu đề";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                           new QuizTestViewModelAd
                           {
                               status = q.status,
@@ -294,7 +294,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.name).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderByDescending(e => e.name).Select(q =>
                             new QuizTestViewModelAd
                             {
                                 status = q.status,
@@ -311,7 +311,7 @@ namespace TracNghiem.Controllers
                         ViewBag.sortname = "ngày tạo";
                         if (sortOrder.Equals(CurrentSort))
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.CreateDate).Select(q =>
                             new QuizTestViewModelAd
                             {
                                 status = q.status,
@@ -325,7 +325,7 @@ namespace TracNghiem.Controllers
                         }
                         else
                         {
-                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderByDescending(e => e.CreateDate).Select(q =>
+                            lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderByDescending(e => e.CreateDate).Select(q =>
                             new QuizTestViewModelAd
                             {
                                 status = q.status,
@@ -339,7 +339,7 @@ namespace TracNghiem.Controllers
                         }
                         break;
                     default:
-                        lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr)).OrderBy(e => e.name).Select(q =>
+                        lstQuiz = db.QuizTests.Where(t => t.name.Contains(titleStr) && t.status != TestStatusAd.Deleted && t.Lesson.Status != LessonStatus.IsDelete).OrderBy(e => e.name).Select(q =>
                         new QuizTestViewModelAd
                         {
                             status = q.status,
@@ -449,7 +449,7 @@ namespace TracNghiem.Controllers
         /// <param name="name"></param>
         /// <param name="hard"></param>
         /// <returns></returns>
-        public JsonResult SearchQuiz(int subject, string name, HardType? hard)
+        public JsonResult SearchQuiz(int? subject, string name, HardType? hard)
         {
             try
             {

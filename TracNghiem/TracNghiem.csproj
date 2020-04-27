@@ -1578,6 +1578,7 @@
     <Content Include="UploadedFiles\web\viewer.js.map" />
     <Content Include="Views\Lesson\MyLesson.cshtml" />
     <Content Include="Views\Lesson\ChangeFile.cshtml" />
+    <Content Include="Views\DoQuiz\NotFoundQuizTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
