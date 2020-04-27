@@ -145,69 +145,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909241105376_initial_database.cs" />
-    <Compile Include="Migrations\201909241105376_initial_database.Designer.cs">
-      <DependentUpon>201909241105376_initial_database.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909261030262_fixrelation.cs" />
-    <Compile Include="Migrations\201909261030262_fixrelation.Designer.cs">
-      <DependentUpon>201909261030262_fixrelation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909261106392_adddate.cs" />
-    <Compile Include="Migrations\201909261106392_adddate.Designer.cs">
-      <DependentUpon>201909261106392_adddate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910020104263_fixrela.cs" />
-    <Compile Include="Migrations\201910020104263_fixrela.Designer.cs">
-      <DependentUpon>201910020104263_fixrela.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910020234352_fixrelation1.cs" />
-    <Compile Include="Migrations\201910020234352_fixrelation1.Designer.cs">
-      <DependentUpon>201910020234352_fixrelation1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201910020257535_fixrelation_new.cs" />
-    <Compile Include="Migrations\201910020257535_fixrelation_new.Designer.cs">
-      <DependentUpon>201910020257535_fixrelation_new.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911060220214_them2bang.cs" />
-    <Compile Include="Migrations\201911060220214_them2bang.Designer.cs">
-      <DependentUpon>201911060220214_them2bang.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912041211573_fixtablequizresult.cs" />
-    <Compile Include="Migrations\201912041211573_fixtablequizresult.Designer.cs">
-      <DependentUpon>201912041211573_fixtablequizresult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004111506176_addLesson.cs" />
-    <Compile Include="Migrations\202004111506176_addLesson.Designer.cs">
-      <DependentUpon>202004111506176_addLesson.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004111524036_convertDatetime.cs" />
-    <Compile Include="Migrations\202004111524036_convertDatetime.Designer.cs">
-      <DependentUpon>202004111524036_convertDatetime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004111619212_edit.cs" />
-    <Compile Include="Migrations\202004111619212_edit.Designer.cs">
-      <DependentUpon>202004111619212_edit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004121320352_editLesson.cs" />
-    <Compile Include="Migrations\202004121320352_editLesson.Designer.cs">
-      <DependentUpon>202004121320352_editLesson.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004140804423_fixdatetime.cs" />
-    <Compile Include="Migrations\202004140804423_fixdatetime.Designer.cs">
-      <DependentUpon>202004140804423_fixdatetime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004161023498_editlesson2.cs" />
-    <Compile Include="Migrations\202004161023498_editlesson2.Designer.cs">
-      <DependentUpon>202004161023498_editlesson2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004231447399_editactivetest.cs" />
-    <Compile Include="Migrations\202004231447399_editactivetest.Designer.cs">
-      <DependentUpon>202004231447399_editactivetest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004231458019_editactivetest2.cs" />
-    <Compile Include="Migrations\202004231458019_editactivetest2.Designer.cs">
-      <DependentUpon>202004231458019_editactivetest2.cs</DependentUpon>
+    <Compile Include="Migrations\202004270622372_Initial.cs" />
+    <Compile Include="Migrations\202004270622372_Initial.Designer.cs">
+      <DependentUpon>202004270622372_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
@@ -1652,57 +1592,12 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201909241105376_initial_database.resx">
-      <DependentUpon>201909241105376_initial_database.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909261030262_fixrelation.resx">
-      <DependentUpon>201909261030262_fixrelation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909261106392_adddate.resx">
-      <DependentUpon>201909261106392_adddate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910020104263_fixrela.resx">
-      <DependentUpon>201910020104263_fixrela.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910020234352_fixrelation1.resx">
-      <DependentUpon>201910020234352_fixrelation1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910020257535_fixrelation_new.resx">
-      <DependentUpon>201910020257535_fixrelation_new.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911060220214_them2bang.resx">
-      <DependentUpon>201911060220214_them2bang.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912041211573_fixtablequizresult.resx">
-      <DependentUpon>201912041211573_fixtablequizresult.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004111506176_addLesson.resx">
-      <DependentUpon>202004111506176_addLesson.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004111524036_convertDatetime.resx">
-      <DependentUpon>202004111524036_convertDatetime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004111619212_edit.resx">
-      <DependentUpon>202004111619212_edit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004121320352_editLesson.resx">
-      <DependentUpon>202004121320352_editLesson.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004140804423_fixdatetime.resx">
-      <DependentUpon>202004140804423_fixdatetime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004161023498_editlesson2.resx">
-      <DependentUpon>202004161023498_editlesson2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004231447399_editactivetest.resx">
-      <DependentUpon>202004231447399_editactivetest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004231458019_editactivetest2.resx">
-      <DependentUpon>202004231458019_editactivetest2.cs</DependentUpon>
-    </EmbeddedResource>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
+    <EmbeddedResource Include="Migrations\202004270622372_Initial.resx">
+      <DependentUpon>202004270622372_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
