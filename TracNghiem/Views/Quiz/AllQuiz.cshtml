@@ -216,11 +216,15 @@ var changeStt = function (xthis) {
         data: JSON.stringify({ id: xid, state: st }),
         dataType: "json",
         success: function (recData) {
-            var notify = $.notify('<strong>Thành công</strong><br/>' + recData.Message + '<br />', {
+            var notify = $.notify('<strong>Thông báo</strong><br/>' + recData.Message + '<br />', {
                 type: 'pastel-info',
                 allow_dismiss: false,
                 timer: 1000,
+                
             });
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
         },
         error: function () { alert('An error occured'); }
     });
