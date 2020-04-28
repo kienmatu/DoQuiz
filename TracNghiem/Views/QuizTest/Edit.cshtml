@@ -1,6 +1,6 @@
 ﻿@model TracNghiem.ViewModel.QuizTestViewModel
 @{
-    ViewBag.Title = "SỬA ĐỀ THI "+Model.name;
+    ViewBag.Title = "Sửa bài tập "+Model.name;
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -10,7 +10,7 @@
     Loading...
 </div>
 <div class="container-fluid" style="margin-top:15px;padding-top:15px;">
-    <form method="post" id="createTest">
+    <form method="post" id="editTest">
         <div class="form-group">
             <label for="Quiz">Tiêu đề bài thi:</label><br />
             @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Tiêu đề" })
@@ -218,7 +218,7 @@
         confirmModal.modal('hide');
     });
 
-    $('#createTest').submit(function (e) {
+    $('#editTest').submit(function (e) {
         e.preventDefault();
         var tempdata = $(this).serializeFormJSON();
         var quizID = pick.pickList('getSelectedID').quizID;
@@ -227,7 +227,7 @@
         $('#overlay').fadeIn();
         $.ajax({
             type: "POST",
-            url: '/QuizTest/Create',
+            url: '/QuizTest/edit',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ model: data }),
             dataType: "json",

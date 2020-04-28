@@ -33,12 +33,17 @@ namespace TracNghiem.Controllers
         {
             if (!ModelState.IsValid)
             {
+                
                 return Json(new { success = false, Message = "Bạn nhập thiếu các trường yêu cầu" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 User u = db.Users.Where(i => i.username == User.Identity.Name).First();
-
+                var quiz = db.QuizTests.Where(x => x.name == model.name && x.LessonId == model.LessonId).SingleOrDefault();
+                if (quiz != null)
+                {
+                    return Json(new { success = false, Message = "Bài học này đã có bài tập" }, JsonRequestBehavior.AllowGet);
+                }
                 QuizTest test = new QuizTest
                 {
                     CreatorID = u.ID,
@@ -394,7 +399,7 @@ namespace TracNghiem.Controllers
     
         [Authorize(Roles = "admin,teacher")]
         [HttpPost]
-        public ActionResult Edit(QuizTestViewModel model)
+        public JsonResult Edit(QuizTestViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -403,24 +408,20 @@ namespace TracNghiem.Controllers
             else
             {
                 User u = db.Users.Where(i => i.username == User.Identity.Name).First();
-
-                QuizTest test = new QuizTest
-                {
-                    CreatorID = u.ID,
-                    Creator = u,
-                    CreateDate = DateTime.Now,
-                    LessonId = model.LessonId,
-                    TotalMark = model.TotalMark,
-                    name = model.name,
-                    TotalTime = (int)model.TotalTime,
-                    status = (TestStatusAd)model.status,
-                };
+                var quiztest = db.QuizTests.Where(x => x.TestID == model.LessonId).SingleOrDefault();
+                quiztest.CreatorID = u.ID;
+                quiztest.Creator = u;
+                quiztest.CreateDate = DateTime.Now;
+                quiztest.LessonId = model.LessonId;
+                quiztest.TotalMark = model.TotalMark;
+                quiztest.name = model.name;
+                quiztest.TotalTime = (int)model.TotalTime;
+                quiztest.status = (TestStatusAd)model.status;
                 foreach (var item in model.quizID)
                 {
                     Quiz q = db.Quizzes.Find(item);
-                    test.Quiz.Add(q);
+                    quiztest.Quiz.Add(q);
                 }
-                db.QuizTests.Add(test);
                 db.SaveChanges();
                 return Json(new { success = true, Message = "Cập nhật bài tập thành công !" }, JsonRequestBehavior.AllowGet);
             }
@@ -458,7 +459,7 @@ namespace TracNghiem.Controllers
                 {
                     if (hard.HasValue)
                     {
-                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.LessonId == subject).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.LessonId == subject && i.status == QuizStatusAd.Active).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,
@@ -470,7 +471,7 @@ namespace TracNghiem.Controllers
                 {
                     if (hard.HasValue)
                     {
-                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.name.Contains(name) && i.LessonId == subject).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.HardType == hard && i.name.Contains(name) && i.LessonId == subject && i.status == QuizStatusAd.Active).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,
@@ -479,7 +480,7 @@ namespace TracNghiem.Controllers
                     }
                     else
                     {
-                        lst = db.Quizzes.Where(i =>  i.name.Contains(name) && i.LessonId == subject).Take(30).Select(a => new QuizSearchViewModel
+                        lst = db.Quizzes.Where(i =>  i.name.Contains(name) && i.LessonId == subject && i.status == QuizStatusAd.Active).Take(30).Select(a => new QuizSearchViewModel
                         {
                             HardType = a.HardType,
                             id = a.QuizID,

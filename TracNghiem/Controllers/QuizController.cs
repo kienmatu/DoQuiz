@@ -423,6 +423,11 @@ namespace TracNghiem.Controllers
         [HttpPost]
         public JsonResult DeleteQuiz(int id)
         {
+            bool active = db.QuizTests.Any(x => x.Quiz.Select(c=>c.QuizID).Contains(id));
+            if(active == true)
+            {
+                return Json(new { Message = "Câu hỏi này không thể xóa" }, JsonRequestBehavior.AllowGet);
+            }
             User u = db.Users.Where(t => t.username == User.Identity.Name).First();
             Quiz q = db.Quizzes.Find(id);
             if (q !=null || User.IsInRole("admin"))
@@ -445,7 +450,12 @@ namespace TracNghiem.Controllers
         {
             User u = db.Users.Where(t => t.username == User.Identity.Name).First();
             Quiz q = db.Quizzes.Find(id);
-            if(q.CreatorID == u.ID || User.IsInRole("admin"))
+            bool active = db.QuizTests.Any(x => x.Quiz.Select(c => c.QuizID).Contains(id));
+            if (active == true)
+            {
+                return Json(new { Message = "Câu hỏi này không thể hủy" }, JsonRequestBehavior.AllowGet);
+            }
+            if (q.CreatorID == u.ID || User.IsInRole("admin"))
             {
                 string title = q.name;
                 q.status = state;
