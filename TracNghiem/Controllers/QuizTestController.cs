@@ -39,7 +39,7 @@ namespace TracNghiem.Controllers
             else
             {
                 User u = db.Users.Where(i => i.username == User.Identity.Name).First();
-                var quiz = db.QuizTests.Where(x => x.name == model.name && x.LessonId == model.LessonId).SingleOrDefault();
+                var quiz = db.QuizTests.Where(x => x.name == model.name || x.LessonId == model.LessonId).SingleOrDefault();
                 if (quiz != null)
                 {
                     return Json(new { success = false, Message = "Bài học này đã có bài tập" }, JsonRequestBehavior.AllowGet);

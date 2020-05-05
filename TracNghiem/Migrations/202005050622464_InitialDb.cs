@@ -3,7 +3,7 @@ namespace TracNghiem.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class InitialDb : DbMigration
     {
         public override void Up()
         {
@@ -60,7 +60,7 @@ namespace TracNghiem.Migrations
                         Status = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Users", t => t.CreatorID, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.CreatorID, cascadeDelete: false)
                 .Index(t => t.CreatorID);
             
             CreateTable(
@@ -122,7 +122,7 @@ namespace TracNghiem.Migrations
                         ActiveTestID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Users", t => t.StudentID, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.StudentID, cascadeDelete: false)
                 .ForeignKey("dbo.ActiveTests", t => t.ActiveTestID)
                 .Index(t => t.StudentID)
                 .Index(t => t.ActiveTestID);

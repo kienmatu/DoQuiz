@@ -87,7 +87,7 @@ namespace TracNghiem.Controllers
         public ActionResult OpenRoom(int id)
         {
             var model = db.QuizTests.Where(x => x.LessonId == id && x.status == TestStatusAd.Active).SingleOrDefault();
-            var test = db.ActiveTests.Where(x=>x.IsActive == true).SingleOrDefault();
+            var test = db.ActiveTests.Where(x => x.IsActive == true).SingleOrDefault();
             if (model != null && test != null)
             {
                 var lesson = db.Lessons.Where(x => x.ID == id).Single();

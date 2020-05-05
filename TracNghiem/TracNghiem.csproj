@@ -145,9 +145,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202004270622372_Initial.cs" />
-    <Compile Include="Migrations\202004270622372_Initial.Designer.cs">
-      <DependentUpon>202004270622372_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202005050622464_InitialDb.cs" />
+    <Compile Include="Migrations\202005050622464_InitialDb.Designer.cs">
+      <DependentUpon>202005050622464_InitialDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ActiveTest.cs" />
@@ -1596,8 +1596,8 @@
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004270622372_Initial.resx">
-      <DependentUpon>202004270622372_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202005050622464_InitialDb.resx">
+      <DependentUpon>202005050622464_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
